@@ -206,7 +206,7 @@ Parameters:
     Default: '2'
     Description: 'The desired number of webapp hosts to create. The maximum number is four.'
     Type: String
-   WebAppInstanceType:
+  WebAppInstanceType:
     Description: 'Amazon EC2 instance type for the web app instances.'
     Type: String
     Default: 't2.medium'
@@ -573,7 +573,7 @@ Resources:
           Fn::If:
           - UsingDefaultBucket
           - !Sub '${QSS3BucketName}-${AWS::Region}'
-          - !Ref QSS3BucketName
+          - !Ref RegionalArtifactBucket
         QSS3KeyPrefix: !Sub '${QSS3KeyPrefix}submodules/quickstart-linux-bastion/'
         RemoteAccessCIDR: !Ref RemoteAccessCIDR
         VPCID: !GetAtt 
@@ -671,7 +671,7 @@ Resources:
           Fn::If:
           - UsingDefaultBucket
           - !Sub '${QSS3BucketName}-${AWS::Region}'
-          - !Ref QSS3BucketName
+          - !Ref RegionalArtifactBucket
         WebSocketURL : !GetAtt FunctionsStack.Outputs.WebSocketURL 
         WebAppInstanceType: !Ref WebAppInstanceType
         MergedRecordingBucketName: !GetAtt StorageStack.Outputs.MergedRecordingBucketName
@@ -705,7 +705,7 @@ Resources:
           Fn::If:
           - UsingDefaultBucket
           - !Sub '${QSS3BucketName}-${AWS::Region}'
-          - !Ref QSS3BucketName
+          - !Ref RegionalArtifactBucket
         KeywordsFileName: !Ref KeywordsFileName
         QSS3KeyPrefix: !Ref QSS3KeyPrefix
         RecordingBucketName: !GetAtt StorageStack.Outputs.RecordingBucketName

@@ -161,20 +161,6 @@ Resources:
                 Resource: 
                   - !Sub '${LiveCallsMetadataTableARN}'
                   - !Sub '${TranscriptionKeywordExtractionTableARN}'
-        - PolicyName: transcribe-access
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Sid: 1
-                Effect: Allow
-                Action:
-                  - 'transcribe:*'
-                Resource: '*'
-              - Sid: 2
-                Effect: Allow
-                Action:
-                  - 's3:GetObject'
-                Resource: 'arn:aws:s3:::*transcribe*'  
  
   CognitoAuthRole:
     Type: 'AWS::IAM::Role'
@@ -369,7 +355,7 @@ Resources:
         Count: !Ref DesiredCapacity
         Timeout: PT60M
       AutoScalingCreationPolicy:
-        MinSuccessfulInstancesPercent: 0
+        MinSuccessfulInstancesPercent: 50
     UpdatePolicy:
       AutoScalingReplacingUpdate:
         WillReplace: true
@@ -472,10 +458,15 @@ Resources:
               cwd: '/var'
               command: "apt -y install nodejs"
         app_code:
-          sources: 
-            /var : !Sub "https://${QSS3BucketName}.s3.${AWS::URLSuffix}/${QSS3KeyPrefix}web_app/ui_code.zip"
           commands:
-            1_edit_env_file:
+            1_download_ui_code:
+              cwd: '/var'
+              command: !Sub | 
+                aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}web_app/ui_code.zip .
+            2_unzip_ui_code:
+              cwd: '/var'
+              command: unzip ui_code.zip
+            3_edit_env_file:
               cwd: '/var/ui_code'
               command: !Sub | 
                 cat <<EOF > ./src/environments/environment.ts
@@ -506,7 +497,7 @@ Resources:
                 }
                 
                 EOF
-            2_edit_env_prod_file:
+            4_edit_env_prod_file:
               cwd: '/var/ui_code'
               command: !Sub | 
                 cat <<EOF > ./src/environments/environment.prod.ts
@@ -536,16 +527,16 @@ Resources:
                 }
                 
                 EOF
-            3_install_dependencies:
+            5_install_dependencies:
               cwd: '/var/ui_code'
               command: "npm install"
-            4_install_angular_cli:
+            6_install_angular_cli:
               cwd: '/var/ui_code'
               command: "npm install -g -f @angular/cli"
-            5_build_app_artifacts:
+            7_build_app_artifacts:
               cwd: '/var/ui_code'
               command: "ng build"
-            6_copy_to_html:
+            8_copy_to_html:
               cwd: '/var/ui_code'
               command: "cp -r ./dist/ui/. /var/www/html/"
     Properties:
