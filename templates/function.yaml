@@ -1,0 +1,969 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Resources to process 
+              1.Chime Voice Connector audio from KVS,transcribe and publish transcription, keyword-extraction
+              and custom entity extraction results to websocket and DynamoDB table
+
+Parameters:
+  QSS3BucketName:
+    Description: The bucket where backend codes and packages are present.
+    Type: String
+  QSTagValue:
+    Description: Tag value to be attached to resource names.
+    Type: String
+  QSS3KeyPrefix:
+    Description: The S3 key name prefix used for your copy of Quick Start assets.
+    Type: String
+  KeywordsFileName:
+    Description: The file where Keywords are stored for the Keywords Function.
+    Type: String
+  RecordingBucketName:
+    Description: The Name of Recording Bucket.
+    Type: String
+  MergedRecordingBucketName:
+    Description: The Name of Merged Recording Bucket.
+    Type: String
+  SourceArtifactBucketName:
+    Description: The Name of Source Artifact Bucket.
+    Type: String
+  TranscriptionWebsocketConnectionTableName:
+    Description: The name of connection table.
+    Type: String
+  TranscriptionKeywordExtractionTableName:
+    Description: The name of keyword extraction table.
+    Type: String
+  LiveCallsMetadataTableName:
+    Description: The name of metadata table.
+    Type: String
+  LiveCallsTranscriptionTableName:
+    Description: Transcription table name.
+    Type: String
+  RecordingBucketARN:
+    Description: The ARN of Recording bucket.
+    Type: String
+  MergedRecordingBucketARN:
+    Description: The ARN of Merged Recording Bucket.
+    Type: String
+  SourceArtifactBucketARN:
+    Description: The ARN of Source Artifact Bucket.
+    Type: String
+  TranscriptionWebsocketConnectionTableARN:
+    Description: The ARN of connection table.
+    Type: String
+  TranscriptionKeywordExtractionTableARN:
+    Description: The ARN of keyword extraction table.
+    Type: String
+  LiveCallsMetadataTableARN:
+    Description: The ARN of metadata table.
+    Type: String
+  LiveCallsTranscriptionTableARN:
+    Description: Transcription table ARN.
+    Type: String
+
+Resources:
+  EventSQS1:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${QSTagValue}ChimeVoiceConnectorStreaming1
+      VisibilityTimeout: 1800
+  EventSQS2:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${QSTagValue}ChimeVoiceConnectorStreaming2
+      VisibilityTimeout: 10
+  EventSQS3:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${QSTagValue}TranscribeResultsStreaming
+      VisibilityTimeout: 30
+  SendEventToSQSRule1:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source:
+        - aws.chime
+        detail-type:
+        - Chime VoiceConnector Streaming Status
+      Targets:
+      - Id: "1"
+        Arn:
+          Fn::GetAtt:
+          - EventSQS1
+          - Arn
+  SendEventToSQSRule2:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source:
+        - aws.chime
+        detail-type:
+        - Chime VoiceConnector Streaming Status
+      Targets:
+      - Id: "1"
+        Arn:
+          Fn::GetAtt:
+          - EventSQS2
+          - Arn
+  EventSQSSendEventPolicy1:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Id: GrantSendEventPermission
+        Statement:
+        - Sid: '1'
+          Effect: Allow
+          Principal:
+            Service:
+            - events.amazonaws.com
+          Action:
+          - sqs:SendMessage
+          Resource:
+            Fn::GetAtt:
+            - EventSQS1
+            - Arn
+          Condition:
+            ArnEquals:
+              AWS:SourceArn:
+                Fn::GetAtt:
+                - SendEventToSQSRule1
+                - Arn
+      Queues:
+      - Ref: EventSQS1
+  EventSQSSendEventPolicy2:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Id: GrantSendEventPermission
+        Statement:
+        - Sid: '1'
+          Effect: Allow
+          Principal:
+            Service:
+            - events.amazonaws.com
+          Action:
+          - sqs:SendMessage
+          Resource:
+            Fn::GetAtt:
+            - EventSQS2
+            - Arn
+          Condition:
+            ArnEquals:
+              AWS:SourceArn:
+                Fn::GetAtt:
+                - SendEventToSQSRule2
+                - Arn
+      Queues:
+      - Ref: EventSQS2
+  EventSQSSendEventPolicy3:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Id: GrantSendEventPermission
+        Statement:
+        - Sid: '1'
+          Effect: Allow
+          Principal: 
+            AWS: "*"
+          Action:
+          - sqs:*
+          Resource:
+            Fn::GetAtt:
+            - EventSQS3
+            - Arn
+      Queues:
+      - Ref: EventSQS3
+  
+  LambdaLayer1:
+    Type: "AWS::Lambda::LayerVersion"
+    Properties:
+      CompatibleRuntimes:
+        - python3.8
+      Content:
+        S3Bucket: !Ref QSS3BucketName
+        S3Key: !Sub '${QSS3KeyPrefix}layers/chimetranscribe-libraries.zip'
+      Description: chimetranscribe-libraries
+      LayerName: chimetranscribe-libraries
+      LicenseInfo: MIT
+  LambdaLayer2:
+    Type: "AWS::Lambda::LayerVersion"
+    Properties:
+      CompatibleRuntimes:
+        - python3.6
+      Content:
+        S3Bucket: !Ref QSS3BucketName
+        S3Key: !Sub '${QSS3KeyPrefix}layers/pandas.zip'
+      Description: pandas layer
+      LayerName: pandas
+      LicenseInfo: MIT
+  LambdaLayer3:
+    Type: "AWS::Lambda::LayerVersion"
+    Properties:
+      CompatibleRuntimes:
+        - python3.6
+        - python3.7
+        - python3.8
+      Content:
+        S3Bucket: !Ref QSS3BucketName
+        S3Key: !Sub '${QSS3KeyPrefix}layers/date_extractor.zip'
+      Description: date extractor layer
+      LayerName: date_extractorr
+      LicenseInfo: MIT
+  LambdaLayer4:
+    Type: "AWS::Lambda::LayerVersion"
+    Properties:
+      CompatibleRuntimes:
+        - python3.6
+        - python3.7
+        - python3.8
+      Content:
+        S3Bucket: !Ref QSS3BucketName
+        S3Key: !Sub '${QSS3KeyPrefix}layers/pydub.zip'
+      Description: pydub layer
+      LayerName: pydubb
+      LicenseInfo: MIT
+  
+  MainLambdaFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - sts:AssumeRole
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+      Policies:
+      - PolicyName: inline
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - cloudwatch:Put*
+            - cloudwatch:Get*
+            - cloudwatch:List*
+            Resource: "*"
+      - PolicyName: logs-access
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+              - "logs:CreateLogGroup"
+              - "logs:CreateLogStream"
+              - "logs:PutLogEvents"
+              Resource:
+              - arn:aws:logs:*:*:*    
+      - PolicyName: kinesis-access
+        PolicyDocument:
+          Version: '2012-10-17' 
+          Statement:
+          - Effect: Allow
+            Action:
+            - "kinesisvideo:Describe*"
+            - "kinesisvideo:Get*"
+            - "kinesisvideo:List*"
+            Resource: '*'
+      - PolicyName: transcribe-access
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Sid: 1
+              Effect: Allow
+              Action:
+                - "transcribe:GetTranscriptionJob"
+                - "transcribe:StartStreamTranscription"
+                - "transcribe:StartTranscriptionJob"
+                - "transcribe:DeleteTranscriptionJob"
+                - "transcribe:ListTranscriptionJobs"
+                - "transcribe:StartStreamTranscriptionWebSocket"
+              Resource: '*'
+            - Sid: 2
+              Effect: Allow
+              Action:
+                - 's3:GetObject'
+              Resource: 'arn:aws:s3:::*transcribe*'        
+      - PolicyName: sqs-execution
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Sid: 1
+              Effect: Allow
+              Action:
+                - 'sqs:SendMessage'
+                - 'sqs:SendMessageBatch'
+              Resource: !GetAtt EventSQS3.Arn
+            - Sid: 2
+              Effect: Allow
+              Action:
+                - 'sqs:ReceiveMessage'
+                - 'sqs:DeleteMessage'
+                - 'sqs:GetQueueAttributes'
+              Resource: '*'
+      - PolicyName: audio-recording-S3-get-access
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - 's3:GetObject'
+                - 's3:PutObject'
+              Resource: !Sub '${RecordingBucketARN}/*'
+      - PolicyName: api-gateway-executeapi
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'execute-api:Invoke'
+                - 'execute-api:ManageConnections'
+              Resource: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${TranscriptionWebSocketAPI}/*'
+      - PolicyName: dynamodb-table-read-write-access
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:BatchGetItem'
+                - 'dynamodb:GetItem'
+                - 'dynamodb:Query'
+                - 'dynamodb:Scan'
+                - 'dynamodb:BatchWriteItem'
+                - 'dynamodb:PutItem'
+                - 'dynamodb:UpdateItem'
+              Resource: !Sub '${LiveCallsTranscriptionTableARN}'
+
+  MetadataFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - sts:AssumeRole
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+      Policies:
+      - PolicyName: inline
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - cloudwatch:Put*
+            - cloudwatch:Get*
+            - cloudwatch:List*
+            Resource: "*"
+      - PolicyName: comprehend-access
+        PolicyDocument:
+          Version: '2012-10-17' 
+          Statement:
+          - Effect: Allow
+            Action:
+            - "comprehend:DetectEntities"
+            Resource: '*'
+      - PolicyName: logs-access
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+          - Effect: Allow
+            Action:
+            - "logs:CreateLogGroup"
+            - "logs:CreateLogStream"
+            - "logs:PutLogEvents"
+            Resource:
+            - arn:aws:logs:*:*:*     
+      - PolicyName: sqs-execution
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'sqs:ReceiveMessage'
+                - 'sqs:DeleteMessage'
+                - 'sqs:GetQueueAttributes'
+              Resource: "*"
+      - PolicyName: audio-recording-S3-get-access
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Sid: 1
+              Effect: Allow
+              Action:
+                - 's3:GetObject'
+              Resource: 
+              - !Sub '${RecordingBucketARN}/*'
+            - Sid: 2
+              Effect: Allow
+              Action:
+                - 's3:PutObject'
+              Resource: 
+              - !Sub '${MergedRecordingBucketARN}/*'
+            - Sid: 3
+              Effect: Allow
+              Action:
+                - 's3:ListBucket'
+              Resource: 
+              - !Sub '${RecordingBucketARN}' 
+              - !Sub '${MergedRecordingBucketARN}' 
+      - PolicyName: api-gateway-executeapi
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'execute-api:Invoke'
+                - 'execute-api:ManageConnections'
+              Resource: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${TranscriptionWebSocketAPI}/*'
+      - PolicyName: dynamodb-table-read-write-access
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:BatchGetItem'
+                - 'dynamodb:GetItem'
+                - 'dynamodb:Query'
+                - 'dynamodb:Scan'
+                - 'dynamodb:BatchWriteItem'
+                - 'dynamodb:PutItem'
+                - 'dynamodb:UpdateItem'
+              Resource: 
+              - !Sub '${LiveCallsTranscriptionTableARN}'
+              - !Sub '${LiveCallsMetadataTableARN}'
+              - !Sub '${TranscriptionWebsocketConnectionTableARN}'
+
+
+  KeywordExtractionFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - sts:AssumeRole
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+      Policies:
+      - PolicyName: inline
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - cloudwatch:Put*
+            - cloudwatch:Get*
+            - cloudwatch:List*
+            Resource: "*"
+      - PolicyName: logs-access
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+              - "logs:CreateLogGroup"
+              - "logs:CreateLogStream"
+              - "logs:PutLogEvents"
+              Resource:
+              - arn:aws:logs:*:*:*     
+      - PolicyName: sqs-execution
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'sqs:ReceiveMessage'
+                - 'sqs:DeleteMessage'
+                - 'sqs:GetQueueAttributes'
+              Resource: "*"
+      - PolicyName: keywords-S3-get-access
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Sid: 1
+              Effect: Allow
+              Action:
+                - 's3:GetObject'
+              Resource: !Sub '${SourceArtifactBucketARN}/*'
+            - Sid: 2
+              Effect: Allow
+              Action:
+                - 's3:ListBucket'
+              Resource: !Sub '${SourceArtifactBucketARN}'
+      - PolicyName: api-gateway-executeapi
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'execute-api:Invoke'
+                - 'execute-api:ManageConnections'
+              Resource: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${TranscriptionWebSocketAPI}/*'
+      - PolicyName: dynamodb-table-read-write-access
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:BatchGetItem'
+                - 'dynamodb:GetItem'
+                - 'dynamodb:Query'
+                - 'dynamodb:Scan'
+                - 'dynamodb:BatchWriteItem'
+                - 'dynamodb:PutItem'
+                - 'dynamodb:UpdateItem'
+              Resource: 
+                - !Sub '${TranscriptionKeywordExtractionTableARN}'
+                - !Sub '${TranscriptionWebsocketConnectionTableARN}'
+
+  WebSocketFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - sts:AssumeRole
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+      Policies:
+      - PolicyName: inline
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - cloudwatch:Put*
+            - cloudwatch:Get*
+            - cloudwatch:List*
+            Resource: "*"
+      - PolicyName: logs-access
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+              - "logs:CreateLogGroup"
+              - "logs:CreateLogStream"
+              - "logs:PutLogEvents"
+              Resource:
+              - arn:aws:logs:*:*:*     
+      - PolicyName: audio-recording-S3-get-access
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Sid: 1
+              Effect: Allow
+              Action:
+                - 's3:GetObject'
+                - 's3:DeleteObject'
+                - 's3:PutObject'
+              Resource: 
+              - !Sub '${SourceArtifactBucketARN}/*' 
+              - !Sub '${MergedRecordingBucketARN}/*' 
+              - !Sub '${RecordingBucketARN}/*'
+            - Sid: 2
+              Effect: Allow
+              Action:
+                - 's3:ListBucket'
+              Resource: 
+              - !Sub '${SourceArtifactBucketARN}' 
+              - !Sub '${MergedRecordingBucketARN}' 
+              - !Sub '${RecordingBucketARN}'            
+      - PolicyName: api-gateway-executeapi
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'execute-api:Invoke'
+                - 'execute-api:ManageConnections'
+              Resource: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${TranscriptionWebSocketAPI}/*'
+      - PolicyName: dynamodb-table-read-write-access
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - 'dynamodb:BatchGetItem'
+                - 'dynamodb:GetItem'
+                - 'dynamodb:Query'
+                - 'dynamodb:Scan'
+                - 'dynamodb:BatchWriteItem'
+                - 'dynamodb:PutItem'
+                - 'dynamodb:UpdateItem'
+                - 'dynamodb:DeleteItem'
+              Resource: 
+                - !Sub '${TranscriptionKeywordExtractionTableARN}'
+                - !Sub '${TranscriptionWebsocketConnectionTableARN}'
+                - !Sub '${LiveCallsMetadataTableARN}'
+                - !Sub '${LiveCallsTranscriptionTableARN}'
+
+          
+  TranscriptionWebSocketIntegrationRole:
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - sts:AssumeRole
+          Principal:
+            Service:
+            - apigateway.amazonaws.com
+  TranscriptionWebSocketIntegrationFunctionPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt TranscriptionWebSocketIntegrationFunction.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: TranscriptionWebSocketAPI
+          - "/*/*"
+  
+  TranscriptionWebSocketAPI:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      CredentialsArn:
+        Fn::GetAtt:
+        - TranscriptionWebSocketIntegrationRole
+        - Arn
+      Name: !Sub ${QSTagValue}TranscriptWebSocketTransmission
+      ProtocolType: WEBSOCKET
+      RouteSelectionExpression: "$request.body.service"
+      ApiKeySelectionExpression: "$request.header.x-api-key"
+  TranscriptionWebSocketLambdaIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId:
+        Ref: TranscriptionWebSocketAPI
+      IntegrationType: AWS_PROXY
+      IntegrationUri:
+        Fn::Join:
+        - ''
+        - - 'arn:'
+          - Ref: AWS::Partition
+          - ":apigateway:"
+          - Ref: AWS::Region
+          - ":lambda:path/2015-03-31/functions/"
+          - Fn::GetAtt:
+            - TranscriptionWebSocketIntegrationFunction
+            - Arn
+          - "/invocations"
+      CredentialsArn:
+        Fn::GetAtt:
+        - TranscriptionWebSocketIntegrationRole
+        - Arn
+      IntegrationMethod: POST
+      ConnectionType: INTERNET
+  TranscriptionWebSocketAPITranscribeRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId:
+        Ref: TranscriptionWebSocketAPI
+      RouteKey: transcribe
+      AuthorizationType: NONE
+      Target:
+        Fn::Join:
+        - "/"
+        - - integrations
+          - Ref: TranscriptionWebSocketLambdaIntegration
+  TranscriptionWebSocketAPIDeleteRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId:
+        Ref: TranscriptionWebSocketAPI
+      RouteKey: delete
+      AuthorizationType: NONE
+      Target:
+        Fn::Join:
+        - "/"
+        - - integrations
+          - Ref: TranscriptionWebSocketLambdaIntegration
+  TranscriptionWebSocketAPIRouteResponse1:
+    Type: AWS::ApiGatewayV2::RouteResponse
+    Properties:
+      RouteId:
+        Ref: TranscriptionWebSocketAPITranscribeRoute
+      ApiId:
+        Ref: TranscriptionWebSocketAPI
+      RouteResponseKey: "$default"
+  TranscriptionWebSocketAPIRouteResponse2:
+    Type: AWS::ApiGatewayV2::RouteResponse
+    Properties:
+      RouteId:
+        Ref: TranscriptionWebSocketAPIDeleteRoute
+      ApiId:
+        Ref: TranscriptionWebSocketAPI
+      RouteResponseKey: "$default"
+  TranscriptionWebSocketAPIConnectRoute:
+    Type: AWS::ApiGatewayV2::Route
+    DependsOn:
+    - TranscriptionWebSocketLambdaIntegration
+    Properties:
+      ApiId:
+        Ref: TranscriptionWebSocketAPI
+      RouteKey: "$connect"
+      AuthorizationType: NONE
+      Target:
+        Fn::Join:
+        - "/"
+        - - integrations
+          - Ref: TranscriptionWebSocketLambdaIntegration
+  TranscriptionWebSocketAPIDisconnectRoute:
+    Type: AWS::ApiGatewayV2::Route
+    DependsOn:
+    - TranscriptionWebSocketLambdaIntegration
+    Properties:
+      ApiId:
+        Ref: TranscriptionWebSocketAPI
+      RouteKey: "$disconnect"
+      AuthorizationType: NONE
+      Target:
+        Fn::Join:
+        - "/"
+        - - integrations
+          - Ref: TranscriptionWebSocketLambdaIntegration
+  TranscriptionWebSocketAPIDefaultRoute:
+    Type: AWS::ApiGatewayV2::Route
+    DependsOn:
+    - TranscriptionWebSocketLambdaIntegration
+    Properties:
+      ApiId:
+        Ref: TranscriptionWebSocketAPI
+      RouteKey: "$default"
+      AuthorizationType: NONE
+      Target:
+        Fn::Join:
+        - "/"
+        - - integrations
+          - Ref: TranscriptionWebSocketLambdaIntegration
+  TranscriptionWebSocketAPIDeployment:
+    Type: AWS::ApiGatewayV2::Deployment
+    DependsOn:
+    - TranscriptionWebSocketAPIDisconnectRoute
+    - TranscriptionWebSocketAPIConnectRoute
+    - TranscriptionWebSocketAPITranscribeRoute
+    - TranscriptionWebSocketAPIDefaultRoute
+    - TranscriptionWebSocketAPIDeleteRoute
+    Properties:
+      ApiId:
+        Ref: TranscriptionWebSocketAPI
+  TranscriptionWebSocketAPIStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      StageName: beta
+      DeploymentId:
+        Ref: TranscriptionWebSocketAPIDeployment
+      ApiId:
+        Ref: TranscriptionWebSocketAPI
+  
+  
+  TranscriptionWebSocketIntegrationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: 
+        Fn::Sub: ${QSTagValue}-TranscriptionWebSocketIntegrationFunction
+      CodeUri: 
+        Bucket: !Ref QSS3BucketName
+        Key: !Sub '${QSS3KeyPrefix}functions/websocket-connection.zip'
+      Environment:
+        Variables:
+          CONNECTIONS_TABLE: !Ref TranscriptionWebsocketConnectionTableName
+          ENTITIES_TABLE: !Ref LiveCallsMetadataTableName
+          KEYWORDS_TABLE: !Ref TranscriptionKeywordExtractionTableName
+          MERGED_FILES_S3_BUCKET: !Ref MergedRecordingBucketName
+          SINGLE_FILES_S3_BUCKET: !Ref RecordingBucketName
+          TRANSCRIPTS_TABLE: !Ref LiveCallsTranscriptionTableName
+          WEBSOCKET_URL: 
+            Fn::Join:
+              - ''
+              - - https://
+                - Ref: TranscriptionWebSocketAPI
+                - ".execute-api."
+                - Ref: AWS::Region
+                - ".amazonaws.com/beta"
+      Handler: lambda_function.lambda_handler
+      Role:
+        Fn::GetAtt:
+        - WebSocketFunctionRole
+        - Arn
+      Runtime: python3.8
+      MemorySize: 128
+      Timeout: 10
+  MainLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: 
+        Fn::Sub: ${QSTagValue}-LiveCallsTranscriberFunction
+      AutoPublishAlias: Provisioned
+      MemorySize: 1024
+      Timeout: 900
+      Handler: com.amazonaws.kvstranscribestreaming.lambda.KVSTranscribeStreamingLambda::handleRequest
+      Runtime: java11
+      CodeUri: 
+        Bucket: !Ref QSS3BucketName
+        Key: !Sub '${QSS3KeyPrefix}functions/amazon-chime-recordandtranscribe.zip'
+      Role:
+        Fn::GetAtt:
+        - MainLambdaFunctionRole
+        - Arn
+      Environment:
+        Variables:
+          IS_TRANSCRIBE_ENABLED: 'true'
+          RECORDINGS_BUCKET_NAME: !Ref RecordingBucketName
+          DDB_OUT_NAME: !Ref LiveCallsTranscriptionTableName
+          SQS_ENDPOINT: !Ref EventSQS3
+          TRANSCRIBE_API_GATEWAY_APIID: !Ref TranscriptionWebSocketAPI
+          TRANSCRIBE_API_GATEWAY_STAGE: !Ref TranscriptionWebSocketAPIStage
+      Events:
+        EventQueue:
+          Type: SQS
+          Properties:
+            Queue:
+              Fn::GetAtt:
+              - EventSQS1
+              - Arn
+            BatchSize: 1
+      ProvisionedConcurrencyConfig:
+        ProvisionedConcurrentExecutions: 2
+  KeywordExtractionFunction:
+    Type: AWS::Serverless::Function
+    DependsOn: 
+    - EventSQS3
+    Properties:
+      FunctionName: 
+        Fn::Sub: ${QSTagValue}-KeywordExtractionFunction
+      MemorySize: 192
+      Timeout: 30
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.8
+      CodeUri: 
+        Bucket: !Ref QSS3BucketName
+        Key: !Sub '${QSS3KeyPrefix}functions/keyword-extraction.zip'
+      Role:
+        Fn::GetAtt:
+        - KeywordExtractionFunctionRole
+        - Arn
+      Environment:
+        Variables:
+          BUCKET: !Ref SourceArtifactBucketName
+          CONNECTIONS_TABLE: !Ref TranscriptionWebsocketConnectionTableName
+          DOWNLOAD_TXT_PATH: '/tmp/output.txt'
+          TEXT_KEY: !Sub ${QSS3KeyPrefix}assets/${KeywordsFileName}
+          TRANSCRIPTS_TABLE: !Ref TranscriptionKeywordExtractionTableName
+          WEBSOCKET_URL:
+            Fn::Join:
+              - ''
+              - - https://
+                - Ref: TranscriptionWebSocketAPI
+                - ".execute-api."
+                - Ref: AWS::Region
+                - ".amazonaws.com/beta"
+      Events:
+        EventQueue:
+          Type: SQS
+          Properties:
+            Queue:
+              Fn::GetAtt:
+              - EventSQS3
+              - Arn
+            BatchSize: 1
+      Layers:
+        - !Ref LambdaLayer1
+  PublishCallMetadataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: 
+        Fn::Sub: ${QSTagValue}-PublishCallMetadataFunction
+      MemorySize: 128
+      Timeout: 10
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.6
+      CodeUri: 
+        Bucket: !Ref QSS3BucketName
+        Key: !Sub '${QSS3KeyPrefix}functions/publish-call-metadata.zip'
+      Role:
+        Fn::GetAtt:
+        - MetadataFunctionRole
+        - Arn
+      Environment:
+        Variables:
+          CONNECTIONS_TABLE: !Ref TranscriptionWebsocketConnectionTableName
+          MERGED_FILES_S3_BUCKET: !Ref MergedRecordingBucketName
+          METADATA_TABLE: !Ref LiveCallsMetadataTableName
+          SINGLE_FILES_S3_BUCKET: !Ref RecordingBucketName
+          TRANSCRIPTS_TABLE: !Ref LiveCallsTranscriptionTableName
+          WEBSOCKET_URL:
+            Fn::Join:
+              - ''
+              - - https://
+                - Ref: TranscriptionWebSocketAPI
+                - ".execute-api."
+                - Ref: AWS::Region
+                - ".amazonaws.com/beta"
+      Events:
+        EventQueue:
+          Type: SQS
+          Properties:
+            Queue:
+              Fn::GetAtt:
+              - EventSQS2
+              - Arn
+            BatchSize: 1
+      Layers:
+        - !Ref LambdaLayer2
+        - !Ref LambdaLayer3
+        - !Ref LambdaLayer4
+
+Outputs:
+  TranscriptionWebSocketAPI:
+    Description: The apigateway Id
+    Value: !Ref TranscriptionWebSocketAPI
+    Export:
+      Name: 
+        Fn::Sub: "${AWS::StackName}-TranscriptionWebSocketAPI"
+  TranscriptionWebSocketAPIStage:
+    Description: stage name of apigateway
+    Value: !Ref TranscriptionWebSocketAPIStage
+    Export:
+      Name: 
+        Fn::Sub: "${AWS::StackName}-TranscriptionWebSocketAPIStage"
+  EventSQS3:
+    Description: The post processing sqs Queue
+    Value: !Ref EventSQS3
+    Export:
+      Name: 
+        Fn::Sub: "${AWS::StackName}-EventSQS3"
+  WebSocketURL :
+    Description: Transcription Websocket URL
+    Value: 
+      Fn::Join:
+              - ''
+              - - wss://
+                - Ref: TranscriptionWebSocketAPI
+                - ".execute-api."
+                - Ref: AWS::Region
+                - ".amazonaws.com/beta"
