@@ -10,7 +10,7 @@ tests:  # [REQUIRED] Test definition section
   quickstart-quantiphi-test-1:
     parameters:
       QSS3BucketName: $[taskcat_autobucket]
-      QSTagValue: new-qs
+      QSTagValue: qs-new-vpc
       QSS3KeyPrefix: quickstart-quantiphi-realtime-analytics/
       KeyPairName: quickstart-taskcat
       VPCID: ''
@@ -48,13 +48,13 @@ tests:  # [REQUIRED] Test definition section
   quickstart-quantiphi-test-2:
     parameters:
       QSS3BucketName: $[taskcat_autobucket]
-      QSTagValue: old-qs
+      QSTagValue: qs-old-vpc
       QSS3KeyPrefix: quickstart-quantiphi-realtime-analytics/
       KeyPairName: quickstart-taskcat
       VPCID:  '' #Put your VPC Id here
       SubnetID1: '' #Put your Private Subnet Id here. (Web App)
       SubnetID2: '' #Put another Private Subnet Id here. (Web App)
-      SubnetIDs: '' #Put your Public Subnet Id's (Mininmum 2) here. (Web App Application Load Balancer)
+      SubnetIDs: '' #Put your Public Subnet Id's (Minimum 2) here. (Web App Application Load Balancer)
       CIDR: 0.0.0.0/0
       MinCapacity: 1
       MaxCapacity: 4
