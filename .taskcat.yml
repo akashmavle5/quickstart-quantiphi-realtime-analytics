@@ -2,6 +2,7 @@ project:
   name: quickstart-quantiphi-realtime-analytics
   regions: # List of AWS regions
     - us-east-1
+    - us-west-2
   tags: 
     Project: Quickstart-quantiphi-realtime-analytics
   template: ./templates/master.yaml
@@ -78,6 +79,82 @@ tests:  # [REQUIRED] Test definition section
       WebAppInstanceType: 't2.medium'
     regions:
       - us-east-1
+    tags:  
+      Project: Quickstart-quantiphi-realtime-analytics
+    template: ./templates/master.yaml
+
+# Using New VPC
+  quickstart-quantiphi-test-3:
+    parameters:
+      QSS3BucketName: $[taskcat_autobucket]
+      QSTagValue: qstestnew
+      QSS3KeyPrefix: quickstart-quantiphi-realtime-analytics/
+      KeyPairName: quickstart-taskcat
+      VPCID: ''
+      SubnetID1: ''
+      SubnetID2: ''
+      SubnetIDs: ''
+      CIDR: 0.0.0.0/0
+      MinCapacity: 1
+      MaxCapacity: 4
+      DesiredCapacity: 2
+      CreateNewVPC: 'Yes'
+      VPCCIDR: 10.192.0.0/16
+      PublicSubnet1CIDR: 10.192.10.0/24
+      PublicSubnet2CIDR: 10.192.11.0/24
+      PrivateSubnet1CIDR: 10.192.20.0/24
+      PrivateSubnet2CIDR: 10.192.21.0/24
+      BastionAMIOS: Amazon-Linux2-HVM
+      BastionBanner: ""
+      BastionTenancy: default
+      BastionInstanceType: t2.micro
+      EnableBanner: 'false'
+      EnableTCPForwarding: 'false'
+      EnableX11Forwarding: 'false'
+      NumBastionHosts:  1
+      RemoteAccessCIDR: 0.0.0.0/0
+      BastionSecurityGroupId: ''
+      WebAppInstanceType: 't2.medium'
+    regions:
+      - us-west-2
+    tags:  
+      Project: Quickstart-quantiphi-realtime-analytics
+    template: ./templates/master.yaml
+
+  # Using Existing VPC
+  quickstart-quantiphi-test-4:
+    parameters:
+      QSS3BucketName: $[taskcat_autobucket]
+      QSTagValue: qstestold
+      QSS3KeyPrefix: quickstart-quantiphi-realtime-analytics/
+      KeyPairName: quickstart-taskcat
+      VPCID:  '' #Put your VPC Id here
+      SubnetID1: '' #Put your Private Subnet Id here. (Web App)
+      SubnetID2: '' #Put another Private Subnet Id here. (Web App)
+      SubnetIDs: '' #Put your Public Subnet Id's (Minimum 2) here. (Web App Application Load Balancer)
+      CIDR: 0.0.0.0/0
+      MinCapacity: 1
+      MaxCapacity: 4
+      DesiredCapacity: 2
+      CreateNewVPC: 'No'
+      VPCCIDR: ''
+      PublicSubnet1CIDR: ''
+      PublicSubnet2CIDR: ''
+      PrivateSubnet1CIDR: ''
+      PrivateSubnet2CIDR: ''
+      BastionAMIOS: ''
+      BastionBanner: ""
+      BastionTenancy: ''
+      BastionInstanceType: ''
+      EnableBanner: ''
+      EnableTCPForwarding: ''
+      EnableX11Forwarding: ''
+      NumBastionHosts:  ''
+      RemoteAccessCIDR: ''
+      BastionSecurityGroupId: ''
+      WebAppInstanceType: 't2.medium'
+    regions:
+      - us-west-2
     tags:  
       Project: Quickstart-quantiphi-realtime-analytics
     template: ./templates/master.yaml

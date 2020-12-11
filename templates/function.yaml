@@ -626,8 +626,6 @@ Resources:
   TranscriptionWebSocketIntegrationRole:
     Type: AWS::IAM::Role
     Properties:
-      ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -637,6 +635,16 @@ Resources:
           Principal:
             Service:
             - apigateway.amazonaws.com
+      Policies:
+      - PolicyName: lamda-invoke
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+              - "lambda:InvokeFunction"
+              Resource: "*"
+
   TranscriptionWebSocketIntegrationFunctionPermission:
     Type: AWS::Lambda::Permission
     Properties:
