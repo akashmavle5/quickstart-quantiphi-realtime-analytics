@@ -22,8 +22,9 @@ logger.setLevel(logging.INFO)
 # make the connection to dynamodb
 dynamodb = boto3.resource('dynamodb')
 
+region = os.environ['AWS_REGION']
 # make the connection to comprehend
-client = boto3.client('comprehend', region_name='us-east-1')
+client = boto3.client('comprehend', region_name=region)
 
 # make the connection to s3
 s3_client = boto3.client('s3')
@@ -54,7 +55,6 @@ def merge_audios(bucket,key1,key2):
     sound2 = AudioSegment.from_file(download_path_2)
     combined = sound1.overlay(sound2)
     output_file_path=download_path_1.split(" ")[0]+'.wav'
-    # output_file_path = "/tmp/voiceConnectorToKVS_13d55ccf-4d13-491f-81b8-7e6930460cbe_5DA6E4B-F05111EA-901D86B5-9607AB24@10.255.101.136_2020-09-07.wav"
     combined.export(output_file_path, format='wav')
     s3_path = output_file_path.split('/')[-1]
     s3_client.upload_file(output_file_path, os.environ['MERGED_FILES_S3_BUCKET'] ,s3_path,ExtraArgs={'ContentType': 'audio/wav','ACL':'private'})
@@ -71,7 +71,6 @@ def get_s3_keys(bucket, prefix):
         resp = s3_client.list_objects_v2(**kwargs)
         for obj in resp['Contents']:
             key = obj['Key']
-            # print(key)
             extension = key.split('.')[-1]
             if extension == 'wav':
                 keys.append(key)
@@ -90,7 +89,6 @@ def publish_to_websocket(transactionId,fromNumber,toNumber,streamingStatus,date_
         response = connections_table.scan()
         data_ = response['Items']
         for item in data_:
-            # logger.info(item['ConnectionId'])
             wsclient = boto3.client('apigatewaymanagementapi',endpoint_url = os.environ['WEBSOCKET_URL'])
             response = wsclient.post_to_connection(
                 Data=json.dumps({"transactionId": transactionId, "fromNumber": fromNumber, "toNumber": toNumber, "streamingStatus": streamingStatus,"date_": date_,"customEntities": entities}),
@@ -121,15 +119,13 @@ def insert_into_table(receivedEventAt,transactionId,fromNumber,toNumber,streamin
     if streamingStatus == 'ENDED':
         entities={"memberInfo": [], "providerInfo": []}
         time.sleep(4)
-        member_name,member_ID,phone_number,dob,provider_name,provider_facility=custom_entity_extraction(transactionId)
+        member_name,member_ID,phone_number,dob=custom_entity_extraction(transactionId)
         member_info = {}
         provider_info = {}
         member_info["memberName"]=member_name
         member_info["memberIDNumber"]=member_ID
         member_info["callbackPhoneNumber"]=phone_number
         member_info["DOB"]=dob
-        provider_info["providerName"]=provider_name
-        provider_info["providerFacility"]=provider_facility
         entities["memberInfo"].append(member_info)
         entities["providerInfo"].append(provider_info)
         publish_to_websocket(transactionId,fromNumber,toNumber,streamingStatus,date_,entities)
@@ -176,17 +172,13 @@ def custom_entity_extraction(transactionId):
         member_ID=extract_member_ID(transcript)
         phone_number=extract_phone_number_ctxt(transcript)
         dob=extract_DOB(transcript)
-        provider_name=isProvider(transcript)
-        provider_facility=isProvider_fac(transcript)
     except Exception as e:
         member_name=''
         member_ID=''
         phone_number=''
         dob=''
-        provider_name=''
-        provider_facility=''
         print('Exception in custom entity section',e)
-    return member_name,member_ID,phone_number,dob,provider_name,provider_facility
+    return member_name,member_ID,phone_number,dob
 
 # ENTITY FUNCTIONS START HERE
  
@@ -285,39 +277,6 @@ def extract_DOB(transcript):
     else:
         return ''
 
-# PROVIDER NAME
-
-def isProvider(transcript):
-    context = ['calling from', 'calling with', 'authorization', 'eligibility and benefits', 'benefits', 'name of the office', 'name of the provider', 'name of the facility', 'calling for']
-    lower = transcript[:300].lower()
-    #print(lower)
-    b = list(filter(lambda k: lower.find(k) != -1, context))
-    #print(b, '\n')
-    if b!=[]:
-        provider = extract_provider_name(transcript)
-        return provider
-    else:
-        return ''
-
-def extract_provider_name(transcript):
-    response = client.detect_entities(Text=transcript[:350],LanguageCode='en')
-    all_persons = [i['Text'] for i in list(filter(lambda x: x['Type'] == 'PERSON' and x['Score'] > 0.75, response['Entities']))]
-    print(all_persons)
-    for i in range(len(all_persons)):
-        try:
-            if all_persons[i] == all_persons[i-1] and len(all_persons) > 1:
-                all_persons.remove(all_persons[i-1])
-        except:
-            continue
-    print(all_persons)
-    try:
-        if len(all_persons) > 1:
-            return all_persons[1]
-        else:
-            return all_persons[0]
-    except:
-        return ''
-
 # MEMBER NAME
 
 def extract_member_name(transcript):
@@ -337,66 +296,13 @@ def extract_member_name(transcript):
             print('seg',seg)
             response = client.detect_entities(Text=seg,LanguageCode='en')
             names = list(filter(lambda x: x['Type'] == 'PERSON', response['Entities']))
-            #names = sorted(names, key=lambda x: x['Score'], reverse = True)
             if names != []:
                 return names[0]['Text']
                 break
-            #elif j < len(b) - 1:
-            #    continue
             else: return ''
     else:
         return ''
         
-# PROVIDER FACILITY 
-
-def isProvider_fac(transcript):
-    context = ['calling from', 'calling with', 'authorization', 'eligibility and benefits', 'benefits', 'name of the office', 'name of the provider', 'name of the facility', 'calling for']
-    lower = transcript[:300].lower()
-    #print(lower)
-    b = list(filter(lambda k: lower.find(k) != -1, context))
-    #print(b, '\n')
-    if b!=[]:
-        fac = extract_provider_facility(transcript)
-        return fac
-    else:
-        return ''
-
-def extract_provider_facility(transcript):
-    context = [i.lower() for i in ['calling from', 'calling with', 'name of the office', 'office', 'facility', 'name of the provider']]
-    doc_context = [i.lower() for i in ['Dr.', 'Dr ', 'office', 'clinic']]
-    lower = transcript.lower()
-    b = list(filter(lambda k: lower.find(k) != -1, context))
-    if b!= []:
-        a = transcript.find(b[0])
-        seg = transcript[np.clip(a - 20, 0, len(transcript)):np.clip(a + 100, 0, len(transcript))]
-        response = client.detect_entities(Text=seg,LanguageCode='en')
-        fac = list(filter(lambda x: x['Type'] == 'ORGANIZATION' and x['Score'] > 0.65, response['Entities']))
-        fac = list(filter(lambda x: x['Text'] != 'Dr', fac))
-        fac = sorted(fac, key=lambda x: x['Score'], reverse = True)
-        if fac != []:
-            for i in fac:
-                k = re.findall(r'^[A-Z]+$', i['Text'])
-                if k!= []:
-                    fac.remove(i)
-        if fac != []:
-            return fac[0]['Text']
-        else:
-            pt_doctor = list(filter(lambda x: x['Type'] == 'PERSON', response['Entities']))
-            pt_doctor = list(filter(lambda x: x['Text'] != 'Dr', pt_doctor))
-            #pt_doctor = sorted(pt_doctor, key=lambda x: x['Score'], reverse = True)
-            doctor = []
-            ment = seg.lower()
-            for i in pt_doctor:
-                for j in doc_context:
-                    if j in ment[np.clip(i['BeginOffset'] - 5, 0, len(seg)):np.clip(i['EndOffset'] + 15, 0, len(seg))]:
-                        doctor.append('Dr. ' + i['Text'])
-            if doctor != []:
-                return doctor[0]
-            else:
-                return ''
-    else:
-        return ''
-
 # END OF ENTITY FUNCTIONS
 
 def lambda_handler(event, context):
@@ -404,7 +310,6 @@ def lambda_handler(event, context):
         This function along with transcriber lambda are called when a call is started and ended
     '''
     receivedEventAt=datetime.datetime.now().strftime('%H:%M:%S')
-    # logger.info(f'event is {event}')
     body = json.loads(event["Records"][0]["body"])
     detail = body.get('detail')
     fromNumber = detail.get('fromNumber')

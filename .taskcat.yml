@@ -51,10 +51,10 @@ tests:  # [REQUIRED] Test definition section
       QSTagValue: old-qs
       QSS3KeyPrefix: quickstart-quantiphi-realtime-analytics/
       KeyPairName: quickstart-taskcat
-      VPCID:  #Put your VPC Id here
-      SubnetID1:  #Put your Private Subnet Id here. (Web App)
-      SubnetID2:  #Put another Private Subnet Id here. (Web App)
-      SubnetIDs:  #Put your Public Subnet Id's (Mininmum 2) here. (Web App Application Load Balancer)
+      VPCID:  '' #Put your VPC Id here
+      SubnetID1: '' #Put your Private Subnet Id here. (Web App)
+      SubnetID2: '' #Put another Private Subnet Id here. (Web App)
+      SubnetIDs: '' #Put your Public Subnet Id's (Mininmum 2) here. (Web App Application Load Balancer)
       CIDR: 0.0.0.0/0
       MinCapacity: 1
       MaxCapacity: 4

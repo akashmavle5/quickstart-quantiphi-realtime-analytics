@@ -138,7 +138,7 @@ Parameters:
   QSS3BucketName:
     Description: The S3 bucket created for your copy of Quick Start assets.
     Type: String
-    Default: 'quickstart-bucket'
+    Default: 'aws-quickstart'
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
   QSTagValue:
     Description: 'Tag value to be attached to resource names.'
@@ -509,15 +509,15 @@ Resources:
         - "templates/storage.yaml"
         - "templates/function.yaml"
         - "templates/master.yaml"
-        - "functions/websocket-connection.zip"
-        - "functions/publish-call-metadata.zip"
-        - "functions/keyword-extraction.zip"
-        - "functions/amazon-chime-recordandtranscribe.zip"
-        - "layers/pydub.zip"
-        - "layers/pandas.zip"
-        - "layers/chimetranscribe-libraries.zip"
-        - "layers/date_extractor.zip"
-        - "web_app/ui_code.zip"
+        - "functions/packages/websocket-connection.zip"
+        - "functions/packages/publish-call-metadata.zip"
+        - "functions/packages/keyword-extraction.zip"
+        - "functions/packages/amazon-chime-recordandtranscribe.zip"
+        - "functions/packages/layers/pydub.zip"
+        - "functions/packages/layers/pandas.zip"
+        - "functions/packages/layers/chimetranscribe-libraries.zip"
+        - "functions/packages/layers/date_extractor.zip"
+        - "assets/web_app/ui_code.zip"
         - "submodules/quickstart-linux-bastion/scripts/auditing_configure.sh"
         - "submodules/quickstart-linux-bastion/scripts/banner_message.txt"
         - "submodules/quickstart-linux-bastion/scripts/bastion_bootstrap.sh"

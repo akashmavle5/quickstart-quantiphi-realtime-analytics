@@ -37,7 +37,6 @@ def convert_time_stamp(n):
     ts = ts - datetime.timedelta(microseconds=ts.microseconds)
     to_dt = datetime.datetime.strptime(str(ts), "%H:%M:%S")
     from_dt = to_dt.strftime("%M:%S")
-    # from_dt = to_dt.strftime("%H:%M:%S")
     return from_dt
 
 def decode_transcript(body):

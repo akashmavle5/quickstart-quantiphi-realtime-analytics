@@ -222,20 +222,6 @@ Resources:
                 Resource: 
                   - !Sub '${LiveCallsMetadataTableARN}'
                   - !Sub '${TranscriptionKeywordExtractionTableARN}'
-        - PolicyName: transcribe-access
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Sid: 1
-                Effect: Allow
-                Action:
-                  - 'transcribe:*'
-                Resource: '*'
-              - Sid: 2
-                Effect: Allow
-                Action:
-                  - 's3:GetObject'
-                Resource: 'arn:aws:s3:::*transcribe*'  
  
   AttachRoleToPool:
     Type: 'AWS::Cognito::IdentityPoolRoleAttachment'
@@ -462,7 +448,7 @@ Resources:
             1_download_ui_code:
               cwd: '/var'
               command: !Sub | 
-                aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}web_app/ui_code.zip .
+                aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}assets/web_app/ui_code.zip .
             2_unzip_ui_code:
               cwd: '/var'
               command: unzip ui_code.zip
@@ -603,9 +589,6 @@ Resources:
       VpcId: !Ref VPCID
       Port: 80
       Protocol: HTTP
-      # Targets:
-      #   - Id: !Ref EC2Instance1
-      #     Port: 80
  
   LoadBalancer:
     Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'

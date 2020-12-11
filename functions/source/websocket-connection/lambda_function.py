@@ -36,7 +36,7 @@ def get_s3_keys(bucket, prefix):
         resp = s3_client.list_objects_v2(**kwargs)
         for obj in resp['Contents']:
             key = obj['Key']
-            # print(key)
+            
             extension = key.split('.')[-1]
             if extension == 'wav':
                 keys.append(key)

@@ -62,6 +62,11 @@ Parameters:
     Type: String
 
 Resources:
+  DeadLetterSQS:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${QSTagValue}ChimeVoiceConnectorDeadLetter
+      VisibilityTimeout: 1800
   EventSQS1:
     Type: AWS::SQS::Queue
     Properties:
@@ -72,6 +77,12 @@ Resources:
     Properties:
       QueueName: !Sub ${QSTagValue}ChimeVoiceConnectorStreaming2
       VisibilityTimeout: 10
+      RedrivePolicy: 
+        deadLetterTargetArn: 
+          Fn::GetAtt: 
+            - "DeadLetterSQS"
+            - "Arn"
+        maxReceiveCount: 2
   EventSQS3:
     Type: AWS::SQS::Queue
     Properties:
@@ -184,7 +195,7 @@ Resources:
         - python3.8
       Content:
         S3Bucket: !Ref QSS3BucketName
-        S3Key: !Sub '${QSS3KeyPrefix}layers/chimetranscribe-libraries.zip'
+        S3Key: !Sub '${QSS3KeyPrefix}functions/packages/layers/chimetranscribe-libraries.zip'
       Description: chimetranscribe-libraries
       LayerName: chimetranscribe-libraries
       LicenseInfo: MIT
@@ -195,7 +206,7 @@ Resources:
         - python3.6
       Content:
         S3Bucket: !Ref QSS3BucketName
-        S3Key: !Sub '${QSS3KeyPrefix}layers/pandas.zip'
+        S3Key: !Sub '${QSS3KeyPrefix}functions/packages/layers/pandas.zip'
       Description: pandas layer
       LayerName: pandas
       LicenseInfo: MIT
@@ -208,7 +219,7 @@ Resources:
         - python3.8
       Content:
         S3Bucket: !Ref QSS3BucketName
-        S3Key: !Sub '${QSS3KeyPrefix}layers/date_extractor.zip'
+        S3Key: !Sub '${QSS3KeyPrefix}functions/packages/layers/date_extractor.zip'
       Description: date extractor layer
       LayerName: date_extractorr
       LicenseInfo: MIT
@@ -221,7 +232,7 @@ Resources:
         - python3.8
       Content:
         S3Bucket: !Ref QSS3BucketName
-        S3Key: !Sub '${QSS3KeyPrefix}layers/pydub.zip'
+        S3Key: !Sub '${QSS3KeyPrefix}functions/packages/layers/pydub.zip'
       Description: pydub layer
       LayerName: pydubb
       LicenseInfo: MIT
@@ -720,8 +731,6 @@ Resources:
       RouteResponseKey: "$default"
   TranscriptionWebSocketAPIConnectRoute:
     Type: AWS::ApiGatewayV2::Route
-    DependsOn:
-    - TranscriptionWebSocketLambdaIntegration
     Properties:
       ApiId:
         Ref: TranscriptionWebSocketAPI
@@ -734,8 +743,6 @@ Resources:
           - Ref: TranscriptionWebSocketLambdaIntegration
   TranscriptionWebSocketAPIDisconnectRoute:
     Type: AWS::ApiGatewayV2::Route
-    DependsOn:
-    - TranscriptionWebSocketLambdaIntegration
     Properties:
       ApiId:
         Ref: TranscriptionWebSocketAPI
@@ -748,8 +755,6 @@ Resources:
           - Ref: TranscriptionWebSocketLambdaIntegration
   TranscriptionWebSocketAPIDefaultRoute:
     Type: AWS::ApiGatewayV2::Route
-    DependsOn:
-    - TranscriptionWebSocketLambdaIntegration
     Properties:
       ApiId:
         Ref: TranscriptionWebSocketAPI
@@ -788,7 +793,7 @@ Resources:
         Fn::Sub: ${QSTagValue}-TranscriptionWebSocketIntegrationFunction
       CodeUri: 
         Bucket: !Ref QSS3BucketName
-        Key: !Sub '${QSS3KeyPrefix}functions/websocket-connection.zip'
+        Key: !Sub '${QSS3KeyPrefix}functions/packages/websocket-connection.zip'
       Environment:
         Variables:
           CONNECTIONS_TABLE: !Ref TranscriptionWebsocketConnectionTableName
@@ -825,7 +830,7 @@ Resources:
       Runtime: java11
       CodeUri: 
         Bucket: !Ref QSS3BucketName
-        Key: !Sub '${QSS3KeyPrefix}functions/amazon-chime-recordandtranscribe.zip'
+        Key: !Sub '${QSS3KeyPrefix}functions/packages/amazon-chime-recordandtranscribe.zip'
       Role:
         Fn::GetAtt:
         - MainLambdaFunctionRole
@@ -862,7 +867,7 @@ Resources:
       Runtime: python3.8
       CodeUri: 
         Bucket: !Ref QSS3BucketName
-        Key: !Sub '${QSS3KeyPrefix}functions/keyword-extraction.zip'
+        Key: !Sub '${QSS3KeyPrefix}functions/packages/keyword-extraction.zip'
       Role:
         Fn::GetAtt:
         - KeywordExtractionFunctionRole
@@ -904,7 +909,7 @@ Resources:
       Runtime: python3.6
       CodeUri: 
         Bucket: !Ref QSS3BucketName
-        Key: !Sub '${QSS3KeyPrefix}functions/publish-call-metadata.zip'
+        Key: !Sub '${QSS3KeyPrefix}functions/packages/publish-call-metadata.zip'
       Role:
         Fn::GetAtt:
         - MetadataFunctionRole
