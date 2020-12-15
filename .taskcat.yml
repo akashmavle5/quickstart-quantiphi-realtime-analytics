@@ -5,7 +5,7 @@ project:
     - us-west-2
   tags: 
     Project: Quickstart-quantiphi-realtime-analytics
-  template: ./templates/master.yaml
+  template: ./templates/main.yaml
 tests:  # [REQUIRED] Test definition section
   # Using New VPC
   quickstart-quantiphi-test-1:
@@ -43,7 +43,7 @@ tests:  # [REQUIRED] Test definition section
       - us-east-1
     tags:  
       Project: Quickstart-quantiphi-realtime-analytics
-    template: ./templates/master.yaml
+    template: ./templates/main.yaml
 
   # Using Existing VPC
   quickstart-quantiphi-test-2:
@@ -81,7 +81,7 @@ tests:  # [REQUIRED] Test definition section
       - us-east-1
     tags:  
       Project: Quickstart-quantiphi-realtime-analytics
-    template: ./templates/master.yaml
+    template: ./templates/main.yaml
 
 # Using New VPC
   quickstart-quantiphi-test-3:
@@ -119,7 +119,7 @@ tests:  # [REQUIRED] Test definition section
       - us-west-2
     tags:  
       Project: Quickstart-quantiphi-realtime-analytics
-    template: ./templates/master.yaml
+    template: ./templates/main.yaml
 
   # Using Existing VPC
   quickstart-quantiphi-test-4:
@@ -157,4 +157,4 @@ tests:  # [REQUIRED] Test definition section
       - us-west-2
     tags:  
       Project: Quickstart-quantiphi-realtime-analytics
-    template: ./templates/master.yaml
+    template: ./templates/main.yaml

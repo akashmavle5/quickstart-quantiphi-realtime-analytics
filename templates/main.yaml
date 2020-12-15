@@ -508,7 +508,7 @@ Resources:
         - "templates/vpc.yaml"
         - "templates/storage.yaml"
         - "templates/function.yaml"
-        - "templates/master.yaml"
+        - "templates/main.yaml"
         - "functions/packages/websocket-connection.zip"
         - "functions/packages/publish-call-metadata.zip"
         - "functions/packages/keyword-extraction.zip"
