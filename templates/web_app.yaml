@@ -1,0 +1,621 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Resources to process
+                i) Cognito User Pool
+                ii) EC2, ALB and SG
+Parameters:
+  QSTagValue:
+    Description: 'Tag value to be attached to resource names'
+    Type: String
+  QSS3KeyPrefix:
+    Description: 'The S3 key name prefix used for your copy of Quick Start assets.'
+    Type: String
+  KeyPairName:
+    Description: 'The name of KeyPair which is used to ssh into EC2 instance.'
+    Type: String
+  VPCID:
+    Type: "AWS::EC2::VPC::Id"
+    Description: VPC IDs
+  SubnetID1:
+    Description: 'The Private Subnet ID for 1st Instance.'
+    Type: "AWS::EC2::Subnet::Id"
+  SubnetID2: 
+    Description: 'The Private Subnet ID for 2nd Instance.'
+    Type: "AWS::EC2::Subnet::Id"
+  SubnetIDs: 
+    Description: "Choose the minimum 2 subnets. The availability zone where instance is created should match with atleast one of the subnet's availability zone you choose."
+    Type: "CommaDelimitedList"
+  CIDR: 
+    Description: 'CIDR to restrict access to application.'
+    Type: String
+  QSS3BucketName:
+    Description: 'The S3 bucket created for your copy of Quick Start assets.'
+    Type: String
+  WebSocketURL:
+    Description: 'The transcription web-socket url.'
+    Type: String
+  MergedRecordingBucketARN:
+    Description: 'The ARN of the merged recordings bucket.'
+    Type: String
+  TranscriptionKeywordExtractionTableARN:
+    Description: 'The name of keyword extraction table.'
+    Type: String
+  LiveCallsMetadataTableARN:
+    Description: 'The name of metadata table.'
+    Type: String
+  MergedRecordingBucketName:
+    Description: 'The name of merged recordings bucket.'
+    Type: String
+  TranscriptionKeywordExtractionTableName:
+    Description: 'The name of keyword extraction table.'
+    Type: String
+  LiveCallsMetadataTableName:
+    Description: 'The name of metadata table.'
+    Type: String
+  MinCapacity:
+    AllowedValues:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+    Description: 'The minimum number of webapp hosts to be maintained. The minimum number is one.'
+    Type: String
+  MaxCapacity:
+    AllowedValues:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+    Description: 'The maximum number of webapp hosts to be scaled out. The maximum number is four.'
+    Type: String
+  DesiredCapacity:
+    AllowedValues:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+    Description: 'The desired number of webapp hosts to create. The maximum number is four.'
+    Type: String
+  BastionSecurityGroupId:
+    Type: String
+    Description: 'The Security Group Id of Bastion Host Instance.'
+  WebAppInstanceType:
+    Description: 'Amazon EC2 instance type for the web app instances.'
+    Type: String
+Mappings:
+  RegionMap:
+    us-east-1:
+      AMI: ami-05801d0a3c8e4c443
+    us-west-2:
+      AMI: ami-06ffade19910cbfc0
+Conditions:
+  HasBastionSGId:
+    Fn::Not:
+    - Fn::Equals:
+      - ''
+      - Ref: BastionSecurityGroupId
+Resources:
+  IdentityPool:
+    Type: 'AWS::Cognito::IdentityPool'
+    Properties:
+      IdentityPoolName: !Sub '${QSTagValue}-identity-pool'
+      AllowUnauthenticatedIdentities: true
+      AllowClassicFlow: false
+     
+  CognitoUnauthRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: cognito-identity.amazonaws.com
+            Action:
+              - 'sts:AssumeRoleWithWebIdentity'
+            Condition:
+              StringEquals:
+                'cognito-identity.amazonaws.com:aud':
+                  Ref: IdentityPool
+      Path: /
+      Policies:
+        - PolicyName: !Sub 'oneClick_Cognito_${QSTagValue}_Unauth_Role'
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'mobileanalytics:PutEvents'
+                  - 'cognito-sync:*'
+                Resource: '*'
+        - PolicyName: audio-recording-S3-get-access
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: 1
+                Effect: Allow
+                Action:
+                  - 's3:GetObject'
+                  - 's3:DeleteObject'
+                  - 's3:PutObject'
+                Resource: 
+                - !Sub '${MergedRecordingBucketARN}/*'
+              - Sid: 2
+                Effect: Allow
+                Action:
+                  - 's3:ListBucket'
+                Resource: 
+                - !Sub '${MergedRecordingBucketARN}' 
+        - PolicyName: dynamodb-table-read-write-access
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'dynamodb:BatchGetItem'
+                  - 'dynamodb:GetItem'
+                  - 'dynamodb:Query'
+                  - 'dynamodb:Scan'
+                  - 'dynamodb:BatchWriteItem'
+                  - 'dynamodb:PutItem'
+                  - 'dynamodb:UpdateItem'
+                Resource: 
+                  - !Sub '${LiveCallsMetadataTableARN}'
+                  - !Sub '${TranscriptionKeywordExtractionTableARN}'
+ 
+  CognitoAuthRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: cognito-identity.amazonaws.com
+            Action:
+              - 'sts:AssumeRoleWithWebIdentity'
+            Condition:
+              StringEquals:
+                'cognito-identity.amazonaws.com:aud':
+                  Ref: IdentityPool
+      Path: /
+      Policies:
+        - PolicyName: !Sub 'oneClick_Cognito_${QSTagValue}_Auth_Role'
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'mobileanalytics:PutEvents'
+                  - 'cognito-sync:*'
+                Resource: '*'
+        - PolicyName: audio-recording-S3-get-access
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Sid: 1
+                Effect: Allow
+                Action:
+                  - 's3:GetObject'
+                  - 's3:DeleteObject'
+                  - 's3:PutObject'
+                Resource: 
+                - !Sub '${MergedRecordingBucketARN}/*'
+              - Sid: 2
+                Effect: Allow
+                Action:
+                  - 's3:ListBucket'
+                Resource: 
+                - !Sub '${MergedRecordingBucketARN}' 
+        - PolicyName: dynamodb-table-read-write-access
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'dynamodb:BatchGetItem'
+                  - 'dynamodb:GetItem'
+                  - 'dynamodb:Query'
+                  - 'dynamodb:Scan'
+                  - 'dynamodb:BatchWriteItem'
+                  - 'dynamodb:PutItem'
+                  - 'dynamodb:UpdateItem'
+                Resource: 
+                  - !Sub '${LiveCallsMetadataTableARN}'
+                  - !Sub '${TranscriptionKeywordExtractionTableARN}'
+ 
+  AttachRoleToPool:
+    Type: 'AWS::Cognito::IdentityPoolRoleAttachment'
+    Properties:
+      IdentityPoolId:
+        Ref: IdentityPool
+      Roles:
+        unauthenticated:
+          Fn::GetAtt:
+            - CognitoUnauthRole
+            - Arn
+        authenticated:
+          Fn::GetAtt:
+            - CognitoAuthRole
+            - Arn
+ 
+  ALBSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Allow connections from specified CIDR ranges
+      VpcId: !Ref VPCID
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref CIDR
+ 
+  EC2SecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: Allow connections from specified CIDR ranges
+      VpcId: !Ref VPCID
+ 
+  EC2SecurityGroupIngress:
+    Type: 'AWS::EC2::SecurityGroupIngress'
+    Properties:
+      IpProtocol: tcp
+      FromPort: 80
+      ToPort: 80
+      GroupId: !GetAtt EC2SecurityGroup.GroupId
+      SourceSecurityGroupId: !GetAtt ALBSecurityGroup.GroupId
+ 
+  EC2SecurityGroupBastionIngress:
+    Condition: HasBastionSGId
+    Type: 'AWS::EC2::SecurityGroupIngress'
+    Properties:
+      IpProtocol: tcp
+      FromPort: 22
+      ToPort: 22
+      GroupId: !GetAtt EC2SecurityGroup.GroupId
+      SourceSecurityGroupId: !Ref BastionSecurityGroupId
+
+  # EC2 Role to give access to AWS S3 deployment bucket
+  EC2Role:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: !Sub '${QSTagValue}-ec2-role'
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: ec2-custom-role
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'ssm:*'
+                Resource: '*'
+        - PolicyName: artifact-S3-get-access
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 's3:GetObject'
+                Resource: !Sub 'arn:aws:s3:::${QSS3BucketName}/*'
+
+  EC2InstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      InstanceProfileName: !Sub '${QSTagValue}-instance-profile'
+      Path: /
+      Roles:
+        - !Ref EC2Role
+
+  WebAppAutoScalingGroup:
+    Type: 'AWS::AutoScaling::AutoScalingGroup'
+    Properties:
+      TargetGroupARNs:
+        - !Ref TargetGroup
+      LaunchConfigurationName: !Ref WebAppLaunchConfiguration
+      VPCZoneIdentifier:
+        - !Ref SubnetID1
+        - !Ref SubnetID2
+      MinSize: !Ref MinCapacity
+      MaxSize: !Ref MaxCapacity
+      Cooldown: '900'
+      DesiredCapacity: !Ref DesiredCapacity
+      Tags:
+        - Key: Name
+          Value: 
+            Fn::Join:
+              - ''
+              - - !Ref QSTagValue
+                - '-webapp'
+          PropagateAtLaunch: true
+    CreationPolicy:
+      ResourceSignal:
+        Count: !Ref DesiredCapacity
+        Timeout: PT60M
+      AutoScalingCreationPolicy:
+        MinSuccessfulInstancesPercent: 50
+    UpdatePolicy:
+      AutoScalingReplacingUpdate:
+        WillReplace: true
+  
+  WebAppLaunchConfiguration:
+    Type: 'AWS::AutoScaling::LaunchConfiguration'
+    Metadata:
+      'AWS::CloudFormation::Authentication':
+        S3AccessCreds:
+          type: S3
+          roleName: !Ref EC2Role
+          buckets: !Ref QSS3BucketName
+      'AWS::CloudFormation::Init':
+        configSets: 
+          InstallAndRun:
+            - "basic_service"
+            - "update_apache"
+            - "aws_cli"
+            - "nodejs"
+            - "app_code"
+        basic_service:
+          packages:
+            apt:
+              apache2: []
+              build-essential: []
+              apt-transport-https: []
+              lsb-release: []
+              ca-certificates: []
+              curl: []
+              zip: []
+          commands:
+            1_start_apache2:
+              cwd: '/'
+              command: "systemctl enable apache2"
+        update_apache:
+          commands:
+            1_delete_default_conf:
+              cwd: '/'
+              command: "rm /etc/apache2/sites-available/000-default.conf"
+            2_a2enmod_rewrite:
+              cwd: '/'
+              command: "a2enmod rewrite"
+            3_new_default_conf:
+              cwd: '/'
+              command: !Sub |
+                cat <<EOF >> /etc/apache2/sites-available/000-default.conf
+
+                <VirtualHost *:80>
+
+                        ServerAdmin webmaster@localhost
+                        DocumentRoot /var/www/html
+
+                    <Directory /var/www/html>
+                        Options Indexes FollowSymLinks MultiViews
+                        AllowOverride All
+                        Require all granted
+                    </Directory>
+
+                </VirtualHost>
+                  
+                EOF
+            4_restart_apache2:
+              cwd: '/'
+              command: "systemctl restart apache2"
+            5_htaccess:
+              cwd: '/'
+              command:  !Sub | 
+                cat <<EOF >> /var/www/html/.htaccess
+
+                RewriteEngine on
+
+
+                # Don't rewrite files or directories
+
+                RewriteCond %{REQUEST_FILENAME} -f [OR]  
+
+                RewriteCond %{REQUEST_FILENAME} -d  
+
+                RewriteRule ^ - [L]
+
+
+                # Rewrite everything else to index.html to allow html5 state links
+
+                RewriteRule ^ index.html [L]
+
+                EOF
+        aws_cli:
+          sources:
+            /var : "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+          commands:
+            1_install_cli:
+              cwd: '/var'
+              command: "./aws/install"
+        nodejs:
+          commands:
+            1_get_nodejs:
+              cwd: '/var'
+              command: "curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -"
+            2_install_nodejs:
+              cwd: '/var'
+              command: "apt -y install nodejs"
+        app_code:
+          commands:
+            1_download_ui_code:
+              cwd: '/var'
+              command: !Sub | 
+                aws s3 cp s3://${QSS3BucketName}/${QSS3KeyPrefix}assets/web_app/ui_code.zip .
+            2_unzip_ui_code:
+              cwd: '/var'
+              command: unzip ui_code.zip
+            3_edit_env_file:
+              cwd: '/var/ui_code'
+              command: !Sub | 
+                cat <<EOF > ./src/environments/environment.ts
+
+                export const environment = {
+
+                    webSocketUrl: '${WebSocketURL}',
+
+                    cognitoIdentityPoolRegion: '${AWS::Region}',
+
+                    cognitoIdentityPoolId: '${IdentityPool}',
+
+                    completedCallsMergedAudioS3Bucket: '${MergedRecordingBucketName}',
+
+                    activeCallsCompletedCallsMetaDataTable: '${LiveCallsMetadataTableName}',
+
+                    completedCallsTranscriptionDataTable: '${TranscriptionKeywordExtractionTableName}',
+
+                    preRecordedCallDetailsTable: '',
+
+                    preRecordedTranscriptionDataTable: '',
+
+                    preRecordedCallsS3Bucket: '',
+
+                    preRecordedCallsS3BucketPath: '',
+
+                    production: false
+                }
+                
+                EOF
+            4_edit_env_prod_file:
+              cwd: '/var/ui_code'
+              command: !Sub | 
+                cat <<EOF > ./src/environments/environment.prod.ts
+
+                export const environment = {
+                    webSocketUrl: '${WebSocketURL}',
+
+                    cognitoIdentityPoolRegion: '${AWS::Region}',
+
+                    cognitoIdentityPoolId: '${IdentityPool}',
+
+                    completedCallsMergedAudioS3Bucket: '${MergedRecordingBucketName}',
+
+                    activeCallsCompletedCallsMetaDataTable: '${LiveCallsMetadataTableName}',
+
+                    completedCallsTranscriptionDataTable: '${TranscriptionKeywordExtractionTableName}',
+
+                    preRecordedCallDetailsTable: '',
+
+                    preRecordedTranscriptionDataTable: '',
+
+                    preRecordedCallsS3Bucket: '',
+
+                    preRecordedCallsS3BucketPath: '',
+
+                    production: true
+                }
+                
+                EOF
+            5_install_dependencies:
+              cwd: '/var/ui_code'
+              command: "npm install"
+            6_install_angular_cli:
+              cwd: '/var/ui_code'
+              command: "npm install -g -f @angular/cli"
+            7_build_app_artifacts:
+              cwd: '/var/ui_code'
+              command: "ng build"
+            8_copy_to_html:
+              cwd: '/var/ui_code'
+              command: "cp -r ./dist/ui/. /var/www/html/"
+    Properties:
+      AssociatePublicIpAddress: false
+      KeyName: !Ref KeyPairName
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      ImageId: 
+        Fn::FindInMap:
+          - RegionMap
+          - Ref: AWS::Region
+          - AMI
+      SecurityGroups:
+        - !Ref EC2SecurityGroup
+      InstanceType: !Ref WebAppInstanceType
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 20
+            VolumeType: gp2
+      UserData:
+        Fn::Base64: !Sub |
+            #!/bin/bash
+            yum install git -y || apt-get install -y git || zypper -n install git
+
+            exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 
+
+            echo user-data script running
+
+            pwd
+
+            apt -y update
+
+            function cfn_fail
+            {
+              cfn-signal -e 1 --stack ${AWS::StackName} --region ${AWS::Region} --resource WebAppAutoScalingGroup
+              exit 1
+            }
+
+            function cfn_success
+            {
+              cfn-signal -e 0 --stack ${AWS::StackName} --region ${AWS::Region} --resource WebAppAutoScalingGroup
+              exit 0
+            }
+
+            until git clone https://github.com/aws-quickstart/quickstart-linux-utilities.git ; do echo "Retrying"; done
+            cd /quickstart-linux-utilities;
+            source quickstart-cfn-tools.source;
+            qs_update-os;
+            qs_bootstrap_pip;
+            qs_aws-cfn-bootstrap;
+
+            cfn-init -v --stack '${AWS::StackName}' --configsets InstallAndRun --resource WebAppLaunchConfiguration --region ${AWS::Region} || cfn_fail
+            [ $(qs_status) == 0 ] && cfn_success || cfn_fail
+  
+  TargetGroup:
+    Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+    Properties:
+      Name:
+        Fn::Join:
+          - ''
+          - - !Ref QSTagValue
+            - '-TG'
+      TargetType: instance
+      VpcId: !Ref VPCID
+      Port: 80
+      Protocol: HTTP
+ 
+  LoadBalancer:
+    Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
+    Properties:
+      Name:
+        Fn::Join:
+          - ''
+          - - !Ref QSTagValue
+            - '-LB'
+      IpAddressType: ipv4
+      Scheme: internet-facing
+      SecurityGroups:
+        - !Ref ALBSecurityGroup
+      Subnets: !Ref SubnetIDs
+      Type: application
+ 
+  HttpListener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref TargetGroup
+          Type: forward
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP
+
+Outputs:
+  LoadBalancerDNS:
+    Description: DNS Address of the Load-Balancer
+    Value: !GetAtt LoadBalancer.DNSName

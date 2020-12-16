@@ -1,0 +1,181 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Resources to process
+                i) DynamoDB Tables
+Parameters:
+  QSTagValue:
+    Description: Tag value to be attached to resource names.
+    Type: String
+Resources:
+  # DynamoDB Tables
+  LiveCallsTranscriptionTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: TransactionId
+        AttributeType: S
+      - AttributeName: StartTime
+        AttributeType: N
+      KeySchema:
+      - AttributeName: TransactionId
+        KeyType: HASH
+      - AttributeName: StartTime
+        KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: !Sub ${QSTagValue}LiveCallsTranscriptionTable
+  TranscriptionKeywordExtractionTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: TransactionId
+        AttributeType: S
+      - AttributeName: StartTime
+        AttributeType: S
+      KeySchema:
+      - AttributeName: TransactionId
+        KeyType: HASH
+      - AttributeName: StartTime
+        KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: !Sub ${QSTagValue}KeywordExtractionTable
+  LiveCallsMetadataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: TransactionId
+        AttributeType: S
+      KeySchema:
+      - AttributeName: TransactionId
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: !Sub ${QSTagValue}LiveCallsMetadataTable
+  TranscriptionWebsocketConnectionTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: ConnectionId
+        AttributeType: S
+      KeySchema:
+      - AttributeName: ConnectionId
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: !Sub ${QSTagValue}TranscriptionWebsocketConnectionTable
+  # S3 Buckets
+  MergedRecordingBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Fn::Sub: mergedaudiorec-${QSTagValue}-${AWS::Region}-${AWS::AccountId}
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+      CorsConfiguration:
+        CorsRules:
+          -
+            AllowedOrigins: 
+              - "*"
+            AllowedMethods: 
+              - POST
+              - GET
+              - PUT
+              - DELETE
+              - HEAD
+            AllowedHeaders: 
+              - "*"
+            ExposedHeaders:
+              - ETag
+              - x-amz-meta-name
+  RecordingBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName:
+        Fn::Sub: audiorec-${QSTagValue}-${AWS::Region}-${AWS::AccountId}
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+  SourceArtifactBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: Private
+      BucketName: 
+        Fn::Sub: artifact-${QSTagValue}-${AWS::Region}-${AWS::AccountId}
+      CorsConfiguration:
+        CorsRules:
+          -
+            AllowedOrigins: 
+              - "*"
+            AllowedMethods: 
+              - POST
+              - GET
+              - PUT
+              - DELETE
+              - HEAD
+            AllowedHeaders: 
+              - "*"
+            ExposedHeaders:
+              - ETag
+              - x-amz-meta-name
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls : true
+        BlockPublicPolicy : true
+        IgnorePublicAcls : true
+        RestrictPublicBuckets : true
+
+Outputs:
+  RecordingBucketName:
+    Description: The Name of Recording bucket
+    Value: !Ref RecordingBucket
+  RecordingBucketARN:
+    Description: The ARN of Recording bucket
+    Value: !GetAtt RecordingBucket.Arn 
+
+  MergedRecordingBucketName:
+    Description: The Name of Merged Recording Bucket
+    Value: !Ref MergedRecordingBucket
+  MergedRecordingBucketARN:
+    Description: The ARN of Merged Recording Bucket
+    Value: !GetAtt MergedRecordingBucket.Arn 
+
+  SourceArtifactBucketName:
+    Description: The Name of Source Artifact Bucket
+    Value: !Ref SourceArtifactBucket
+  SourceArtifactBucketARN:
+    Description: The ARN of Source Artifact Bucket
+    Value: !GetAtt SourceArtifactBucket.Arn 
+
+  TranscriptionWebsocketConnectionTableName:
+    Description: The name of connection table
+    Value: !Ref TranscriptionWebsocketConnectionTable
+  TranscriptionWebsocketConnectionTableARN:
+    Description: The ARN of connection table
+    Value: !GetAtt TranscriptionWebsocketConnectionTable.Arn
+
+  TranscriptionKeywordExtractionTableName:
+    Description: The name of keyword extraction table
+    Value: !Ref TranscriptionKeywordExtractionTable
+  TranscriptionKeywordExtractionTableARN:
+    Description: The name of keyword extraction table
+    Value: !GetAtt TranscriptionKeywordExtractionTable.Arn
+
+  LiveCallsMetadataTableName:
+    Description: The name of metadata table
+    Value: !Ref LiveCallsMetadataTable
+  LiveCallsMetadataTableARN:
+    Description: The name of metadata table
+    Value: !GetAtt LiveCallsMetadataTable.Arn
+  
+  LiveCallsTranscriptionTableName:
+    Description: Transcription table name
+    Value: !Ref LiveCallsTranscriptionTable
+  LiveCallsTranscriptionTableARN:
+    Description: Transcription table ARN
+    Value: !GetAtt LiveCallsTranscriptionTable.Arn
