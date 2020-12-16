@@ -5,7 +5,7 @@ project:
     - us-west-2
   tags: 
     Project: Quickstart-quantiphi-realtime-analytics
-  template: ./templates/main.yaml
+  template: ./templates/analytics-main.yaml
 tests:  # [REQUIRED] Test definition section
   # Using New VPC
   quickstart-quantiphi-test-1:
@@ -14,15 +14,10 @@ tests:  # [REQUIRED] Test definition section
       QSTagValue: qs-new-vpc
       QSS3KeyPrefix: quickstart-quantiphi-realtime-analytics/
       KeyPairName: quickstart-taskcat
-      VPCID: ''
-      SubnetID1: ''
-      SubnetID2: ''
-      SubnetIDs: ''
       CIDR: 0.0.0.0/0
       MinCapacity: 1
       MaxCapacity: 4
       DesiredCapacity: 2
-      CreateNewVPC: 'Yes'
       VPCCIDR: 10.192.0.0/16
       PublicSubnet1CIDR: 10.192.10.0/24
       PublicSubnet2CIDR: 10.192.11.0/24
@@ -37,13 +32,14 @@ tests:  # [REQUIRED] Test definition section
       EnableX11Forwarding: 'false'
       NumBastionHosts:  1
       RemoteAccessCIDR: 0.0.0.0/0
-      BastionSecurityGroupId: ''
       WebAppInstanceType: 't2.medium'
+      KeywordsFileName: 'kw_50_updated.txt'
+      AvailabilityZones: 'us-east-1a,us-east-1b'
     regions:
       - us-east-1
     tags:  
       Project: Quickstart-quantiphi-realtime-analytics
-    template: ./templates/main.yaml
+    template: ./templates/analytics-main.yaml
 
   # Using Existing VPC
   quickstart-quantiphi-test-2:
@@ -60,28 +56,14 @@ tests:  # [REQUIRED] Test definition section
       MinCapacity: 1
       MaxCapacity: 4
       DesiredCapacity: 2
-      CreateNewVPC: 'No'
-      VPCCIDR: ''
-      PublicSubnet1CIDR: ''
-      PublicSubnet2CIDR: ''
-      PrivateSubnet1CIDR: ''
-      PrivateSubnet2CIDR: ''
-      BastionAMIOS: ''
-      BastionBanner: ""
-      BastionTenancy: ''
-      BastionInstanceType: ''
-      EnableBanner: ''
-      EnableTCPForwarding: ''
-      EnableX11Forwarding: ''
-      NumBastionHosts:  ''
-      RemoteAccessCIDR: ''
-      BastionSecurityGroupId: ''
       WebAppInstanceType: 't2.medium'
+      KeywordsFileName: 'kw_50_updated.txt'
+      BastionSecurityGroupId: ''
     regions:
       - us-east-1
     tags:  
       Project: Quickstart-quantiphi-realtime-analytics
-    template: ./templates/main.yaml
+    template: ./templates/analytics.yaml
 
 # Using New VPC
   quickstart-quantiphi-test-3:
@@ -90,15 +72,10 @@ tests:  # [REQUIRED] Test definition section
       QSTagValue: qstestnew
       QSS3KeyPrefix: quickstart-quantiphi-realtime-analytics/
       KeyPairName: quickstart-taskcat
-      VPCID: ''
-      SubnetID1: ''
-      SubnetID2: ''
-      SubnetIDs: ''
       CIDR: 0.0.0.0/0
       MinCapacity: 1
       MaxCapacity: 4
       DesiredCapacity: 2
-      CreateNewVPC: 'Yes'
       VPCCIDR: 10.192.0.0/16
       PublicSubnet1CIDR: 10.192.10.0/24
       PublicSubnet2CIDR: 10.192.11.0/24
@@ -113,13 +90,14 @@ tests:  # [REQUIRED] Test definition section
       EnableX11Forwarding: 'false'
       NumBastionHosts:  1
       RemoteAccessCIDR: 0.0.0.0/0
-      BastionSecurityGroupId: ''
       WebAppInstanceType: 't2.medium'
+      KeywordsFileName: 'kw_50_updated.txt'
+      AvailabilityZones: 'us-west-2a,us-west-2b'
     regions:
       - us-west-2
     tags:  
       Project: Quickstart-quantiphi-realtime-analytics
-    template: ./templates/main.yaml
+    template: ./templates/analytics-main.yaml
 
   # Using Existing VPC
   quickstart-quantiphi-test-4:
@@ -136,25 +114,11 @@ tests:  # [REQUIRED] Test definition section
       MinCapacity: 1
       MaxCapacity: 4
       DesiredCapacity: 2
-      CreateNewVPC: 'No'
-      VPCCIDR: ''
-      PublicSubnet1CIDR: ''
-      PublicSubnet2CIDR: ''
-      PrivateSubnet1CIDR: ''
-      PrivateSubnet2CIDR: ''
-      BastionAMIOS: ''
-      BastionBanner: ""
-      BastionTenancy: ''
-      BastionInstanceType: ''
-      EnableBanner: ''
-      EnableTCPForwarding: ''
-      EnableX11Forwarding: ''
-      NumBastionHosts:  ''
-      RemoteAccessCIDR: ''
+      WebAppInstanceType: 't2.medium'      
+      KeywordsFileName: 'kw_50_updated.txt'
       BastionSecurityGroupId: ''
-      WebAppInstanceType: 't2.medium'
     regions:
       - us-west-2
     tags:  
       Project: Quickstart-quantiphi-realtime-analytics
-    template: ./templates/main.yaml
+    template: ./templates/analytics.yaml
