@@ -1,6 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Resources to process 
-              1.Chime Voice Connector audio from KVS,transcribe and publish transcription, keyword-extraction
+              1.New VPC and Bastion Host
+              2.Chime Voice Connector audio from KVS,transcribe and publish transcription, keyword-extraction
               and custom entity extraction results to websocket and DynamoDB table
 Metadata:
   QuickStartDocumentation:
@@ -14,28 +15,21 @@ Metadata:
             - QSS3BucketName
             - QSTagValue
             - QSS3KeyPrefix
-            - QSS3BucketRegion
         - Label: 
             default: "Keywords Function Configuration"
           Parameters: 
             - KeywordsFileName
-        - 
-          Label: 
-            default: "New VPC Creation Option"
-          Parameters: 
-            - CreateNewVPC
-        - 
-          Label: 
+        - Label: 
             default: "New VPC Configuration"
           Parameters: 
+            - AvailabilityZones
             - VPCCIDR
             - PublicSubnet1CIDR
             - PublicSubnet2CIDR
             - PrivateSubnet1CIDR
             - PrivateSubnet2CIDR
-        - 
-          Label:
-            default: "Linux bastion configuration"
+        - Label:
+            default: "Linux Bastion Configuration"
           Parameters:
             - NumBastionHosts
             - BastionTenancy
@@ -44,15 +38,13 @@ Metadata:
             - EnableTCPForwarding
             - EnableX11Forwarding
             - RemoteAccessCIDR
-        - 
-          Label:
-            default: "Bastion Host Instance configuration"
+        - Label:
+            default: "Bastion Host Instance Configuration."
           Parameters:
             - BastionAMIOS
             - BastionInstanceType
-        - 
-          Label: 
-            default: "Web App Configuration"
+        - Label: 
+            default: "Web App Configuration."
           Parameters: 
             - KeyPairName
             - CIDR
@@ -60,41 +52,22 @@ Metadata:
             - MaxCapacity
             - DesiredCapacity
             - WebAppInstanceType
-        - 
-          Label: 
-            default: "Web App Deployment Configuration (Existing VPC)"
-          Parameters:            
-            - VPCID
-            - SubnetID1
-            - SubnetID2
-            - SubnetIDs
-            - BastionSecurityGroupId
 
     ParameterLabels: 
       QSS3BucketName:
         default: Your configured S3 bucket with all artifacts for the Quickstart.
       QSTagValue:
         default: A tag that will act as an identifier prefix for all assets.
-      QSS3BucketRegion:
-        default: The region of Quick Start bucket
       QSS3KeyPrefix:
         default: The folder name in the artifacts S3 bucket where you want to sync the Git repo.
+      AvailabilityZones:
+        default: Availability Zones
       KeywordsFileName:
         default: The file name for the keywords function.
       KeyPairName:
         default: The keypair name of the key to ssh into the web app ec2 instances and bastion host.
-      VPCID:
-        default: The VPC Id for the deployment.
-      SubnetID1:
-        default: Subnet Id of the Private Subnet for 1st  web-app EC2 instance.
-      SubnetID2:
-        default: Subnet Id of the Private Subnet for 2nd web-app EC2 instance. 
-      SubnetIDs:
-        default: Subnet Ids for the application load balancer.
       CIDR:
         default: CIDR to limit the web app access.
-      CreateNewVPC:
-        default: Option to create new VPC.
       VPCCIDR:
         default: CIDR for the new VPC.
       PublicSubnet1CIDR:
@@ -129,8 +102,6 @@ Metadata:
         default: Maximum capacity of Web App ASG.
       DesiredCapacity:
         default: Desired capacity of Web App ASG.
-      BastionSecurityGroupId:
-        default: 'The Security Group Id of Bastion Host Instance'
       WebAppInstanceType:
         default: 'Amazon EC2 instance type for the web app instances.'
 
@@ -151,10 +122,6 @@ Parameters:
     Description: 'The S3 key name prefix used for your copy of Quick Start assets.'
     Default: 'quickstart-quantiphi-realtime-analytics/'
     AllowedPattern: ^(?![\/\s])[0-9a-zA-Z-\/]*\/$
-  QSS3BucketRegion:
-    Default: 'us-east-1'
-    Description: 'The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted.'
-    Type: String
   KeywordsFileName:
     AllowedPattern: ^.*.txt$
     Description: 'The file where Keywords are stored for the Keywords Function.'
@@ -164,18 +131,6 @@ Parameters:
     Description: 'The name of KeyPair which is used to ssh into EC2 instance.'
     Type: String
     Default: 'quickstart-taskcat'
-  VPCID:
-    Type: String
-    Description: 'VPC ID for deploying web app. (Leave blank if using new VPC)'
-  SubnetID1: 
-    Description: 'Subnet ID for EC2 Instance. (Leave blank if using new VPC)'
-    Type: String
-  SubnetID2: 
-    Description: 'Subnet ID for EC2 Instance. (Leave blank if using new VPC)'
-    Type: String
-  SubnetIDs: 
-    Description: "Choose the minimum 2 subnets. The availability zone where instance is created should match with atleast one of the subnet's availability zone you choose. (Leave blank if using new VPC)"
-    Type: CommaDelimitedList
   CIDR: 
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
     Description: 'CIDR to restrict access to web application.'
@@ -217,36 +172,33 @@ Parameters:
       - 't3.large'
       - 't3.xlarge'
       - 't3.2xlarge'
-  CreateNewVPC:
-    Description: 'Select Yes if want to create new VPC else select No to use existing.'
-    Type: String
-    AllowedValues: 
-      - 'Yes'
-      - 'No'
-    Default: 'No'
+  AvailabilityZones:
+    Description: 'List of Availability Zones to use for the subnets in the VPC. Note:
+      The logical order is preserved and only 2 AZs are used for this deployment.'
+    Type: List<AWS::EC2::AvailabilityZone::Name>
   VPCCIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$|^$
-    Description: 'Please enter the IP range (CIDR notation) for this VPC. (Leave blank if using existing VPC)'
+    Description: 'Please enter the IP range (CIDR notation) for this VPC.'
     Type: String
     Default: '10.192.0.0/16'
   PublicSubnet1CIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$|^$
-    Description: 'Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone. (Leave blank if using existing VPC)'
+    Description: 'Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone.'
     Type: String
     Default: '10.192.10.0/24'
   PublicSubnet2CIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$|^$
-    Description: 'Please enter the IP range (CIDR notation) for the public subnet in the second Availability Zone. (Leave blank if using existing VPC)'
+    Description: 'Please enter the IP range (CIDR notation) for the public subnet in the second Availability Zone.'
     Type: String
     Default: '10.192.11.0/24'
   PrivateSubnet1CIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$|^$
-    Description: 'Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone. (Leave blank if using existing VPC)'
+    Description: 'Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone.'
     Type: String
     Default: '10.192.20.0/24'
   PrivateSubnet2CIDR:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$|^$
-    Description: 'Please enter the IP range (CIDR notation) for the private subnet in the second Availability Zone. (Leave blank if using existing VPC)'
+    Description: 'Please enter the IP range (CIDR notation) for the private subnet in the second Availability Zone.'
     Type: String
     Default: '10.192.21.0/24'
   BastionAMIOS:
@@ -335,20 +287,12 @@ Parameters:
     Description: 'Allowed CIDR block for external SSH access to the bastions'
     Default: '0.0.0.0/0'
     Type: String
-  BastionSecurityGroupId:
-    Type: String
-    Description: 'The Security Group Id of Bastion Host Instance. (Leave blank if using existing VPC)'
 
 Conditions:
-  PermitNewVPC:
-    Fn::Equals:
-    - 'Yes'
-    - Ref: CreateNewVPC
   UsingDefaultBucket: 
     Fn::Equals: 
     - !Ref QSS3BucketName
     - 'aws-quickstart'
-
 
 Resources:
   LambdaFunctionIAMRole:
@@ -503,53 +447,40 @@ Resources:
       SourceBucket: !Ref 'QSS3BucketName'
       Prefix: !Ref 'QSS3KeyPrefix'
       Objects:
-        - "assets/kw_50_updated.txt"
-        - "templates/web_app.yaml"
-        - "templates/vpc.yaml"
-        - "templates/storage.yaml"
-        - "templates/function.yaml"
-        - "templates/main.yaml"
-        - "functions/packages/websocket-connection.zip"
-        - "functions/packages/publish-call-metadata.zip"
-        - "functions/packages/keyword-extraction.zip"
-        - "functions/packages/amazon-chime-recordandtranscribe.zip"
-        - "functions/packages/layers/pydub.zip"
-        - "functions/packages/layers/pandas.zip"
-        - "functions/packages/layers/chimetranscribe-libraries.zip"
-        - "functions/packages/layers/date_extractor.zip"
-        - "assets/web_app/ui_code.zip"
+        - "templates/analytics.yaml"
         - "submodules/quickstart-linux-bastion/scripts/auditing_configure.sh"
         - "submodules/quickstart-linux-bastion/scripts/banner_message.txt"
         - "submodules/quickstart-linux-bastion/scripts/bastion_bootstrap.sh"
         - "submodules/quickstart-linux-bastion/templates/linux-bastion.template"
         - "submodules/quickstart-linux-bastion/templates/linux-bastion-master.template"
+        - "submodules/quickstart-aws-vpc/templates/aws-vpc.template"
 
   VPCStack:
     DependsOn: CopyZips
-    Condition: PermitNewVPC
     Type: 'AWS::CloudFormation::Stack'
     Properties:
       TemplateURL:
         !Sub 
-        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/vpc.yaml
-        - S3Region: !If [UsingDefaultBucket, !Ref QSS3BucketRegion, !Ref 'AWS::Region']
+        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-aws-vpc/templates/aws-vpc.template
+        - S3Region: !Ref 'AWS::Region'
           S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref RegionalArtifactBucket]
       Parameters:
-        EnvironmentName: !Ref QSTagValue
+        AvailabilityZones: !Join
+          - ','
+          - !Ref 'AvailabilityZones'
         VPCCIDR: !Ref VPCCIDR
         PublicSubnet1CIDR: !Ref PublicSubnet1CIDR
         PublicSubnet2CIDR: !Ref PublicSubnet2CIDR
-        PrivateSubnet1CIDR: !Ref PrivateSubnet1CIDR
-        PrivateSubnet2CIDR: !Ref PrivateSubnet2CIDR
+        PrivateSubnet1ACIDR: !Ref PrivateSubnet1CIDR
+        PrivateSubnet2ACIDR: !Ref PrivateSubnet2CIDR
   
   BastionStack:
-    Condition: PermitNewVPC
     Type: 'AWS::CloudFormation::Stack'
     Properties:
       TemplateURL: 
         !Sub 
         - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}submodules/quickstart-linux-bastion/templates/linux-bastion.template
-        - S3Region: !If [UsingDefaultBucket, !Ref QSS3BucketRegion, !Ref 'AWS::Region']
+        - S3Region: !Ref 'AWS::Region'
           S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref RegionalArtifactBucket]
       Parameters:
         BastionAMIOS: !Ref BastionAMIOS
@@ -564,10 +495,10 @@ Resources:
         NumBastionHosts: !Ref NumBastionHosts
         PublicSubnet1ID: !GetAtt 
           - VPCStack
-          - Outputs.PublicSubnet1
+          - Outputs.PublicSubnet1ID
         PublicSubnet2ID: !GetAtt 
           - VPCStack
-          - Outputs.PublicSubnet2
+          - Outputs.PublicSubnet2ID
         QSS3BucketRegion: !Ref AWS::Region
         QSS3BucketName: 
           Fn::If:
@@ -578,184 +509,62 @@ Resources:
         RemoteAccessCIDR: !Ref RemoteAccessCIDR
         VPCID: !GetAtt 
           - VPCStack
-          - Outputs.VPC
-  
-  StorageStack:
-    DependsOn: CopyZips
+          - Outputs.VPCID
+
+  AnalyticsStack:
     Type: 'AWS::CloudFormation::Stack'
     Properties:
       TemplateURL:
         !Sub 
-        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/storage.yaml
-        - S3Region: !If [UsingDefaultBucket, !Ref QSS3BucketRegion, !Ref 'AWS::Region']
+        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/analytics.yaml
+        - S3Region: !Ref 'AWS::Region'
           S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref RegionalArtifactBucket]
       Parameters:
         QSTagValue: !Ref QSTagValue
-  
-  CopyAsset:
-    DependsOn: LambdaFunctionIAMPolicySourceBucketAccess
-    Type: Custom::CopyZips
-    Properties:
-      ServiceToken: !GetAtt 'CopyZipsFunction.Arn'
-      DestBucket: !GetAtt StorageStack.Outputs.SourceArtifactBucketName
-      SourceBucket: !Ref 'RegionalArtifactBucket'
-      Prefix: !Ref 'QSS3KeyPrefix'
-      Objects:
-        - "assets/kw_50_updated.txt"
-  
-  LambdaFunctionIAMPolicySourceBucketAccess:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: !Join
-        - ''
-        - - !Ref 'LambdaFunctionIAMRole'
-          - S3access_policy
-      Roles:
-      - Ref: LambdaFunctionIAMRole
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-        - Effect: Allow
-          Action:
-          - "s3:GetObject"
-          - "s3:GetObjectTagging"
-          - "s3:PutObject"
-          - "s3:PutObjectTagging"
-          - "s3:DeleteObject"
-          Resource:
-          - !Join
-            - ''
-            - - 'arn:aws:s3:::'
-              - !GetAtt StorageStack.Outputs.SourceArtifactBucketName
-          - !Join
-            - ''
-            - - 'arn:aws:s3:::'
-              - !GetAtt StorageStack.Outputs.SourceArtifactBucketName
-              - '/*'
-  WebAppDeploymentStack:
-    DependsOn: CopyZips
-    Type: 'AWS::CloudFormation::Stack'
-    Properties:
-      TemplateURL:
-        !Sub 
-        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/web_app.yaml
-        - S3Region: !If [UsingDefaultBucket, !Ref QSS3BucketRegion, !Ref 'AWS::Region']
-          S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref RegionalArtifactBucket]
-      Parameters:
-        QSTagValue: !Ref QSTagValue
-        KeyPairName: !Ref KeyPairName
-        VPCID: 
-          Fn::If:
-          - PermitNewVPC
-          - !GetAtt VPCStack.Outputs.VPC
-          - !Ref VPCID
-        SubnetID1: 
-          Fn::If:
-          - PermitNewVPC
-          - !GetAtt VPCStack.Outputs.PrivateSubnet1
-          - !Ref SubnetID1
-        SubnetID2: 
-          Fn::If:
-          - PermitNewVPC
-          - !GetAtt VPCStack.Outputs.PrivateSubnet2
-          - !Ref SubnetID2
-        SubnetIDs: 
-          Fn::If:
-          - PermitNewVPC
-          - !GetAtt VPCStack.Outputs.PublicSubnets
-          - !Join 
-              - ','
-              - !Ref SubnetIDs
-        CIDR: !Ref CIDR
-        QSS3BucketName: 
-          Fn::If:
-          - UsingDefaultBucket
-          - !Sub '${QSS3BucketName}-${AWS::Region}'
-          - !Ref RegionalArtifactBucket
-        WebSocketURL : !GetAtt FunctionsStack.Outputs.WebSocketURL 
-        WebAppInstanceType: !Ref WebAppInstanceType
-        MergedRecordingBucketName: !GetAtt StorageStack.Outputs.MergedRecordingBucketName
-        TranscriptionKeywordExtractionTableName: !GetAtt StorageStack.Outputs.TranscriptionKeywordExtractionTableName
-        LiveCallsMetadataTableName: !GetAtt StorageStack.Outputs.LiveCallsMetadataTableName
-        MergedRecordingBucketARN: !GetAtt StorageStack.Outputs.MergedRecordingBucketARN
-        TranscriptionKeywordExtractionTableARN: !GetAtt StorageStack.Outputs.TranscriptionKeywordExtractionTableARN
-        LiveCallsMetadataTableARN: !GetAtt StorageStack.Outputs.LiveCallsMetadataTableARN
+        QSS3BucketName: !Ref 'QSS3BucketName'
+        KeywordsFileName: !Ref KeywordsFileName
+        QSS3KeyPrefix: !Ref QSS3KeyPrefix
+        VPCID: !GetAtt VPCStack.Outputs.VPCID
+        SubnetID1: !GetAtt VPCStack.Outputs.PrivateSubnet1AID
+        SubnetID2: !GetAtt VPCStack.Outputs.PrivateSubnet2AID
+        SubnetIDs: !Join [ ",", [ !GetAtt VPCStack.Outputs.PublicSubnet1ID, !GetAtt VPCStack.Outputs.PublicSubnet2ID ]]
         MinCapacity: !Ref MinCapacity
         MaxCapacity: !Ref MaxCapacity
         DesiredCapacity: !Ref DesiredCapacity
-        QSS3KeyPrefix: !Ref QSS3KeyPrefix
-        BastionSecurityGroupId: 
-          Fn::If:
-          - PermitNewVPC
-          - !GetAtt BastionStack.Outputs.BastionSecurityGroupID
-          - !Ref BastionSecurityGroupId
-
-  FunctionsStack:
-    DependsOn: CopyZips
-    Type: 'AWS::CloudFormation::Stack'
-    Properties:
-      TemplateURL:
-        !Sub 
-        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/function.yaml
-        - S3Region: !If [UsingDefaultBucket, !Ref QSS3BucketRegion, !Ref 'AWS::Region']
-          S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref RegionalArtifactBucket]
-      Parameters:
-        QSTagValue: !Ref QSTagValue
-        QSS3BucketName: 
-          Fn::If:
-          - UsingDefaultBucket
-          - !Sub '${QSS3BucketName}-${AWS::Region}'
-          - !Ref RegionalArtifactBucket
-        KeywordsFileName: !Ref KeywordsFileName
-        QSS3KeyPrefix: !Ref QSS3KeyPrefix
-        RecordingBucketName: !GetAtt StorageStack.Outputs.RecordingBucketName
-        MergedRecordingBucketName: !GetAtt StorageStack.Outputs.MergedRecordingBucketName
-        SourceArtifactBucketName: !GetAtt StorageStack.Outputs.SourceArtifactBucketName
-        TranscriptionWebsocketConnectionTableName: !GetAtt StorageStack.Outputs.TranscriptionWebsocketConnectionTableName
-        TranscriptionKeywordExtractionTableName: !GetAtt StorageStack.Outputs.TranscriptionKeywordExtractionTableName
-        LiveCallsMetadataTableName: !GetAtt StorageStack.Outputs.LiveCallsMetadataTableName
-        LiveCallsTranscriptionTableName: !GetAtt StorageStack.Outputs.LiveCallsTranscriptionTableName
-        RecordingBucketARN: !GetAtt StorageStack.Outputs.RecordingBucketARN
-        MergedRecordingBucketARN: !GetAtt StorageStack.Outputs.MergedRecordingBucketARN
-        SourceArtifactBucketARN: !GetAtt StorageStack.Outputs.SourceArtifactBucketARN
-        TranscriptionWebsocketConnectionTableARN: !GetAtt StorageStack.Outputs.TranscriptionWebsocketConnectionTableARN
-        TranscriptionKeywordExtractionTableARN: !GetAtt StorageStack.Outputs.TranscriptionKeywordExtractionTableARN
-        LiveCallsMetadataTableARN: !GetAtt StorageStack.Outputs.LiveCallsMetadataTableARN
-        LiveCallsTranscriptionTableARN: !GetAtt StorageStack.Outputs.LiveCallsTranscriptionTableARN
+        BastionSecurityGroupId: !GetAtt BastionStack.Outputs.BastionSecurityGroupID
+        CIDR: !Ref CIDR
+        KeyPairName: !Ref KeyPairName
+        WebAppInstanceType: !Ref WebAppInstanceType
+        
 Outputs:
   RecordingBucket:
-    Description: The name of bucket
-    Value: !GetAtt StorageStack.Outputs.RecordingBucketName
+    Description: The Name of Audio Recording Bucket
+    Value: !GetAtt AnalyticsStack.Outputs.RecordingBucket
 
   MergedRecordingBucket:
     Description: The Name of Merged Recording Bucket
-    Value: !GetAtt StorageStack.Outputs.MergedRecordingBucketName
+    Value: !GetAtt AnalyticsStack.Outputs.MergedRecordingBucket
 
   SourceArtifactBucket:
     Description: The Name of Source Artifact Bucket
-    Value: !GetAtt StorageStack.Outputs.SourceArtifactBucketName
+    Value: !GetAtt AnalyticsStack.Outputs.SourceArtifactBucket
  
   LiveCallsTranscriptionTable:
     Description: Transcription table
-    Value: !GetAtt StorageStack.Outputs.LiveCallsTranscriptionTableName
+    Value: !GetAtt AnalyticsStack.Outputs.LiveCallsTranscriptionTable
  
   LiveCallsMetadataTable:
     Description: Live Call MetaData table
-    Value: !GetAtt StorageStack.Outputs.LiveCallsMetadataTableName
+    Value: !GetAtt AnalyticsStack.Outputs.LiveCallsMetadataTable
 
   TranscriptionWebsocketConnectionTable:
     Description: The name of Connection table
-    Value: !GetAtt StorageStack.Outputs.TranscriptionWebsocketConnectionTableName
+    Value: !GetAtt AnalyticsStack.Outputs.TranscriptionWebsocketConnectionTable
 
   TranscriptionKeywordExtractionTable:
     Description: The name of Keywords table
-    Value: !GetAtt StorageStack.Outputs.TranscriptionKeywordExtractionTableName
+    Value: !GetAtt AnalyticsStack.Outputs.TranscriptionKeywordExtractionTable
 
   LoadBalancerDNSAddr:
     Description: DNS Address of the Load-Balancer
-    Value: !GetAtt WebAppDeploymentStack.Outputs.LoadBalancerDNS
-
-  
-
-
-        
+    Value: !GetAtt AnalyticsStack.Outputs.LoadBalancerDNSAddr
