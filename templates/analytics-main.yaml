@@ -7,17 +7,20 @@ Metadata:
   AWS::CloudFormation::Interface: 
     ParameterGroups:
         - Label: 
-            default: "Quickstart Configuration"
-          Parameters: 
-            - QSS3BucketName
-            - QSTagValue
-            - QSS3KeyPrefix
-        - Label: 
             default: "Keywords Function Configuration"
           Parameters: 
             - KeywordsFileName
         - Label: 
-            default: "New VPC Configuration"
+            default: "Web App Configuration."
+          Parameters: 
+            - KeyPairName
+            - CIDR
+            - MinCapacity
+            - MaxCapacity
+            - DesiredCapacity
+            - WebAppInstanceType
+        - Label: 
+            default: "VPC Configuration"
           Parameters: 
             - AvailabilityZones
             - VPCCIDR
@@ -41,14 +44,12 @@ Metadata:
             - BastionAMIOS
             - BastionInstanceType
         - Label: 
-            default: "Web App Configuration."
+            default: "Quick Start Configuration"
           Parameters: 
-            - KeyPairName
-            - CIDR
-            - MinCapacity
-            - MaxCapacity
-            - DesiredCapacity
-            - WebAppInstanceType
+            - QSS3BucketName
+            - QSTagValue
+            - QSS3KeyPrefix
+        
 
     ParameterLabels: 
       QSS3BucketName:

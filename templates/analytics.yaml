@@ -9,12 +9,6 @@ Metadata:
   AWS::CloudFormation::Interface: 
     ParameterGroups:
         - Label: 
-            default: "Quickstart Configuration"
-          Parameters: 
-            - QSS3BucketName
-            - QSTagValue
-            - QSS3KeyPrefix
-        - Label: 
             default: "Keywords Function Configuration"
           Parameters: 
             - KeywordsFileName
@@ -28,14 +22,20 @@ Metadata:
             - DesiredCapacity
             - WebAppInstanceType
         - Label: 
-            default: "Web App Deployment Configuration"
+            default: "VPC Configuration"
           Parameters:            
             - VPCID
             - SubnetID1
             - SubnetID2
             - SubnetIDs
             - BastionSecurityGroupId
-
+        - Label: 
+            default: "Quickstart Configuration"
+          Parameters: 
+            - QSS3BucketName
+            - QSTagValue
+            - QSS3KeyPrefix
+        
     ParameterLabels: 
       QSS3BucketName:
         default: Your configured S3 bucket with all artifacts for the Quickstart.
