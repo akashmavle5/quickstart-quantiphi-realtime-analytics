@@ -1,7 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Resources to process
-                i) Cognito User Pool
-                ii) EC2, ALB and SG
+Description: Creates Cognito User Pool, EC2, ALB and SGs (qs-1re0264sr)
 Parameters:
   QSTagValue:
     Description: 'Tag value to be attached to resource names'

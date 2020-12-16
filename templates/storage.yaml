@@ -1,6 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Resources to process
-                i) DynamoDB Tables
+Description: Resources to create DynamoDB Tables (qs-1re0264sj)
 Parameters:
   QSTagValue:
     Description: Tag value to be attached to resource names.

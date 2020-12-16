@@ -1,10 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Resources to process 
-              1.Chime Voice Connector audio from KVS,transcribe and publish transcription, keyword-extraction
-              and custom entity extraction results to websocket and DynamoDB table
+Description: Creates resources in an existing VPC - Chime Voice Connector audio from KVS,transcribe and publish transcription, keyword-extraction and custom entity extraction results to websocket and DynamoDB table (qs-1re0264ru)
 Metadata:
   QuickStartDocumentation:
-    EntrypointName: "Parameters for launching stack creation"
+    EntrypointName: "Parameters to launch stack in an existing VPC"
     OptionalParameters:
       - BastionSecurityGroupId
 

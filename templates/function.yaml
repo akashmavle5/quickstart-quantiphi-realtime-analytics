@@ -3,7 +3,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Resources to process 
               1.Chime Voice Connector audio from KVS,transcribe and publish transcription, keyword-extraction
-              and custom entity extraction results to websocket and DynamoDB table
+              and custom entity extraction results to websocket and DynamoDB table (qs-1re0264s7)
 
 Parameters:
   QSS3BucketName:

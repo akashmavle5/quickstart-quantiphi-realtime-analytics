@@ -1,11 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Resources to process 
-              1.New VPC and Bastion Host
-              2.Chime Voice Connector audio from KVS,transcribe and publish transcription, keyword-extraction
-              and custom entity extraction results to websocket and DynamoDB table
+Description: Creates New VPC and Bastion Host, Chime Voice Connector audio from KVS,transcribe and publish transcription, keyword-extraction and custom entity extraction results to websocket and DynamoDB table (qs-1re0264pg)
 Metadata:
   QuickStartDocumentation:
-    EntrypointName: "Parameters for launching stack creation"
+    EntrypointName: "Parameters to launch stack in a new VPC"
 
   AWS::CloudFormation::Interface: 
     ParameterGroups:
