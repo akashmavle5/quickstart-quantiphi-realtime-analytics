@@ -116,6 +116,33 @@ Resources:
           Fn::GetAtt:
           - EventSQS2
           - Arn
+  DeadLetterSQSPolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Id: GrantSendEventPermission
+        Statement:
+        - Sid: '1'
+          Effect: Allow
+          Principal:
+            Service:
+            - sqs.amazonaws.com
+          Action:
+          - sqs:SendMessage
+          Resource:
+            Fn::GetAtt:
+            - DeadLetterSQS
+            - Arn
+          Condition:
+            ArnEquals:
+              AWS:SourceArn:
+                Fn::GetAtt:
+                - EventSQS2
+                - Arn
+      Queues:
+      - Ref: DeadLetterSQS
+
   EventSQSSendEventPolicy1:
     Type: AWS::SQS::QueuePolicy
     Properties:
@@ -178,13 +205,39 @@ Resources:
         - Sid: '1'
           Effect: Allow
           Principal: 
-            AWS: "*"
+            Service:
+            - lambda.amazonaws.com
           Action:
-          - sqs:*
+          - sqs:SendMessage
           Resource:
             Fn::GetAtt:
             - EventSQS3
             - Arn
+          Condition:
+            ArnEquals:
+              AWS:SourceArn:
+                Fn::GetAtt:
+                - MainLambdaFunction
+                - Arn
+        - Sid: '2'
+          Effect: Allow
+          Principal: 
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sqs:ReceiveMessage
+          - sqs:DeleteMessage
+          - sqs:GetQueueAttributes
+          Resource:
+            Fn::GetAtt:
+            - EventSQS3
+            - Arn
+          Condition:
+            ArnEquals:
+              AWS:SourceArn:
+                Fn::GetAtt:
+                - KeywordExtractionFunction
+                - Arn
       Queues:
       - Ref: EventSQS3
   
