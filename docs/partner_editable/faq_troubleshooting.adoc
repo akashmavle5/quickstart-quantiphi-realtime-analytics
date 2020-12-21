@@ -1,21 +1,27 @@
-// Add any tips or answers to anticipated questions.
 
-== FAQ
+Troubleshooting
 
-*Q.* I encountered a *CREATE_FAILED* error when I launched the Quick Start.
+Question. I encountered a CREATE_FAILED error when I launched the Quick Start.
 
-*A.* If AWS CloudFormation fails to create the stack, relaunch the template with *Rollback on failure* set to *Disabled*. This setting is under *Advanced* in the AWS CloudFormation console on the *Configure stack options* page. With this setting, the stack’s state is retained, and the instance keeps running so that you can troubleshoot the issue. (For Windows, look at the log files in `%ProgramFiles%\Amazon\EC2ConfigService` and `C:\cfn\log`.)
-// Customize this answer if needed. For example, if you’re deploying on Linux instances, either provide the location for log files on Linux or omit the final sentence. If the Quick Start has no EC2 instances, revise accordingly (something like "and the assets keep running").
+Answer. If AWS CloudFormation fails to create the stack, we recommend that you relaunch the template with Rollback on failure set to No. (This setting is under Advanced in the AWS CloudFormation console, Options page.) With this setting, the stack’s state is retained and the instance is left running, so you can troubleshoot the issue. (For Windows, look at the log files in %ProgramFiles%\Amazon\EC2ConfigService and C:\cfn\log.)
 
-WARNING: When you set *Rollback on failure* to *Disabled*, you continue to incur AWS charges for this stack. Delete the stack when you finish troubleshooting.
+Important: When you set Rollback on failure to No, you continue to incur AWS charges for this stack. Please make sure to delete the stack when you finish troubleshooting.
 
-For more information, see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html[Troubleshooting AWS CloudFormation^].
-
-*Q.* I encountered a size-limitation error when I deployed the AWS CloudFormation templates.
-
-*A.* Launch the Quick Start templates from the links in this guide or from another S3 bucket. If you deploy the templates from a local copy on your computer or from a location other than an S3 bucket, you might encounter template-size limitations. For more information, see http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html[AWS CloudFormation quotas^].
+For additional information, see https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html[Troubleshooting AWS CloudFormation^] on the AWS website. 
 
 
-== Troubleshooting
+Question. I encountered a size limitation error when I deployed the AWS CloudFormation templates.
 
-<Steps for troubleshooting the deployment.>
+Answer. We recommend that you launch the Quick Start templates from the links in this guide or from another S3 bucket. If you deploy the templates from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information about AWS CloudFormation quotas, see the http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html[AWS documentation^].
+
+
+Question. I am getting the message as ‘The maximum number of addresses has been reached.’. What has to be done?
+
+Answer. You might be encountering this message as you may have reached the limit for the elastic IP address in your AWS account for a particular region. Please check your current limit, if exceeded then request for the quota increase. For more information about AWS CloudFormation quotas, see the http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html[AWS documentation^].
+
+Q. I encountered a “Received 1 FAILURE signal(s) out of 2. Unable to satisfy 50% MinSuccessfulInstancesPercent requirement” error in WebAppDeploymentStack when I deployed the AWS CloudFormation templates. What has to be done?
+A. If you deploy the templates using existing VPC please check in the Network ACL if all the outbound connections are enabled. If all the outbound connections are enabled then in the WebAppDeploymentStack check for the event for LogicalId WebAppAutoScalingGroup with Status CREATE_FAILED and Status reason ‘Received FAILURE signal with UniqueId <instance-id>’. Use the configured bastion host to ssh into that instance and run command cat /var/log/cfn-init.log to get further details.
+
+Important: When you set Rollback on failure to No, you continue to incur AWS charges for this stack. Please make sure to delete the stack when you finish troubleshooting.
+
+For more information on how to use bastion host to ssh into instances in private subnet, see the https://aws.amazon.com/blogs/security/securely-connect-to-linux-instances-running-in-a-private-amazon-vpc/[AWS blogs^].

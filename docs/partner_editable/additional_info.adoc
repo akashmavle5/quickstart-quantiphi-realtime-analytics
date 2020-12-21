@@ -1,23 +1,133 @@
-// Add steps as necessary for accessing the software, post-configuration, and testing. Don’t include full usage instructions for your software, but add links to your product documentation for that information.
-//Should any sections not be applicable, remove them
+ACTIVE CALLS
 
-== Test the deployment
-// If steps are required to test the deployment, add them here. If not, remove the heading
+Following are the steps to capture active calls transcriptions:
 
-== Post-deployment steps
-// If post-deployment steps are required, add them here. If not, remove the heading
+1.From the drop-down make sure the “Active Calls” option is selected. Once selected the user will be able to see a table that will showcase all the calls which are active. If the user finds a message “No Active Calls Found” that means there are no active calls.
 
-== Best practices for using {partner-product-short-name} on AWS
-// Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
+[#UI-1] 
+[link=images/SS1.png]
+image::../images/SS1.png[UI for Real-Time Analytics,width=648,height=439]
 
-_Add any best practices for using the software._
 
-== Security
-// Provide post-deployment best practices for using the technology on AWS, including considerations such as migrating data, backups, ensuring high performance, high availability, etc. Link to software documentation for detailed information.
+2.In the table, the user needs to click on the view (eye icon) button. This will redirect the user to the transcription component of the application where the user will be able to see all the real-time transcription.
 
-_Add any security-related information._
+[#UI-2]
+[link=images/SS2.png]
+image::../images/SS2.png[UI for Real-Time Analytics,width=648,height=439]
 
-== Other useful information
-//Provide any other information of interest to users, especially focusing on areas where AWS or cloud usage differs from on-premises usage.
+3.In the real-time transcription phase where the call is still in the active state, the user will be able to see the transcription on the “Transcription” component and the respective keywords on the “Call Capture” component.
 
-_Add any other details that will help the customer use the software on AWS._
+[#UI-3]
+[link=images/SS3.png]
+image::../images/SS3.png[UI for Real-Time Analytics,width=648,height=439]
+
+4.Once the call is ended, the user will be able to see all the entity identification details in the “Identification” component which is at the top in the module.
+
+[#UI-4]
+[link=images/SS4.png]
+image::../images/SS4.png[UI for Real-Time Analytics,width=648,height=439]
+
+
+5.The user will have the capability to view and download the complete transcriptions and keywords details in the CSV format. Once the call is ended, the user will be able to see a download icon and a table icon in the “Transcription” and “Call Capture” component respectively. On clicking the icons the user will be able to see the details in tabular form and will be able to download the details by clicking on “Download CSV”.
+
+[#UI-5]
+[link=images/SS5.png]
+image::../images/SS5.png[UI for Real-Time Analytics,width=648,height=439]
+
+
+[#UI-6]
+[link=images/SS6.png]
+image::../images/SS6.png[UI for Real-Time Analytics,width=648,height=439]
+
+COMPLETED CALLS
+
+The following are the steps to capture completed calls transcriptions.
+
+1.From the drop-down on the top of the module select the “Completed Calls” option. 
+
+
+[#UI-7]
+[link=images/SS7.png]
+image::../images/SS7.png[UI for Real-Time Analytics,width=648,height=439]
+
+2.On selecting the “Completed Calls” option the user will be able to see a table with the details of all the completed calls.
+
+[#UI-8]
+[link=images/SS8.png]
+image::../images/SS8.png[UI for Real-Time Analytics,width=648,height=439]
+
+3.In the table, the user needs to click on the view button (eye icon) of a particular row. This will redirect the user to the transcription component of the application where the user will be able to see all the transcription of the completed calls.
+
+[#UI-9]
+[link=images/SS9.png]
+image::../images/SS9.png[UI for Real-Time Analytics,width=648,height=439]
+
+4.Below the “Identification” component, the user will be able to hear the recorded call with the help of the “Recording” component. To start the recording, the user will have two options to start
+•	Option 1: By clicking the “Play” button in the “Recording” component.
+
+[#UI-10]
+[link=images/SS10.png]
+image::../images/SS10.png[UI for Real-Time Analytics,width=648,height=439]
+
+
+•	Option 2: By clicking the “Begin” button in the “Transcription” component.
+
+
+[#UI-11]
+[link=images/SS11.png]
+image::../images/SS11.png[UI for Real-Time Analytics,width=648,height=439]
+
+5.While the transcription is in progress the user will be able to view the transcription and its respective keywords in the “Transcription” and “Call Capture” component respectively in a synchronization of the time interval of the audio.
+
+[#UI-12]
+[link=images/SS12.png]
+image::../images/SS12.png[UI for Real-Time Analytics,width=648,height=439]
+
+6.The user will have the functionality to move forward or backward in the recorded audio by clicking the “Forward” and “Backward” icon in the “Recording” component and also by moving the “Red” cursor in the waves of the audio.
+
+[#UI-13]
+[link=images/SS13.png]
+image::../images/SS13.png[UI for Real-Time Analytics,width=648,height=439]
+
+7.The user has the functionality to hear the sentence where the keyword is captured by clicking on the keyword button in the “Call Capture” component. This will play the audio of the sentence where the keyword was captured and the transcription and audio controls will restart from that point.
+
+[#UI-14]
+[link=images/SS14.png]
+image::../images/SS14.png[UI for Real-Time Analytics,width=648,height=439]
+
+8.The user has the functionality to cancel the transcription by clicking the “Cancel” button in the “Transcription” component. This will restart the audio and will move its control to the start time.
+
+[#UI-15]
+[link=images/SS15.png]
+image::../images/SS15.png[UI for Real-Time Analytics,width=648,height=439]
+
+9.Once the call is reached to its end time, the user will be able to view the complete transcription and its respective keywords by clicking the “Download” and “Table” icon in the “Transcription” and “Call Capture” component respectively.
+
+[#UI-16]
+[link=images/SS16.png]
+image::../images/SS2.png[UI for Real-Time Analytics,width=648,height=439]
+
+10.The user will be able to download the transcription and keywords in CSV format by clicking the “Download CSV” button
+
+[#UI-17]
+[link=images/SS17.png]
+image::../images/SS7.png[UI for Real-Time Analytics,width=648,height=439]
+
+11.The user has the functionality to restart the transcription by clicking the “Redo” button either in the “Transcription” component or in the “Call Capture” component.
+
+[#UI-18]
+[link=images/SS18.png]
+image::../images/SS8.png[UI for Real-Time Analytics,width=648,height=439]
+
+12.Once the file is loaded and all the required information is fetched at the end of transcription, the user will be able to view an “Identification” component at the top which has “Members Info” segregated.
+
+[#UI-19]
+[link=images/SS19.png]
+image::../images/SS19.png[UI for Real-Time Analytics,width=648,height=439]
+
+13.To move back to the previous module click on the left arrow button placed at the top beside the module header.
+
+[#UI-20]
+[link=images/SS20.png]
+image::../images/SS20.png[UI for Real-Time Analytics,width=648,height=439]
+

@@ -1,14 +1,16 @@
 // Replace the <n> in each row to specify the number of resources used in this deployment. Remove the rows for resources that aren’t used.
+
+AWS Quick Start configuration:
+
 |===
 |Resource |This deployment uses
 
 // Space needed to maintain table headers
-|VPCs |<n>
-|Elastic IP addresses |<n>
-|Security groups |<n>
-|AWS Identity and Access Management (IAM) roles |<n>
-|Auto Scaling groups |<n>
-|Application Load Balancers |<n>
-|Network Load Balancers |<n>
-|<type> instances |<n>
-|===
+|AWS Identity and Access Management (IAM) roles |11
+|VPCs|1
+|AWS Identity and Access Management (IAM) security groups |3
+|Elastic IP addresses|3-6 (Depends on Bastion Configuration)
+|Auto Scaling Groups |2
+|Application Load Balancers |1
+|Network Load Balancers |0
+|EC2 instances | 2(t2.medium), 1(t2.micro)
