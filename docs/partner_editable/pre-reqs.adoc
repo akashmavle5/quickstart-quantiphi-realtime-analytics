@@ -2,4 +2,4 @@
 
 ==== Prepare for the deployment
 
-Before launching the CloudFormation templates and deploying the Quick Start, be sure that you have created a key pair for the EC2 instances in the selected region where the templates have to be deployed. 
+Before launching the CloudFormation templates and deploying the Quick Start, create a key pair for the EC2 instances in the selected region where the templates have to be deployed. 
