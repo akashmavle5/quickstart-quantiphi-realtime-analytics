@@ -1,6 +1,6 @@
 This Quick Start supports the following Regions:
 
-* us-east-1, US East (N. Virginia) (EXAMPLE)
-* us-east-2, US East (Ohio) (EXAMPLE)
+* us-east-1, US East (N. Virginia) 
+* us-west-2, US WEST (Oregon) 
 
-//Full list: https://docs.aws.amazon.com/general/latest/gr/rande.html
+NOTE: This deployment includes Amazon Chime Voice Connector, which isn’t currently supported in all AWS Regions. For a current list of supported Regions for Amazon Chime Voice Connector, see the service endpoints and quotas page in the https://docs.aws.amazon.com/general/latest/gr/chime.html[AWS documentation^].

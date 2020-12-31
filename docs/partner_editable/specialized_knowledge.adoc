@@ -1,6 +1,11 @@
 // Replace the content in <>
-// For example: “familiarity with basic concepts in networking, database operations, and data encryption” or “familiarity with <software>.”
-// Include links if helpful. 
-// You don't need to list AWS services or point to general info about AWS; the boilerplate already covers this.
+// Describe or link to specific knowledge requirements; for example: “familiarity with basic concepts in the areas of networking, database operations, and data encryption” or “familiarity with <software>.”
 
-This Quick Start also assumes familiarity with <knowledge expectations specific to this Quick Start>.
+=== Specialized knowledge
+
+This Quick Start assumes familiarity with Amazon Transcribe, Amazon SQS, Amazon S3, Amazon DynamoDB, Amazon EC2, Amazon Comprehend.	
+
+This deployment guide also requires a moderate level of familiarity with AWS services. If you’re new to AWS, visit the Getting Started Resource Center and the AWS Training and Certification website. These sites provide materials for learning how to design, deploy, and operate your infrastructure and applications on the AWS Cloud.
+
+
+

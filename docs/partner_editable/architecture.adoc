@@ -1,27 +1,29 @@
-Deploying this Quick Start for a new virtual private cloud (VPC) with
-default parameters builds the following {partner-product-short-name} environment in the
-AWS Cloud.
+Deploying this Quick Start with default parameters builds the following {partner-product-name} environment in the AWS Cloud.
 
-// Replace this example diagram with your own. Send us your source PowerPoint file. Be sure to follow our guidelines here : http://(we should include these points on our contributors giude)
-:xrefstyle: short
+// Replace this example diagram with your own. Send us your source PowerPoint file. Be sure to follow our guidelines here : http://(we should include these points on our contributors guide)
 [#architecture1]
-.Quick Start architecture for {partner-product-short-name} on AWS
-image::../images/architecture_diagram.png[Architecture,width=100%,height=100%]
+.Quick Start architecture for {partner-product-name} on AWS
+[link=images/quantiphi-architecture-diagram.png]
+image::../images/quantiphi-architecture-diagram.png[Architecture,width=648,height=439]
 
-As shown in <<architecture1>>, the Quick Start sets up the following:
+As shown in the <<architecture1>>, the Quick Start sets up the infrastructure that follows the below mentioned steps:
 
-* A highly available architecture that spans two Availability Zones.*
-* A VPC configured with public and private subnets, according to AWS
-best practices, to provide you with your own virtual network on AWS.*
-* In the public subnets:
-** Managed network address translation (NAT) gateways to allow outbound
-internet access for resources in the private subnets.*
-** A Linux bastion host in an Auto Scaling group to allow inbound Secure
-Shell (SSH) access to EC2 instances in public and private subnets.*
-* In the private subnets:
-** <item>.
-** <item>.
-// Add bullet points for any additional components that are included in the deployment. Make sure that the additional components are also represented in the architecture diagram. End each bullet with a period.
-* <describe any additional components>.
 
-[.small]#*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.#
+. The call stream between customer and the agent / provider will be received from Issabel PBX to Amazon Chime Voice Connector in two different streams.
+
+. The chime voice connector streams the audio streams into Kinesis Video Streams
+
+. The streams of the two speakers trigger the two eventbridge rules simultaneously.
+
+. Each event bridge writes the call metadata and the stream details into the respective SQS queues at the start and the end of the call.
+
+. These messages using SQS queue (ChimeVoiceConnectorStreaming1), triggers the Transcription lambda (LiveCallsTranscriberFunction) function. This lambda function reads the audio streams from Kinesis and makes a call to Amazon Transcribe.
+
+. The Transcription Lambda also writes the transcript data into the DynamoDB table (LiveCallsTranscriptionTable) and publishes a message to post processing SQS Queue (TranscribeResultsStreaming). This lambda also stores the mp3 file after call completion to the s3 bucket.
+
+. Post processing SQS triggers the post processing Lambda (KeywordExtractionFunction) function. Here the transcripts are cleaned and key words are extracted using string matching. The results are stored into a DynamoDB table (KeywordExtractionTable).
+
+. Post processing Lambda also publishes the transcripts and the keyword data to the Customer User Interface via the websocket.
+
+. When the call ends, we receive a SQS message for both the streams through the eventbridge rule. A metadata Lambda (PublishCallMetadataFunction) function will be triggered by this SQS queue (ChimeVoiceConnectorStreaming2). In this Lambda we extract the entities from the transcripts using custom entity extraction logic and Amazon Comprehend.  This lambda notifies the frontend that the call has ended and publishes the entity metadata to the websocket and stores the data into the DynamoDB table (LiveCallsMetadataTable).
+
