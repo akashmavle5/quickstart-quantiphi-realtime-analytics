@@ -444,7 +444,7 @@ Resources:
       SourceBucket: !Ref 'QSS3BucketName'
       Prefix: !Ref 'QSS3KeyPrefix'
       Objects:
-        - "templates/analytics.yaml"
+        - "templates/analytics.template.yaml"
         - "submodules/quickstart-linux-bastion/scripts/auditing_configure.sh"
         - "submodules/quickstart-linux-bastion/scripts/banner_message.txt"
         - "submodules/quickstart-linux-bastion/scripts/bastion_bootstrap.sh"
@@ -513,7 +513,7 @@ Resources:
     Properties:
       TemplateURL:
         !Sub 
-        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/analytics.yaml
+        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/analytics.template.yaml
         - S3Region: !Ref 'AWS::Region'
           S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref RegionalArtifactBucket]
       Parameters:

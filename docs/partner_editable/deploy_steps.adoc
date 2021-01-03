@@ -31,7 +31,7 @@ Stack can be deployed by creating a new VPC or by using an existing VPC.
  
 *Deploy {partner-product-name} into a new VPC (end-to-end deployment)*:
 
-From the deployment S3 Bucket under templates folder select analytics-main.yaml template and copy the object URL for the stack creation.
+From the deployment S3 Bucket under templates folder select analytics-main.template.yaml template and copy the object URL for the stack creation.
 Fill all the parameters under Parameter Groups:
 
 *	Quickstart Configuration
@@ -43,7 +43,7 @@ Fill all the parameters under Parameter Groups:
 
 *Deploy {partner-product-name} into an existing VPC*:
 
-From the deployment S3 Bucket under templates folder select analytics.yaml template and copy the object URL for the stack creation.
+From the deployment S3 Bucket under templates folder select analytics.template.yaml template and copy the object URL for the stack creation.
 Fill all the parameters under Parameter Groups:
 
 *	Quickstart Configuration
