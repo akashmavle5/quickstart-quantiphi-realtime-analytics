@@ -2,4 +2,6 @@
 // Briefly describe the software. Use consistent and clear branding. 
 // Include the benefits of using the software on AWS, and provide details on usage scenarios.
 
-<Describe how the software works on AWS.>
+This Quick Start lets user set up a dashboard to get real time transcription and call metadata for all ongoing calls over Amazon Chime. 
+
+This Quick Start sets up transcript generator which uses Amazon Transcribe to generate a near real time transcription of the ongoing calls and also uses Amazon Comprehend to extract metadata from the call transcripts which is displayed on an interactive user interface hosted on AWS infrastructure.
