@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.12">
-<title>Real Time Analytics on the AWS Cloud</title>
+<title>Real Time Call Analytics on the AWS Cloud</title>
 <style>
 
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -790,14 +790,13 @@ p.footer-text a{color:#d7d8d8}
 <div id="toctitle"></div>
 <ul class="sectlevel1">
 <li><a href="#_overview">Overview</a></li>
-<li><a href="#_real_time_analytics_on_aws">Real Time Analytics on AWS</a></li>
+<li><a href="#_real_time_call_analytics_on_aws">Real Time Call Analytics on AWS</a></li>
 <li><a href="#_cost">Cost</a></li>
 <li><a href="#_software_licenses">Software licenses</a></li>
 <li><a href="#_architecture">Architecture</a></li>
 <li><a href="#_planning_the_deployment">Planning the deployment</a>
 <ul class="sectlevel2">
 <li><a href="#_specialized_knowledge">Specialized knowledge</a></li>
-<li><a href="#_specialized_knowledge_2">Specialized knowledge</a></li>
 <li><a href="#_aws_account">AWS account</a></li>
 <li><a href="#_technical_requirements">Technical requirements</a></li>
 </ul>
@@ -828,7 +827,7 @@ p.footer-text a{color:#d7d8d8}
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<h2 id="_real_time_analytics_on_the_aws_cloud" class="discrete text-center">Real Time Analytics on the AWS Cloud</h2>
+<h2 id="_real_time_call_analytics_on_the_aws_cloud" class="discrete text-center">Real Time Call Analytics on the AWS Cloud</h2>
 <h2 id="_quick_start_reference_deployment" class="discrete text-left text-center">Quick Start Reference Deployment</h2>
 <div class="imageblock text-center">
 <div class="content">
@@ -862,13 +861,10 @@ report bugs, or submit feature ideas for this Quick Start.
 <h2 id="_overview">Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Quick Start reference deployment guide provides step-by-step instructions for deploying  Real Time Analytics on the AWS Cloud.</p>
+<p>This Quick Start reference deployment guide provides step-by-step instructions for deploying  Real Time Call Analytics on the AWS Cloud.</p>
 </div>
 <div class="paragraph">
 <p>This Quick Start sets up Real-Time transcript generator which can be used by organizations to improve and optimize the remote support by providing users with the ability to create a user interface, where the live call transcripts can be displayed in near real time along with extraction of keywords, metadata and summary of the call.</p>
-</div>
-<div class="paragraph">
-<p>Please know that we may share who uses AWS Quick Starts with the AWS Partner Network (APN) Partner that collaborated with AWS on the content of the Quick Start.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -885,7 +881,7 @@ Amazon may share user-deployment information with the AWS Partner that collabora
 </div>
 </div>
 <div class="sect1">
-<h2 id="_real_time_analytics_on_aws">Real Time Analytics on AWS</h2>
+<h2 id="_real_time_call_analytics_on_aws">Real Time Call Analytics on AWS</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This Quick Start lets user set up a dashboard to get real time transcription and call metadata for all ongoing calls over Amazon Chime.</p>
@@ -927,7 +923,7 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <h2 id="_software_licenses">Software licenses</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Quick Start does not require a license to deploy Real Time Analytics.</p>
+<p>This Quick Start does not require a license to deploy Real Time Call Analytics.</p>
 </div>
 </div>
 </div>
@@ -935,16 +931,16 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <h2 id="_architecture">Architecture</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Deploying this Quick Start with default parameters builds the following Real Time Analytics environment in the AWS Cloud.</p>
+<p>Deploying this Quick Start with default parameters builds the following Real Time Call Analytics environment in the AWS Cloud.</p>
 </div>
 <div id="architecture1" class="imageblock">
 <div class="content">
 <a class="image" href="images/quantiphi-architecture-diagram.png"><img src="images/quantiphi-architecture-diagram.png" alt="Architecture" width="648" height="439"></a>
 </div>
-<div class="title">Figure 1. Quick Start architecture for Real Time Analytics on AWS</div>
+<div class="title">Figure 1. Quick Start architecture for Real Time Call Analytics on AWS</div>
 </div>
 <div class="paragraph">
-<p>As shown in the <a href="#architecture1">Quick Start architecture for Real Time Analytics on AWS</a>, the Quick Start sets up the infrastructure that follows the below mentioned steps:</p>
+<p>As shown in the <a href="#architecture1">Quick Start architecture for Real Time Call Analytics on AWS</a>, the Quick Start sets up the infrastructure that follows the below mentioned steps:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -987,9 +983,6 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <div class="paragraph">
 <p>This deployment requires a moderate level of familiarity with AWS services. If you’re new to AWS, visit <a href="https://aws.amazon.com/getting-started/" target="_blank" rel="noopener">Getting Started with AWS</a> and <a href="https://aws.amazon.com/training/" target="_blank" rel="noopener">Training and Certification</a>. These sites provide materials for learning how to design, deploy, and operate your infrastructure and applications on the AWS Cloud.</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_specialized_knowledge_2">Specialized knowledge</h3>
 <div class="paragraph">
 <p>This Quick Start assumes familiarity with Amazon Transcribe, Amazon SQS, Amazon S3, Amazon DynamoDB, Amazon EC2, Amazon Comprehend.</p>
 </div>
@@ -1081,7 +1074,7 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <p>us-east-1, US East (N. Virginia)</p>
 </li>
 <li>
-<p>us-west-2, US WEST (Oregon)</p>
+<p>us-west-2, US West (Oregon)</p>
 </li>
 </ul>
 </div>
@@ -1131,15 +1124,15 @@ This Quick Start provides two deployment options:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Deploy Real Time Analytics into a new VPC (end-to-end deployment)</strong>. This option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. It then deploys Real Time Analytics into this new VPC.</p>
+<p><strong>Deploy Real Time Call Analytics into a new VPC (end-to-end deployment)</strong>. This option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. It then deploys Real Time Call Analytics into this new VPC.</p>
 </li>
 <li>
-<p><strong>Deploy Real Time Analytics into an existing VPC</strong>. This option provisions Real Time Analytics in your existing AWS infrastructure.</p>
+<p><strong>Deploy Real Time Call Analytics into an existing VPC</strong>. This option provisions Real Time Call Analytics in your existing AWS infrastructure.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The Quick Start provides separate templates for these options. It also lets you configure Classless Inter-Domain Routing (CIDR) blocks, instance types, and Real Time Analytics settings, as discussed later in this guide.</p>
+<p>The Quick Start provides separate templates for these options. It also lets you configure Classless Inter-Domain Routing (CIDR) blocks, instance types, and Real Time Call Analytics settings, as discussed later in this guide.</p>
 </div>
 </div>
 </div>
@@ -1189,11 +1182,11 @@ You are responsible for the cost of the AWS services used while running this Qui
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="http://qs_launch_link" target="_blank" rel="noopener">Deploy Real Time Analytics into a new VPC on AWS</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="http://qs_launch_link" target="_blank" rel="noopener">Deploy Real Time Call Analytics into a new VPC on AWS</a></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><a href="http://qs_template_link" target="_blank" rel="noopener">View template</a></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="http://qs_launch_link" target="_blank" rel="noopener">Deploy Real Time Analytics into an existing VPC on AWS</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="http://qs_launch_link" target="_blank" rel="noopener">Deploy Real Time Call Analytics into an existing VPC on AWS</a></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><a href="http://qs_template_link" target="_blank" rel="noopener">View template</a></p></td>
 </tr>
 </tbody>
@@ -1204,7 +1197,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 <div class="olist arabic">
 <ol class="arabic" start="2">
 <li>
-<p>Check the AWS Region that’s displayed in the upper-right corner of the navigation bar, and change it if necessary. This is where the network infrastructure for Real Time Analytics is built. The template is launched in the us-east-1 Region by default.</p>
+<p>Check the AWS Region that’s displayed in the upper-right corner of the navigation bar, and change it if necessary. This is where the network infrastructure for Real Time Call Analytics is built. The template is launched in the us-east-1 Region by default.</p>
 </li>
 </ol>
 </div>
@@ -1224,7 +1217,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 <p>Stack can be deployed by creating a new VPC or by using an existing VPC.</p>
 </div>
 <div class="paragraph">
-<p><strong>Deploy Real Time Analytics into a new VPC (end-to-end deployment)</strong>:</p>
+<p><strong>Deploy Real Time Call Analytics into a new VPC (end-to-end deployment)</strong>:</p>
 </div>
 <div class="paragraph">
 <p>From the deployment S3 Bucket under templates folder select analytics-main.template.yaml template and copy the object URL for the stack creation.
@@ -1253,7 +1246,7 @@ Fill all the parameters under Parameter Groups:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Deploy Real Time Analytics into an existing VPC</strong>:</p>
+<p><strong>Deploy Real Time Call Analytics into an existing VPC</strong>:</p>
 </div>
 <div class="paragraph">
 <p>From the deployment S3 Bucket under templates folder select analytics.template.yaml template and copy the object URL for the stack creation.
@@ -1729,10 +1722,10 @@ Unless you are customizing the Quick Start templates for your own deployment pro
 <p>Choose <strong>Create stack</strong> to deploy the stack.</p>
 </li>
 <li>
-<p>Monitor the status of the stack. When the status is <strong>CREATE_COMPLETE</strong>, the Real Time Analytics deployment is ready.</p>
+<p>Monitor the status of the stack. When the status is <strong>CREATE_COMPLETE</strong>, the Real Time Call Analytics deployment is ready.</p>
 </li>
 <li>
-<p>Use the values displayed in the <strong>Outputs</strong> tab for the stack, as shown in <a href="#cfn_outputs">Real Time Analytics outputs after successful deployment</a>, to view the created resources.</p>
+<p>Use the values displayed in the <strong>Outputs</strong> tab for the stack, as shown in <a href="#cfn_outputs">Real Time Call Analytics outputs after successful deployment</a>, to view the created resources.</p>
 </li>
 </ol>
 </div>
@@ -1740,7 +1733,7 @@ Unless you are customizing the Quick Start templates for your own deployment pro
 <div class="content">
 <a class="image" href="images/cfn_outputs.png"><img src="images/cfn_outputs.png" alt="cfn_outputs" width="100%" height="100%"></a>
 </div>
-<div class="title">Figure 2. Real Time Analytics outputs after successful deployment</div>
+<div class="title">Figure 2. Real Time Call Analytics outputs after successful deployment</div>
 </div>
 </div>
 </div>
@@ -1750,16 +1743,16 @@ Unless you are customizing the Quick Start templates for your own deployment pro
 <div class="sectionbody">
 <div id="Output" class="imageblock">
 <div class="content">
-<a class="image" href="images/Output.png"><img src="images/Output.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/Output.png"><img src="images/Output.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 3. Quick Start Main Stack Output for Real Time Analytics</div>
+<div class="title">Figure 3. Quick Start Main Stack Output for Real Time Call Analytics</div>
 </div>
 <div class="paragraph">
 <p>In the outputs of the main stack check for the <strong>LoadBalancerDNSAddr</strong> key, to get the <em>url</em>
 of the web app.</p>
 </div>
 <div class="paragraph">
-<p>The Real Time Analytics has two functionalities:</p>
+<p>The Real Time Call Analytics has two functionalities:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -1781,7 +1774,7 @@ of the web app.</p>
 </div>
 <div id="UI-1" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS1.png"><img src="images/SS1.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS1.png"><img src="images/SS1.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 4. UI landing page</div>
 </div>
@@ -1794,7 +1787,7 @@ of the web app.</p>
 </div>
 <div id="UI-2" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS2.png"><img src="images/SS2.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS2.png"><img src="images/SS2.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 5. Active calls page showing ongoing calls</div>
 </div>
@@ -1807,7 +1800,7 @@ of the web app.</p>
 </div>
 <div id="UI-3" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS3.png"><img src="images/SS3.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS3.png"><img src="images/SS3.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 6. Active calls transcription dashboard (Transcription and Call Capture components)</div>
 </div>
@@ -1820,7 +1813,7 @@ of the web app.</p>
 </div>
 <div id="UI-4" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS4.png"><img src="images/SS4.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS4.png"><img src="images/SS4.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 7. Active calls transcription dashboard (Call Metadata Identification component)</div>
 </div>
@@ -1833,13 +1826,13 @@ of the web app.</p>
 </div>
 <div id="UI-5" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS5.png"><img src="images/SS5.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS5.png"><img src="images/SS5.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 8. Active calls transcription dashboard (Download transcription component)</div>
 </div>
 <div id="UI-6" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS6.png"><img src="images/SS6.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS6.png"><img src="images/SS6.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 9. Active calls transcription dashboard (Download transcription component)</div>
 </div>
@@ -1858,7 +1851,7 @@ of the web app.</p>
 </div>
 <div id="UI-7" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS7.png"><img src="images/SS7.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS7.png"><img src="images/SS7.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 10. Page Selector</div>
 </div>
@@ -1871,7 +1864,7 @@ of the web app.</p>
 </div>
 <div id="UI-8" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS8.png"><img src="images/SS8.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS8.png"><img src="images/SS8.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 11. Completed calls page showing all completed calls</div>
 </div>
@@ -1884,7 +1877,7 @@ of the web app.</p>
 </div>
 <div id="UI-9" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS9.png"><img src="images/SS9.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS9.png"><img src="images/SS9.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 12. Completed calls page (View button)</div>
 </div>
@@ -1897,7 +1890,7 @@ of the web app.</p>
 </div>
 <div id="UI-10" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS10.png"><img src="images/SS10.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS10.png"><img src="images/SS10.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 13. Completed calls transcription dashboard (Play button)</div>
 </div>
@@ -1917,7 +1910,7 @@ of the web app.</p>
 </div>
 <div id="UI-11" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS11.png"><img src="images/SS11.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS11.png"><img src="images/SS11.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 14. Completed calls transcription dashboard (Begin button)</div>
 </div>
@@ -1930,7 +1923,7 @@ of the web app.</p>
 </div>
 <div id="UI-12" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS12.png"><img src="images/SS12.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS12.png"><img src="images/SS12.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 15. Completed calls transcription dashboard (Transcription and Call Capture components)</div>
 </div>
@@ -1943,7 +1936,7 @@ of the web app.</p>
 </div>
 <div id="UI-13" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS13.png"><img src="images/SS13.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS13.png"><img src="images/SS13.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 16. Completed calls transcription dashboard (Audio playback controls)</div>
 </div>
@@ -1956,7 +1949,7 @@ of the web app.</p>
 </div>
 <div id="UI-14" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS14.png"><img src="images/SS14.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS14.png"><img src="images/SS14.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 17. Completed calls transcription dashboard (Call capture component keyword buttons)</div>
 </div>
@@ -1969,7 +1962,7 @@ of the web app.</p>
 </div>
 <div id="UI-15" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS15.png"><img src="images/SS15.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS15.png"><img src="images/SS15.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 18. Completed calls transcription dashboard (Cancel button)</div>
 </div>
@@ -1982,7 +1975,7 @@ of the web app.</p>
 </div>
 <div id="UI-16" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS16.png"><img src="images/SS16.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS16.png"><img src="images/SS16.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 19. Completed calls transcription dashboard (Download button)</div>
 </div>
@@ -1995,7 +1988,7 @@ of the web app.</p>
 </div>
 <div id="UI-17" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS17.png"><img src="images/SS17.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS17.png"><img src="images/SS17.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 20. Completed calls transcription dashboard (Download transcription component)</div>
 </div>
@@ -2008,7 +2001,7 @@ of the web app.</p>
 </div>
 <div id="UI-18" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS18.png"><img src="images/SS18.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS18.png"><img src="images/SS18.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 21. Completed calls transcription dashboard (Redo button)</div>
 </div>
@@ -2021,7 +2014,7 @@ of the web app.</p>
 </div>
 <div id="UI-19" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS19.png"><img src="images/SS19.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS19.png"><img src="images/SS19.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 22. Completed calls transcription dashboard (Call Metadata Identification component)</div>
 </div>
@@ -2034,7 +2027,7 @@ of the web app.</p>
 </div>
 <div id="UI-20" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS20.png"><img src="images/SS20.png" alt="UI for Real Time Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS20.png"><img src="images/SS20.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 23. Completed calls transcription dashboard (Back button)</div>
 </div>
