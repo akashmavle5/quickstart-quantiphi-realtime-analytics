@@ -1,17 +1,17 @@
 ## Real Time Call Analytics Quick Start
 
-This Quick Start reference deployment guide provides step-by-step instructions for deploying UiPath Robot on AWS Cloud.
+This Quick Start reference deployment guide provides step-by-step instructions for deploying Real time call analytics solution on AWS Cloud.
 
 This Quick Start sets up Real-Time transcript generator which can be used by organizations to improve and optimize the remote support by providing users with the ability to create a user interface, where the live call transcripts can be displayed in near real time along with extraction of keywords, metadata and summary of the call.
 
-The [AWS CloudFormation template](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=realtime&templateURL=https://aws-quickstart.s3.amazonaws.com/quickstart-quantiphi-realtime-analytics/templates/analytics-main.template.yaml) included with the Quick Start automates deploying UiPath Robot on AWS. You can also use the AWS CloudFormation template as a starting point for your own implementation.
+The [AWS CloudFormation template](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=realtime&templateURL=https://aws-quickstart.s3.amazonaws.com/quickstart-quantiphi-realtime-analytics/templates/analytics-main.template.yaml) included with the Quick Start automates deploying Real time call analytics solution on AWS. You can also use the AWS CloudFormation template as a starting point for your own implementation.
 
 ![Quick Start architecture for UiPath Robot on AWS](./docs/images/quantiphi-architecture-diagram.png)
 
 As shown in the architecture diagram, the Quick Start sets up the above architecture that follows below steps:
-* The call stream between customer and the agent / provider will be received from Issabel PBX to Amazon Chime Voice Connector in two different streams.
+* The call stream between customer and the agent / provider will be received from PBX to Amazon Chime Voice Connector in two different streams.
 
-* The chime voice connector streams the audio streams into Kinesis Video Streams
+* The chime voice connector streams the audio streams into Kinesis Video Streams.
 
 * The streams of the two speakers trigger the two eventbridge rules simultaneously.
 
