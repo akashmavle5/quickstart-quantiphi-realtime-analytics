@@ -9,7 +9,7 @@ image::../images/quantiphi-architecture-diagram.png[Architecture,width=648,heigh
 As shown in the <<architecture1>>, the Quick Start sets up the infrastructure that follows the below mentioned steps:
 
 
-. The call stream between customer and the agent / provider will be received from Issabel PBX to Amazon Chime Voice Connector in two different streams.
+. The call stream between customer and the agent / provider will be received from PBX to Amazon Chime Voice Connector in two different streams.
 
 . The chime voice connector streams the audio streams into Kinesis Video Streams
 
