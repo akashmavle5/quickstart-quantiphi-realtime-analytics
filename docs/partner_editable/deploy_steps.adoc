@@ -29,33 +29,3 @@ The deployment takes about {deployment_time} to complete.
 [start=3]
 . On the *Create stack* page, keep the default setting for the template URL, and then choose *Next*.
 . On the *Specify stack details* page, change the stack name if needed. Review the parameters for the template. Provide values for the parameters that require input. For all other parameters, review the default settings and customize them as necessary.
-
-
-==== Cloudformation Stack Creation Options
-
-Stack can be deployed by creating a new VPC or by using an existing VPC.
- 
-*Deploy {partner-product-name} into a new VPC (end-to-end deployment)*:
-
-From the deployment S3 Bucket under templates folder select analytics-main.template.yaml template and copy the object URL for the stack creation.
-Fill all the parameters under Parameter Groups:
-
-*	Quickstart Configuration
-*	Keywords Function Configuration
-*	New VPC Configuration
-*	Linux bastion configuration
-*	Bastion Host Instance configuration
-*	Web App Configuration
-
-*Deploy {partner-product-name} into an existing VPC*:
-
-From the deployment S3 Bucket under templates folder select analytics.template.yaml template and copy the object URL for the stack creation.
-Fill all the parameters under Parameter Groups:
-
-*	Quickstart Configuration
-*	Keywords Function Configuration
-*	Web App Configuration
-*	Web App Deployment Configuration
-**	SubnetID1 and SubnetID2 parameters should be given any private subnet under the VPC mentioned in VPCID Parameter.
-
-**	SubnetIDs Parameter has to be given a Comma Separated list of two public subnets under the VPC mentioned in VPCID Parameter.

@@ -1,2 +1,5 @@
+.DS_Store
+
+#Taskcat
 .taskcat
 taskcat_outputs/

@@ -4,4 +4,4 @@
 
 Before launching the CloudFormation templates and deploying the Quick Start, create a key pair for the EC2 instances in the selected region where the templates have to be deployed. 
 
-To be able to test this Quick Start, user needs to have a PBX software setup (e.g. Issabel), which is integrated with amazon chime voice connector.
+To be able to test this Quick Start, user needs to have a PBX software setup (e.g. Issabel) integrated with amazon chime voice connector.
