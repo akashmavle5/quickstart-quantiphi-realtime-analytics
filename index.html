@@ -891,7 +891,7 @@ Amazon may share user-deployment information with the AWS Partner that collabora
 <p>This Quick Start lets user set up a dashboard to get real time transcription and call metadata for all ongoing calls over any PBX software integrated with Amazon Chime Voice Connector.</p>
 </div>
 <div class="paragraph">
-<p>This Quick Start sets up transcript generator which uses Amazon Transcribe to generate a near real time transcription of the ongoing calls and also uses Amazon Comprehend to extract metadata from the call transcripts which is displayed on an interactive user interface hosted on AWS infrastructure.	This Quick Start sets up transcript generator which uses Amazon Transcribe to generate a near real time transcription of the ongoing calls and also uses Amazon Comprehend to extract caller metadata from the call transcripts which is displayed on an interactive user interface hosted on AWS infrastructure.</p>
+<p>This Quick Start sets up transcript generator which uses Amazon Transcribe to generate a near real time transcription of the ongoing calls and also uses Amazon Comprehend to extract caller metadata from the call transcripts which is displayed on an interactive user interface hosted on AWS infrastructure.</p>
 </div>
 <div class="paragraph">
 <p>The Quick Start provides the following functionalities:</p>
@@ -994,15 +994,15 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <div class="title">Figure 1. Quick Start architecture for Real Time Call Analytics on AWS</div>
 </div>
 <div class="paragraph">
-<p>As shown in the <a href="#architecture1">Quick Start architecture for Real Time Call Analytics on AWS</a>, the Quick Start sets up the infrastructure that follows the below mentioned steps:</p>
+<p>As shown in the <a href="#architecture1">Quick Start architecture for Real Time Call Analytics on AWS</a>, the Quick Start sets up the infrastructure as described below, along with the call flow:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>The call stream between customer and the agent / provider will be received from PBX to Amazon Chime Voice Connector in two different streams.</p>
+<p>The call stream between customer and the agent / provider is received from PBX to Amazon Chime Voice Connector in two different streams.</p>
 </li>
 <li>
-<p>The chime voice connector streams the audio streams into Kinesis Video Streams</p>
+<p>The chime voice connector streams the audio streams into Kinesis Video Streams.</p>
 </li>
 <li>
 <p>The streams of the two speakers trigger the two eventbridge rules simultaneously.</p>
@@ -1011,7 +1011,7 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <p>Each event bridge writes the call metadata and the stream details into the respective SQS queues at the start and the end of the call.</p>
 </li>
 <li>
-<p>These messages using SQS queue (ChimeVoiceConnectorStreaming1), triggers the Transcription lambda (LiveCallsTranscriberFunction) function. This lambda function reads the audio streams from Kinesis and makes a call to Amazon Transcribe.</p>
+<p>These messages in SQS queue (ChimeVoiceConnectorStreaming1), triggers the Transcription lambda (LiveCallsTranscriberFunction) function. This lambda function reads the audio streams from Kinesis and makes a call to Amazon Transcribe.</p>
 </li>
 <li>
 <p>The Transcription Lambda also writes the transcript data into the DynamoDB table (LiveCallsTranscriptionTable) and publishes a message to post processing SQS Queue (TranscribeResultsStreaming). This lambda also stores the mp3 file after call completion to the s3 bucket.</p>
@@ -1023,7 +1023,7 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <p>Post processing Lambda also publishes the transcripts and the keyword data to the Customer User Interface via the websocket.</p>
 </li>
 <li>
-<p>When the call ends, we receive a SQS message for both the streams through the eventbridge rule. A metadata Lambda (PublishCallMetadataFunction) function will be triggered by this SQS queue (ChimeVoiceConnectorStreaming2). In this Lambda we extract the entities from the transcripts using custom entity extraction logic and Amazon Comprehend.  This lambda notifies the frontend that the call has ended and publishes the entity metadata to the websocket and stores the data into the DynamoDB table (LiveCallsMetadataTable).</p>
+<p>When the call ends, a SQS message is sent for both the streams through the eventbridge rule. A metadata Lambda (PublishCallMetadataFunction) function will be triggered by this SQS queue (ChimeVoiceConnectorStreaming2). This Lambda function extract the entities from the transcripts using custom entity extraction logic and Amazon Comprehend.  It notifies the frontend that the call has ended and publishes the entity metadata to the websocket and stores the data into the DynamoDB table (LiveCallsMetadataTable).</p>
 </li>
 </ol>
 </div>
@@ -1039,9 +1039,6 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 </div>
 <div class="paragraph">
 <p>This Quick Start assumes familiarity with Amazon Transcribe, Amazon SQS, Amazon S3, Amazon DynamoDB, Amazon EC2, Amazon Comprehend.</p>
-</div>
-<div class="paragraph">
-<p>This deployment guide also requires a moderate level of familiarity with AWS services. If you’re new to AWS, visit the Getting Started Resource Center and the AWS Training and Certification website. These sites provide materials for learning how to design, deploy, and operate your infrastructure and applications on the AWS Cloud.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1169,7 +1166,7 @@ Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.
 <p>Before launching the CloudFormation templates and deploying the Quick Start, create a key pair for the EC2 instances in the selected region where the templates have to be deployed.</p>
 </div>
 <div class="paragraph">
-<p>To be able to test this Quick Start, user needs to have a PBX software setup (e.g. Issabel), which is integrated with amazon chime voice connector.</p>
+<p>To be able to test this Quick Start, user needs to have a PBX software setup (e.g. Issabel) integrated with amazon chime voice connector.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1268,73 +1265,6 @@ You are responsible for the cost of the AWS services used while running this Qui
 </li>
 </ol>
 </div>
-<div class="sect3">
-<h4 id="_cloudformation_stack_creation_options">Cloudformation Stack Creation Options</h4>
-<div class="paragraph">
-<p>Stack can be deployed by creating a new VPC or by using an existing VPC.</p>
-</div>
-<div class="paragraph">
-<p><strong>Deploy Real Time Call Analytics into a new VPC (end-to-end deployment)</strong>:</p>
-</div>
-<div class="paragraph">
-<p>From the deployment S3 Bucket under templates folder select analytics-main.template.yaml template and copy the object URL for the stack creation.
-Fill all the parameters under Parameter Groups:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Quickstart Configuration</p>
-</li>
-<li>
-<p>Keywords Function Configuration</p>
-</li>
-<li>
-<p>New VPC Configuration</p>
-</li>
-<li>
-<p>Linux bastion configuration</p>
-</li>
-<li>
-<p>Bastion Host Instance configuration</p>
-</li>
-<li>
-<p>Web App Configuration</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Deploy Real Time Call Analytics into an existing VPC</strong>:</p>
-</div>
-<div class="paragraph">
-<p>From the deployment S3 Bucket under templates folder select analytics.template.yaml template and copy the object URL for the stack creation.
-Fill all the parameters under Parameter Groups:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Quickstart Configuration</p>
-</li>
-<li>
-<p>Keywords Function Configuration</p>
-</li>
-<li>
-<p>Web App Configuration</p>
-</li>
-<li>
-<p>Web App Deployment Configuration</p>
-<div class="ulist">
-<ul>
-<li>
-<p>SubnetID1 and SubnetID2 parameters should be given any private subnet under the VPC mentioned in VPCID Parameter.</p>
-</li>
-<li>
-<p>SubnetIDs Parameter has to be given a Comma Separated list of two public subnets under the VPC mentioned in VPCID Parameter.</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
 <div class="olist arabic">
 <ol class="arabic" start="5">
 <li>
@@ -1359,7 +1289,6 @@ Fill all the parameters under Parameter Groups:</p>
 <a class="image" href="images/cfn_outputs.png"><img src="images/cfn_outputs.png" alt="cfn_outputs" width="100%" height="100%"></a>
 </div>
 <div class="title">Figure 2. Real Time Call Analytics outputs after successful deployment</div>
-</div>
 </div>
 </div>
 </div>
