@@ -2,18 +2,18 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Creates resources in an existing VPC - Chime Voice Connector audio from KVS,transcribe and publish transcription, keyword-extraction and custom entity extraction results to websocket and DynamoDB table (qs-1re0264ru)
 Metadata:
   QuickStartDocumentation:
-    EntrypointName: "Parameters to launch stack in an existing VPC"
+    EntrypointName: Launch into an existing VPC
     OptionalParameters:
       - BastionSecurityGroupId
 
   AWS::CloudFormation::Interface: 
     ParameterGroups:
         - Label: 
-            default: "Keywords Function Configuration"
+            default: Keywords function configuration
           Parameters: 
             - KeywordsFileName
         - Label: 
-            default: "Web App Configuration"
+            default: Web application configuration
           Parameters: 
             - KeyPairName
             - CIDR
@@ -22,7 +22,7 @@ Metadata:
             - DesiredCapacity
             - WebAppInstanceType
         - Label: 
-            default: "VPC Configuration"
+            default: VPC configuration
           Parameters:            
             - VPCID
             - SubnetID1
@@ -30,7 +30,7 @@ Metadata:
             - SubnetIDs
             - BastionSecurityGroupId
         - Label: 
-            default: "Quickstart Configuration"
+            default: Quick Start configuration
           Parameters: 
             - QSS3BucketName
             - QSTagValue
@@ -38,11 +38,11 @@ Metadata:
         
     ParameterLabels: 
       QSS3BucketName:
-        default: Your configured S3 bucket with all artifacts for the Quickstart.
-      QSTagValue:
-        default: A tag that will act as an identifier prefix for all assets.
+        default: Quick Start S3 bucket name
+      QSS3BucketRegion:
+        default: Quick Start S3 bucket Region
       QSS3KeyPrefix:
-        default: The folder name in the artifacts S3 bucket where you want to sync the Git repo.
+        default: Quick Start S3 key prefix
       KeywordsFileName:
         default: The file name for the keywords function.
       KeyPairName:

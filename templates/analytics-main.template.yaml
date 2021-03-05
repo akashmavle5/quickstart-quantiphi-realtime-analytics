@@ -2,16 +2,16 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Creates New VPC and Bastion Host, Chime Voice Connector audio from KVS,transcribe and publish transcription, keyword-extraction and custom entity extraction results to websocket and DynamoDB table (qs-1re0264pg)
 Metadata:
   QuickStartDocumentation:
-    EntrypointName: "Parameters to launch stack in a new VPC"
+    EntrypointName: Launch into a new VPC
 
   AWS::CloudFormation::Interface: 
     ParameterGroups:
         - Label: 
-            default: "Keywords Function Configuration"
+            default: Keywords function configuration
           Parameters: 
             - KeywordsFileName
         - Label: 
-            default: "Web App Configuration."
+            default: Web application configuration
           Parameters: 
             - KeyPairName
             - CIDR
@@ -20,7 +20,7 @@ Metadata:
             - DesiredCapacity
             - WebAppInstanceType
         - Label: 
-            default: "VPC Configuration"
+            default: VPC configuration
           Parameters: 
             - AvailabilityZones
             - VPCCIDR
@@ -29,7 +29,7 @@ Metadata:
             - PrivateSubnet1CIDR
             - PrivateSubnet2CIDR
         - Label:
-            default: "Linux Bastion Configuration"
+            default: Linux bastion configuration
           Parameters:
             - NumBastionHosts
             - BastionTenancy
@@ -39,12 +39,12 @@ Metadata:
             - EnableX11Forwarding
             - RemoteAccessCIDR
         - Label:
-            default: "Bastion Host Instance Configuration."
+            default: Bastion host instance configuration
           Parameters:
             - BastionAMIOS
             - BastionInstanceType
         - Label: 
-            default: "Quick Start Configuration"
+            default: Quick Start configuration
           Parameters: 
             - QSS3BucketName
             - QSTagValue
@@ -53,45 +53,45 @@ Metadata:
 
     ParameterLabels: 
       QSS3BucketName:
-        default: Your configured S3 bucket with all artifacts for the Quickstart.
-      QSTagValue:
-        default: A tag that will act as an identifier prefix for all assets.
+        default: Quick Start S3 bucket name
+      QSS3BucketRegion:
+        default: Quick Start S3 bucket Region
       QSS3KeyPrefix:
-        default: The folder name in the artifacts S3 bucket where you want to sync the Git repo.
+        default: Quick Start S3 key prefix
       AvailabilityZones:
-        default: Availability Zones.
+        default: Availability Zones
       KeywordsFileName:
-        default: The file name for the keywords function.
+        default: Keywords function file name
       KeyPairName:
-        default: The keypair name of the key to ssh into the web app ec2 instances and bastion host.
+        default: Key pair name
       CIDR:
-        default: CIDR to limit the web app access.
+        default: CIDR to limit the web app access
       VPCCIDR:
-        default: CIDR for the new VPC.
-      PublicSubnet1CIDR:
-        default: CIDR for the Public Subnet 1.
-      PublicSubnet2CIDR:
-        default: CIDR for the Public Subnet 2.
+        default: VPC CIDR
       PrivateSubnet1CIDR:
-        default: CIDR for the Private Subnet 1.
+        default: Private subnet 1 CIDR
       PrivateSubnet2CIDR:
-        default: CIDR for the Private Subnet 2.
+        default: Private subnet 2 CIDR
+      PublicSubnet1CIDR:
+        default: Public subnet 1 CIDR
+      PublicSubnet2CIDR:
+        default: Public subnet 2 CIDR
       BastionAMIOS:
-        default: Bastion AMI operating system.
+        default: Bastion AMI operating system
       BastionTenancy:
-        default: Tenancy of the bastion host.
+        default: Bastion tenancy
       BastionBanner:
-        default: Banner text that will appear when ssh into the host.
+        default: Bastion banner text
       BastionInstanceType:
-        default: Bastion host instance type.
+        default: Bastion host instance type
       EnableBanner:
-        default: Option to enable bastion banner.
+        default: Enable banner
       EnableTCPForwarding:
-        default: Option to enable TCP forwarding.
+        default: TCP forwarding
       EnableX11Forwarding:
-        default: Option to enable X11 forwarding.
+        default: X11 forwarding
       NumBastionHosts:
-        default: Number of bastion hosts needed.
+        default: Number of bastion hosts
       RemoteAccessCIDR:
         default: Option to allow only connections from certain CIDR to access bastion host.
       MinCapacity:
