@@ -95,9 +95,9 @@ Metadata:
       RemoteAccessCIDR:
         default: Allowed bastion external access CIDR
       MinCapacity:
-        default: Minimum capacity of application security group
+        default: Minimum application security group capacity
       MaxCapacity:
-        default: Maximum capacity of application security group
+        default: Maximum application security group
       DesiredCapacity:
         default: Desired capacity of application security group
       WebAppInstanceType:
