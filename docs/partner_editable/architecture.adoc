@@ -7,28 +7,7 @@ Deploying this Quick Start with default parameters builds the following {partner
 [link=images/quantiphi-real-time-analytics-architecture-diagram.png]
 image::../images/quantiphi-real-time-analytics-architecture-diagram.png[Architecture,width=100%,height=100%]
 
-As shown in the <<architecture1>>, the Quick Start sets up the infrastructure as described below, along with the call flow:
-
-
-. The call stream between customer and the agent / provider is received from PBX to Amazon Chime Voice Connector in two different streams.
-
-. The chime voice connector streams the audio streams into Kinesis Video Streams.
-
-. The streams of the two speakers trigger the two eventbridge rules simultaneously.
-
-. Each event bridge writes the call metadata and the stream details into the respective SQS queues at the start and the end of the call.
-
-. These messages in SQS queue (ChimeVoiceConnectorStreaming1), triggers the Transcription lambda (LiveCallsTranscriberFunction) function. This lambda function reads the audio streams from Kinesis and makes a call to Amazon Transcribe.
-
-. The Transcription Lambda also writes the transcript data into the DynamoDB table (LiveCallsTranscriptionTable) and publishes a message to post processing SQS Queue (TranscribeResultsStreaming). This lambda also stores the mp3 file after call completion to the s3 bucket.
-
-. Post processing SQS triggers the post processing Lambda (KeywordExtractionFunction) function. Here the transcripts are cleaned and key words are extracted using string matching. The results are stored into a DynamoDB table (KeywordExtractionTable).
-
-. Post processing Lambda also publishes the transcripts and the keyword data to the Customer User Interface via the websocket.
-
-. When the call ends, a SQS message is sent for both the streams through the eventbridge rule. A metadata Lambda (PublishCallMetadataFunction) function will be triggered by this SQS queue (ChimeVoiceConnectorStreaming2). This Lambda function extract the entities from the transcripts using custom entity extraction logic and Amazon Comprehend.  It notifies the frontend that the call has ended and publishes the entity metadata to the websocket and stores the data into the DynamoDB table (LiveCallsMetadataTable).
-
-
+As shown in the <<architecture1>>, the Quick Start sets up the following:
 
 [start=1]
 * Amazon Chime Voice Connector to receive agent and customer call streams from Private Branch Exchange (PBX) software and route them to Amazon Kinesis Video Streams. 
@@ -45,19 +24,19 @@ As shown in the <<architecture1>>, the Quick Start sets up the infrastructure as
 *** Store call in MP3 format to an Amazon Simple Storage Service (Amazon S3) bucket.
 ** Metadata function (PublishCallMetadataFunction) to do the following:
 *** Extract entities from transcripts using custom entity extraction logic and Amazon Comprehend.
-*** Publish metadata to the Amazon API Gateway with WebSocket API.
+*** Publish metadata to an Amazon API Gateway with WebSocket API.
 *** Store metadata in a Dynamo DB table (LiveCallsMetadata) 
 ** Post-processing function (KeywordExtractionFunction) to do the following:
 *** Extract keywords from transcripts using string matching.
 *** Store results of keyword extraction to a Dynamo DB table (KeywordExtractionTable).
-*** Publish transcripts and keyword data to the web application through Amazon API Gateway.
-* Amazon Transcribe to transcribe audio streams.
-* Amazon Dynamo DB tables for transcription data and keywords.
+*** Publish transcripts and keyword data to the web application through the WebSocket.
+* Amazon Transcribe to transcribe call audio streams.
+* Amazon Dynamo DB tables for transcription data, keywords, and call metadata.
 * Amazon S3 bucket to store MP3 files of call audio.
-* Amazon API Gateways with WebSocket API ...
+* Amazon API Gateways with WebSocket API to provide access to the web application.
 * A virtual private cloud (VPC) to provide you with your own virtual network on AWS.*
 * In the VPC:
-** Application Load Balancer …
+** A Network Load Balancer to balance traffic between web application nodes.
 ** 1-4 Amazon Elastic Compute Cloud (Amazon EC2) instances of the web application to display transcripts and analysis to agents. Each instance is deployed into its own private subnet (not shown).
 * AWS Identity and Access Management (IAM) to manage S3 bucket access policy. 
 
