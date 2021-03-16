@@ -31,10 +31,10 @@ As shown in the <<architecture1>>, the Quick Start sets up the infrastructure as
 
 
 [start=1]
-* Amazon Chime Voice Connector to receive agent and customer streams of a support call from Private Branch Exchange (PBX) software, and route them to Amazon Kinesis Video Streams. 
-* Two Amazon EventBridge rules, both triggered simultaneously on the receipt of call streams. They write call metadata and stream details into Amazon Simple Queue Service (Amazon SQS) queues at the start and end of the call.
+* Amazon Chime Voice Connector to receive agent and customer call streams from Private Branch Exchange (PBX) software and route them to Amazon Kinesis Video Streams. 
+* Two Amazon EventBridge rules triggered simultaneously on the receipt of call streams. They write call metadata and stream details into Amazon Simple Queue Service (Amazon SQS) queues at the start and end of a call.
 * Amazon SQS queues
-** SQS queue ChimeVoiceConnectorStreaming1 to initiate a transcription Lambda function.
+** SQS queue ChimeVoiceConnectorStreaming1 to initiate a transcription AWS Lambda function.
 ** SQS queue ChimeVoiceConnectorStreaming2 to initiate a metadata Lambda function.
 ** Post-processing SQS queue TranscribeResultsStreaming to initiate a post-processing Lambda function.
 * AWS Lambda functions
@@ -42,20 +42,23 @@ As shown in the <<architecture1>>, the Quick Start sets up the infrastructure as
 *** Read audio streams from Kinesis Video Streams and to call Amazon Transcribe.
 *** Write transcription data into an Amazon Dynamo DB table (LiveCallsTranscriptionTable).
 *** Publish a message to a post-processing SQS queue.
-*** Store call in mp3 format to an Amazon Simple Storage Service (Amazon S3) bucket.
-** Metadata function (PublishCallMetadataFunction) to extract entities from transcripts using custom entity extraction logic and Amazon Comprehend. 
+*** Store call in MP3 format to an Amazon Simple Storage Service (Amazon S3) bucket.
+** Metadata function (PublishCallMetadataFunction) to do the following:
+*** Extract entities from transcripts using custom entity extraction logic and Amazon Comprehend.
+*** Publish metadata to the Amazon API Gateway with WebSocket API.
+*** Store metadata in a Dynamo DB table (LiveCallsMetadata) 
 ** Post-processing function (KeywordExtractionFunction) to do the following:
 *** Extract keywords from transcripts using string matching.
 *** Store results of keyword extraction to a Dynamo DB table (KeywordExtractionTable).
 *** Publish transcripts and keyword data to the web application through Amazon API Gateway.
-* Amazon Transcribe …
-* Amazon Dynamo DB …
-* Amazon S3 bucket …
+* Amazon Transcribe to transcribe audio streams.
+* Amazon Dynamo DB tables for transcription data and keywords.
+* Amazon S3 bucket to store MP3 files of call audio.
 * Amazon API Gateways with WebSocket API ...
 * A virtual private cloud (VPC) to provide you with your own virtual network on AWS.*
 * In the VPC:
 ** Application Load Balancer …
-** 1-4 Amazon Elastic Compute Cloud (Amazon EC2) instances of the web application that displays transcripts and analysis to agents. Each instance is deployed into its own private subnet (not shown).
+** 1-4 Amazon Elastic Compute Cloud (Amazon EC2) instances of the web application to display transcripts and analysis to agents. Each instance is deployed into its own private subnet (not shown).
 * AWS Identity and Access Management (IAM) to manage S3 bucket access policy. 
 
 [.small]#*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.#
