@@ -20,7 +20,7 @@ To view a near-real-time transcription of an active call, do the following:
 image::../images/Output.png[UI for {partner-product-name},width=648,height=439]
 
 [start=2]
-. Select *Active Calls* from the drop down list.
+. On the Quantiphi dashboard, select *Active Calls* from the drop down list.
 . A table of active calls displays. Choose the icon in the *View* column of an active call.
 
 [#UI-2]
@@ -46,13 +46,13 @@ image::../images/SS3.png[UI for {partner-product-name},width=648,height=439]
 [link=images/SS4.png]
 image::../images/SS4.png[UI for {partner-product-name},width=648,height=439]
 
-=== View and download call transcription
+=== View and download call transcription and keywords
 
 [start=1]
 . To view and download a transcription after a call, choose the download icon in the *Transcription* section.
 
 [#UI-5]
-.Active calls transcription dashboard (Download transcription component)
+.Download call transcription
 [link=images/SS5.png]
 image::../images/SS5.png[UI for {partner-product-name},width=648,height=439]
 
@@ -61,74 +61,65 @@ image::../images/SS5.png[UI for {partner-product-name},width=648,height=439]
 . The transcription displays in the *Transcription Details* window. Choose *Download CSV* to download the transcription in a CSV file. 
 
 [#UI-6]
-.Active calls transcription dashboard (Download transcription component)
+.Download CSV
 [link=images/SS6.png]
 image::../images/SS6.png[UI for {partner-product-name},width=648,height=439]
 
-TIP: Choose the table icon in the *Call Capture* section to view and download keywords.
+[start=3]
+. Choose the table icon in the *Call Capture* section to view and download keywords.
+
+[#UI-6a]
+.Download keywords
+[link=images/SS6a.png]
+image::../images/SS6a.png[UI for {partner-product-name},width=648,height=439]
 
 === Transcription replays
 
-The following are the steps to capture completed calls transcriptions.
+To replay a completed call, do the following:
+
+[start=1]
+
+. On the Quantiphi dashboard, select *Completed Calls* from the drop down list.
 
 [#UI-7]
-.Page Selector 
+.Quantiphi dashboard 
 [link=images/SS7.png]
 image::../images/SS7.png[UI for {partner-product-name},width=648,height=439]
 
-[start=1]
-. From the drop-down on the top of the module select the “Completed Calls” option. 
-
-[#UI-8]
-.Completed calls page showing all completed calls 
-[link=images/SS8.png]
-image::../images/SS8.png[UI for {partner-product-name},width=648,height=439]
-
 [start=2]
-. On selecting the “Completed Calls” option the user will be able to see a table with the details of all the completed calls.
+. A table of completed calls displays. Choose the icon in the *View* column of a completed call, as shown in <<UI-9>>. 
 
 [#UI-9]
-.Completed calls page (View button) 
+.Completed calls on the Quantiphi dashboard 
 [link=images/SS9.png]
 image::../images/SS9.png[UI for {partner-product-name},width=648,height=439]
 
 [start=3]
-. In the table, the user needs to click on the view button (eye icon) of a particular row. This will redirect the user to the transcription component of the application where the user will be able to see all the transcription of the completed calls.
+. To play the call, choose the play icon in the *Recording* section or *Begin* in the *Transcription* section. 
 
 [#UI-10]
-.Completed calls transcription dashboard (Play button)
+.Starting a playback
 [link=images/SS10.png]
 image::../images/SS10.png[UI for {partner-product-name},width=648,height=439]
 
 [start=4]
-. Below the “Identification” component, the user will be able to hear the recorded call with the help of the “Recording” component. To start the recording, the user will have two options to start
-
-[start=1]
-.. By clicking the “Play” button in the “Recording” component.
-
-[#UI-11]
-.Completed calls transcription dashboard (Begin button)
-[link=images/SS11.png]
-image::../images/SS11.png[UI for {partner-product-name},width=648,height=439]
-
-[start=2]
-.. By clicking the “Begin” button in the “Transcription” component.
+. The transcription and keywords of the playback display in the *Transcription* and *Call Capture* sections, respectively.
 
 [#UI-12]
-.Completed calls transcription dashboard (Transcription and Call Capture components)
+.Playback transcription and keywords
 [link=images/SS12.png]
 image::../images/SS12.png[UI for {partner-product-name},width=648,height=439]
 
 [start=5]
-. While the transcription is in progress the user will be able to view the transcription and its respective keywords in the “Transcription” and “Call Capture” component respectively in a synchronization of the time interval of the audio.
+. You can move the playback head to play a different section of the call. Or, use the forward and backward controls to jump.
 
 [#UI-13]
-.Completed calls transcription dashboard (Audio playback controls)
+.Playback head and forward and backward controls
 [link=images/SS13.png]
 image::../images/SS13.png[UI for {partner-product-name},width=648,height=439]
 
 [start=6]
-. The user will have the functionality to move forward or backward in the recorded audio by clicking the “Forward” and “Backward” icon in the “Recording” component and also by moving the “Red” cursor in the waves of the audio.
+. You can click a keyword in the *Call Capture* section to play the sentence in the call containing the keyword.
 
 [#UI-14]
 .Completed calls transcription dashboard (Call capture component keyword buttons)
@@ -136,16 +127,15 @@ image::../images/SS13.png[UI for {partner-product-name},width=648,height=439]
 image::../images/SS14.png[UI for {partner-product-name},width=648,height=439]
 
 [start=7]
-. The user has the functionality to hear the sentence where the keyword is captured by clicking on the keyword button in the “Call Capture” component. This will play the audio of the sentence where the keyword was captured and the transcription and audio controls will restart from that point.
+
+. Click *Cancel* in the *Transcription* section to stop the transcription. The playback head will return to the beginning of the call. 
 
 [#UI-15]
 .Completed calls transcription dashboard (Cancel button)
 [link=images/SS15.png]
 image::../images/SS15.png[UI for {partner-product-name},width=648,height=439]
 
-[start=8]
-. The user has the functionality to cancel the transcription by clicking the “Cancel” button in the “Transcription” component. This will restart the audio and will move its control to the start time.
-
+You can view and download the entire call transcription and keywords. See link:#_view
 [#UI-16]
 .Completed calls transcription dashboard (Download button)
 [link=images/SS16.png]
