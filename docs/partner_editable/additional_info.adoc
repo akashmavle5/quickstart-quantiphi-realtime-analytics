@@ -12,7 +12,7 @@ To test live call transcription, do the following:
 :xrefstyle: short
 
 [start=1]
-. Access the web application URL. After stack deployment is complete, the web application URL is displayed on the *Outputs* tab. It is the value displayed for the `LoadBalancerDNSAddr` key, as shown in <<output>>.
+. Navigate to the web application URL. After stack deployment is complete, the web application URL is displayed on the *Outputs* tab. It is the value displayed for the `LoadBalancerDNSAddr` key, as shown in <<output>>.
 
 [#output]
 .Web application URL on the Outputs tab
@@ -20,37 +20,36 @@ To test live call transcription, do the following:
 image::../images/Output.png[UI for {partner-product-name},width=648,height=439]
 
 [start=2]
-. Select *Active Calls* from the drop down list. Once selected the user will be able to see a table that will showcase all the calls which are active. If the user finds a message “No Active Calls Found” that means there are no active calls.
-
-[#UI-1] 
-.UI landing page
-[link=images/SS1.png]
-image::../images/SS1.png[UI for {partner-product-name},width=648,height=439]
-
+. Select *Active Calls* from the drop down list.
+. A table of active calls displays. Choose the icon in the *View* column of an active call.
 
 [#UI-2]
-.Active calls page showing ongoing calls
+.Active calls table on the Quantiphi dashboard
 [link=images/SS2.png]
 image::../images/SS2.png[UI for {partner-product-name},width=648,height=439]
 
-[start=2]
-. In the table, the user needs to click on the view (eye icon) button. This will redirect the user to the transcription component of the application where the user will be able to see all the real-time transcription.
+NOTE: The message “No Active Calls Found” displays if there are no active calls. An active call is required to test the deployment using these instructions.
+
+[start=4]
+. The live call transcription displays in the *Transcription* section of the dashboard. Keywords extracted from the call display in the *Call Capture* section, as shown in <<UI-3>>.
 
 [#UI-3]
-.Active calls transcription dashboard (Transcription and Call Capture components)
+.Transcription and keyword displays on the Quantiphi dashboard
 [link=images/SS3.png]
 image::../images/SS3.png[UI for {partner-product-name},width=648,height=439]
 
-[start=3]
-. In the real-time transcription phase where the call is still in the active state, the user will be able to see the transcription on the “Transcription” component and the respective keywords on the “Call Capture” component.
+[start=5]
+. Once the call is ended, caller identification details display in the *Identification* section of the dashboard, as shown in <<UI-4>>.
 
 [#UI-4]
-.Active calls transcription dashboard (Call Metadata Identification component)
+.Identification details on the Quantiphi dashboard
 [link=images/SS4.png]
 image::../images/SS4.png[UI for {partner-product-name},width=648,height=439]
 
-[start=4]
-. Once the call is ended, the user will be able to see all the entity identification details in the “Identification” component which is at the top in the module as shown in <<UI-4>>.
+[start=5]
+. To view and download transcriptions after the call is ended,
+The user will have the capability to view and download the complete transcriptions and keywords details in the CSV format. Once the call is ended, the user will be able to see a download icon and a table icon in the “Transcription” and “Call Capture” component respectively. On clicking the icons the user will be able to see the details in tabular form and will be able to download the details by clicking on “Download CSV”.
+
 
 [#UI-5]
 .Active calls transcription dashboard (Download transcription component)
@@ -62,8 +61,6 @@ image::../images/SS5.png[UI for {partner-product-name},width=648,height=439]
 [link=images/SS6.png]
 image::../images/SS6.png[UI for {partner-product-name},width=648,height=439]
 
-[start=5]
-. The user will have the capability to view and download the complete transcriptions and keywords details in the CSV format. Once the call is ended, the user will be able to see a download icon and a table icon in the “Transcription” and “Call Capture” component respectively. On clicking the icons the user will be able to see the details in tabular form and will be able to download the details by clicking on “Download CSV”.
 
 
 === Transcription replays
