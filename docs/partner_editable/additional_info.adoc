@@ -185,4 +185,3 @@ image::../images/SS20.png[UI for {partner-product-name},width=648,height=439]
 [start=13]
 . To move back to the previous module click on the left arrow button placed at the top beside the module header.
 
-
