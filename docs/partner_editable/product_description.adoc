@@ -2,7 +2,7 @@
 // Briefly describe the software. Use consistent and clear branding. 
 // Include the benefits of using the software on AWS, and provide details on usage scenarios.
 
-This Quick Start lets user set up a dashboard to get real time transcription and call metadata for all ongoing calls over any PBX software integrated with Amazon Chime Voice Connector. 
+This Quick Start provides a dashboard for support agents to view near-real-time transcriptions, keywords, and call metadata. for all ongoing calls over any PBX software integrated with Amazon Chime Voice Connector. 
 
 This Quick Start sets up transcript generator which uses Amazon Transcribe to generate a near real time transcription of the ongoing calls and also uses Amazon Comprehend to extract caller metadata from the call transcripts which is displayed on an interactive user interface hosted on AWS infrastructure.
 

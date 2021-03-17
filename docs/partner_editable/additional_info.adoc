@@ -24,7 +24,7 @@ image::../images/Output.png[UI for {partner-product-name},width=648,height=439]
 . A table of active calls displays. Choose the icon in the *View* column of an active call.
 
 [#UI-2]
-.Active calls table on the Quantiphi dashboard
+.Active calls table
 [link=images/SS2.png]
 image::../images/SS2.png[UI for {partner-product-name},width=648,height=439]
 
@@ -34,7 +34,7 @@ NOTE: The message “No Active Calls Found” displays if there are no active ca
 . The live call transcription displays in the *Transcription* section of the dashboard. Keywords extracted from the call display in the *Call Capture* section, as shown in <<UI-3>>.
 
 [#UI-3]
-.Transcription and keyword displays on the Quantiphi dashboard
+.Transcription and keyword displays
 [link=images/SS3.png]
 image::../images/SS3.png[UI for {partner-product-name},width=648,height=439]
 
@@ -42,7 +42,7 @@ image::../images/SS3.png[UI for {partner-product-name},width=648,height=439]
 . Once the call is ended, caller identification details display in the *Identification* section of the dashboard, as shown in <<UI-4>>.
 
 [#UI-4]
-.Identification details on the Quantiphi dashboard
+.Caller identification
 [link=images/SS4.png]
 image::../images/SS4.png[UI for {partner-product-name},width=648,height=439]
 
@@ -119,60 +119,43 @@ image::../images/SS12.png[UI for {partner-product-name},width=648,height=439]
 image::../images/SS13.png[UI for {partner-product-name},width=648,height=439]
 
 [start=6]
-. You can click a keyword in the *Call Capture* section to play the sentence in the call containing the keyword.
+. You can choose a keyword in the *Call Capture* section to jump to the section of the audio containing the keyword.
 
 [#UI-14]
-.Completed calls transcription dashboard (Call capture component keyword buttons)
+.Jump to a sections of call audio by choosing keywords
 [link=images/SS14.png]
 image::../images/SS14.png[UI for {partner-product-name},width=648,height=439]
 
-[start=7]
+TIP: To view and download the entire call transcription and keywords, see link:#_view_and_download_call_transcription_and_keywords[View and download call transcription and keywords].
 
+[start=7]
 . Click *Cancel* in the *Transcription* section to stop the transcription. The playback head will return to the beginning of the call. 
 
 [#UI-15]
-.Completed calls transcription dashboard (Cancel button)
+.Cancel playback and transcription
 [link=images/SS15.png]
 image::../images/SS15.png[UI for {partner-product-name},width=648,height=439]
 
-You can view and download the entire call transcription and keywords. See link:#_view
-[#UI-16]
-.Completed calls transcription dashboard (Download button)
-[link=images/SS16.png]
-image::../images/SS16.png[UI for {partner-product-name},width=648,height=439]
-
-[start=9]
-. Once the call is reached to its end time, the user will be able to view the complete transcription and its respective keywords by clicking the “Download” and “Table” icon in the “Transcription” and “Call Capture” component respectively.
-
-[#UI-17]
-.Completed calls transcription dashboard (Download transcription component)
-[link=images/SS17.png]
-image::../images/SS17.png[UI for {partner-product-name},width=648,height=439]
-
-[start=10]
-. The user will be able to download the transcription and keywords in CSV format by clicking the “Download CSV” button
+[start=8]
+. Click *Redo* in the *Transcription* or *Call Capture* sections to restart the playback and transcription from the beginning of the call.
 
 [#UI-18]
-.Completed calls transcription dashboard (Redo button)
+.Redo playback and transcription from the beginning
 [link=images/SS18.png]
 image::../images/SS18.png[UI for {partner-product-name},width=648,height=439]
 
-[start=11]
-. The user has the functionality to restart the transcription by clicking the “Redo” button either in the “Transcription” component or in the “Call Capture” component.
+[start=9]
+. At the end of the transcription, the caller identification details display in the *Identification* section of the dashboard, as shown in <<UI-19>>.
 
 [#UI-19]
-.Completed calls transcription dashboard (Call Metadata Identification component)
+.Caller identification
 [link=images/SS19.png]
 image::../images/SS19.png[UI for {partner-product-name},width=648,height=439]
 
-[start=12]
-. Once the file is loaded and all the required information is fetched at the end of transcription, the user will be able to view an “Identification” component at the top which has “Members Info” segregated.
+[start=10]
+. To go back, choose the left arrow button.
 
 [#UI-20]
-.Completed calls transcription dashboard (Back button)
+.Back
 [link=images/SS20.png]
 image::../images/SS20.png[UI for {partner-product-name},width=648,height=439]
-
-[start=13]
-. To move back to the previous module click on the left arrow button placed at the top beside the module header.
-
