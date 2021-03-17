@@ -1,10 +1,10 @@
 :quickstart-project-name: quickstart-quantiphi-real-time-analytics
-:partner-product-name: Real Time Call Analytics
+:partner-product-name: Quantiphi Call Center Analytics
 :partner-company-name: Quantiphi
-:doc-month: December
-:doc-year: 2020
+:doc-month: March
+:doc-year: 2021
 :partner-contributors: Sanchit Jain, Quantiphi
-:quickstart-contributors: Shivansh Singh, Solutions Architect, AWS
+:quickstart-contributors: Shivansh Singh, AWS Quick Start team
 :deployment_time: 40 minutes
 :default_deployment_region: us-east-1
 :parameters_as_appendix:
