@@ -1,31 +1,32 @@
 == Test the deployment
 
-[#Output] 
-.Quick Start Main Stack Output for {partner-product-name}
+To test this Quick Start after deployment, the following items are required:
+
+* PBX software integrated with Amazon Chime Voice Connector.
+* An active call in the Quantiphi call transcription application.
+
+=== Active call transcription
+
+To test live call transcription, do the following:
+
+:xrefstyle: short
+
+[start=1]
+. Access the web application URL. After stack deployment is complete, the web application URL is displayed on the *Outputs* tab. It is the value displayed for the `LoadBalancerDNSAddr` key, as shown in <<output>>.
+
+[#output]
+.Web application URL on the Outputs tab
 [link=images/Output.png]
 image::../images/Output.png[UI for {partner-product-name},width=648,height=439]
 
-In the outputs of the main stack check for the *LoadBalancerDNSAddr* key, to get the _url_
-of the web app.
-
-The {partner-product-name} has two functionalities:
-
-. Active call live transcription 
-. Completed call transcription replay
-
-Following are the steps to interact with UI to check the above mentioned functionalities.
-
-=== ACTIVE CALLS
-
-Steps to capture active calls transcriptions:
+[start=2]
+. Select *Active Calls* from the drop down list. Once selected the user will be able to see a table that will showcase all the calls which are active. If the user finds a message “No Active Calls Found” that means there are no active calls.
 
 [#UI-1] 
 .UI landing page
 [link=images/SS1.png]
 image::../images/SS1.png[UI for {partner-product-name},width=648,height=439]
 
-[start=1]
-. From the drop-down make sure the “Active Calls” option is selected. Once selected the user will be able to see a table that will showcase all the calls which are active. If the user finds a message “No Active Calls Found” that means there are no active calls.
 
 [#UI-2]
 .Active calls page showing ongoing calls
@@ -51,7 +52,6 @@ image::../images/SS4.png[UI for {partner-product-name},width=648,height=439]
 [start=4]
 . Once the call is ended, the user will be able to see all the entity identification details in the “Identification” component which is at the top in the module as shown in <<UI-4>>.
 
-
 [#UI-5]
 .Active calls transcription dashboard (Download transcription component)
 [link=images/SS5.png]
@@ -66,7 +66,7 @@ image::../images/SS6.png[UI for {partner-product-name},width=648,height=439]
 . The user will have the capability to view and download the complete transcriptions and keywords details in the CSV format. Once the call is ended, the user will be able to see a download icon and a table icon in the “Transcription” and “Call Capture” component respectively. On clicking the icons the user will be able to see the details in tabular form and will be able to download the details by clicking on “Download CSV”.
 
 
-=== COMPLETED CALLS
+=== Transcription replays
 
 The following are the steps to capture completed calls transcriptions.
 

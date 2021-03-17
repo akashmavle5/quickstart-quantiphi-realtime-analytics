@@ -4,5 +4,5 @@
 
 This Quick Start reference deployment guide provides step-by-step instructions for deploying {partner-product-name} on the AWS Cloud. 
 
-This Quick Start sets up Quantiphi transcript generator used by organizations to improve and optimize remote support. It provides a user interface where live call transcripts are displayed in near-real-time along with extracted keywords, metadata, and a call summary.
+This Quick Start sets up Quantiphi call center analytics, used by organizations to improve and optimize remote support. It provides a user interface where live call transcripts are displayed in near-real-time along with extracted keywords, metadata, and a call summary.
 
