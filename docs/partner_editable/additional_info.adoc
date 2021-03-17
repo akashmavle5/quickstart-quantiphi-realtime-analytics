@@ -5,9 +5,9 @@ To test this Quick Start after deployment, the following items are required:
 * PBX software integrated with Amazon Chime Voice Connector.
 * An active call in the Quantiphi call transcription application.
 
-=== Active call transcription
+=== View active call transcription
 
-To test live call transcription, do the following:
+To view a near-real-time transcription of an active call, do the following:
 
 :xrefstyle: short
 
@@ -46,22 +46,26 @@ image::../images/SS3.png[UI for {partner-product-name},width=648,height=439]
 [link=images/SS4.png]
 image::../images/SS4.png[UI for {partner-product-name},width=648,height=439]
 
-[start=5]
-. To view and download transcriptions after the call is ended,
-The user will have the capability to view and download the complete transcriptions and keywords details in the CSV format. Once the call is ended, the user will be able to see a download icon and a table icon in the “Transcription” and “Call Capture” component respectively. On clicking the icons the user will be able to see the details in tabular form and will be able to download the details by clicking on “Download CSV”.
+=== View and download call transcription
 
+[start=1]
+. To view and download a transcription after a call, choose the download icon in the *Transcription* section.
 
 [#UI-5]
 .Active calls transcription dashboard (Download transcription component)
 [link=images/SS5.png]
 image::../images/SS5.png[UI for {partner-product-name},width=648,height=439]
 
+[start=2]
+
+. The transcription displays in the *Transcription Details* window. Choose *Download CSV* to download the transcription in a CSV file. 
+
 [#UI-6]
 .Active calls transcription dashboard (Download transcription component)
 [link=images/SS6.png]
 image::../images/SS6.png[UI for {partner-product-name},width=648,height=439]
 
-
+TIP: Choose the table icon in the *Call Capture* section to view and download keywords.
 
 === Transcription replays
 
