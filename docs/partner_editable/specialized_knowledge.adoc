@@ -1,7 +1,14 @@
 // Replace the content in <>
 // Describe or link to specific knowledge requirements; for example: “familiarity with basic concepts in the areas of networking, database operations, and data encryption” or “familiarity with <software>.”
 
-This Quick Start assumes familiarity with Amazon Transcribe, Amazon SQS, Amazon S3, Amazon DynamoDB, Amazon EC2, Amazon Comprehend.	
+This Quick Start assumes familiarity with the following AWS services:
+
+* https://docs.aws.amazon.com/transcribe/latest/dg/what-is-transcribe.html[Amazon Transcribe^]
+* https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html[Amazon SQS^]
+* https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html[Amazon S3^]
+* https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html[Amazon DynamoDB^]
+* https://docs.aws.amazon.com/ec2/?id=docs_gateway[Amazon EC2^]
+* https://docs.aws.amazon.com/comprehend/latest/dg/comprehend-general.html[Amazon Comprehend^]
 
 
 

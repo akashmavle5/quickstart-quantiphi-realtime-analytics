@@ -1,29 +1,43 @@
 Deploying this Quick Start with default parameters builds the following {partner-product-name} environment in the AWS Cloud.
 
 // Replace this example diagram with your own. Send us your source PowerPoint file. Be sure to follow our guidelines here : http://(we should include these points on our contributors guide)
+:xrefstyle: short
 [#architecture1]
 .Quick Start architecture for {partner-product-name} on AWS
-[link=images/quantiphi-architecture-diagram.png]
-image::../images/quantiphi-architecture-diagram.png[Architecture,width=648,height=439]
+[link=images/quantiphi-real-time-analytics-architecture-diagram.png]
+image::../images/quantiphi-real-time-analytics-architecture-diagram.png[Architecture,width=100%,height=100%]
 
-As shown in the <<architecture1>>, the Quick Start sets up the infrastructure as described below, along with the call flow:
+As shown in the <<architecture1>>, the Quick Start sets up the following:
 
+[start=1]
+* Amazon Chime Voice Connector to receive agent and customer call streams from Private Branch Exchange (PBX) software and route them to Amazon Kinesis Video Streams.
+* Kinesis Video Streams to store call streams for analytics.
+* Two Amazon EventBridge rules triggered simultaneously on the receipt of call streams. They write call metadata and stream details into Amazon Simple Queue Service (Amazon SQS) queues at the start and end of a call.
+* Amazon SQS queues
+** Chime Voice Connector stream queue to initiate a transcription AWS Lambda function.
+** Chime Voice Connector stream queue to initiate a metadata Lambda function.
+** Transcribe queue to initiate a post-processing Lambda function.
+* AWS Lambda functions
+** Transcription function to do the following::
+*** Read audio streams from Kinesis Video Streams and call Amazon Transcribe.
+*** Store transcription data in a DynamoDB table.
+*** Publish a message to a post-processing queue.
+*** Store call in MP3 format to an Amazon Simple Storage Service (Amazon S3) bucket.
+** Metadata publication function to do the following:
+*** Extract entities from transcripts using custom entity extraction logic and Amazon Comprehend.
+*** Publish metadata to the web application through Amazon API Gateway.
+*** Store metadata in a DynamoDB table. 
+** Keyword extraction function to do the following:
+*** Extract keywords from transcripts using string matching.
+*** Store results of keyword extraction to a DynamoDB table.
+*** Publish transcripts and keyword data to the web application through Amazon API Gateway.
+* Amazon Transcribe to transcribe call audio streams.
+* Amazon DynamoDB tables for transcription data, keywords, and call metadata.
+* Amazon S3 bucket to store MP3 files of call audio.
+* Amazon API Gateways to manage access to the web application.
+* In the virtual private cloud (VPC):
+** An Application Load Balancer to balance traffic between web application nodes.
+** 1–4 Amazon Elastic Compute Cloud (Amazon EC2) instances to host web application nodes.
+* AWS Identity and Access Management (IAM) to manage IAM roles and policies. 
 
-. The call stream between customer and the agent / provider is received from PBX to Amazon Chime Voice Connector in two different streams.
-
-. The chime voice connector streams the audio streams into Kinesis Video Streams.
-
-. The streams of the two speakers trigger the two eventbridge rules simultaneously.
-
-. Each event bridge writes the call metadata and the stream details into the respective SQS queues at the start and the end of the call.
-
-. These messages in SQS queue (ChimeVoiceConnectorStreaming1), triggers the Transcription lambda (LiveCallsTranscriberFunction) function. This lambda function reads the audio streams from Kinesis and makes a call to Amazon Transcribe.
-
-. The Transcription Lambda also writes the transcript data into the DynamoDB table (LiveCallsTranscriptionTable) and publishes a message to post processing SQS Queue (TranscribeResultsStreaming). This lambda also stores the mp3 file after call completion to the s3 bucket.
-
-. Post processing SQS triggers the post processing Lambda (KeywordExtractionFunction) function. Here the transcripts are cleaned and key words are extracted using string matching. The results are stored into a DynamoDB table (KeywordExtractionTable).
-
-. Post processing Lambda also publishes the transcripts and the keyword data to the Customer User Interface via the websocket.
-
-. When the call ends, a SQS message is sent for both the streams through the eventbridge rule. A metadata Lambda (PublishCallMetadataFunction) function will be triggered by this SQS queue (ChimeVoiceConnectorStreaming2). This Lambda function extract the entities from the transcripts using custom entity extraction logic and Amazon Comprehend.  It notifies the frontend that the call has ended and publishes the entity metadata to the websocket and stores the data into the DynamoDB table (LiveCallsMetadataTable).
-
+//[.small]#*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.#
