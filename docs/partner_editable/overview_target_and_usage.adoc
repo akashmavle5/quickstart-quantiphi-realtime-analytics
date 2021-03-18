@@ -4,5 +4,5 @@
 
 This Quick Start reference deployment guide provides step-by-step instructions for deploying {partner-product-name} on the AWS Cloud. 
 
-This Quick Start sets up Quantiphi call center analytics, used by organizations to improve and optimize remote support. It provides a user interface where live call transcripts are displayed in near-real-time along with keywords, metadata, and a call summary.
+This Quick Start sets up {partner-product-name}, used by organizations to improve and optimize remote support. It provides a dashboard for support agents where live call transcripts, keywords, and call metadata are displayed.
 

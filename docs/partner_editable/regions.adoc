@@ -3,4 +3,4 @@ This Quick Start supports the following Regions:
 * US East (N. Virginia) 
 * US West (Oregon) 
 
-NOTE: This deployment includes Amazon Chime Voice Connector, which is not currently supported in all AWS Regions. Amazon Chime Voice Connector delivers a fault tolerant and highly available SIP trunking service using three availability zones (AZs) in the US-East (N. Virginia) Region and 3 AZs in the US-West (Oregon) Region.
+NOTE: This deployment includes Amazon Chime Voice Connector, which is not currently supported in all AWS Regions. Amazon Chime Voice Connector delivers a fault tolerant and highly available SIP-trunking service using three availability zones (AZs) in the US-East (N. Virginia) Region and 3 AZs in the US-West (Oregon) Region. For more information, see https://aws.amazon.com/chime/faq/voice-connector/[Amazon Chime Voice Connector FAQs].
