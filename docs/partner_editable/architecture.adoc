@@ -11,34 +11,33 @@ As shown in the <<architecture1>>, the Quick Start sets up the following:
 
 [start=1]
 * Amazon Chime Voice Connector to receive agent and customer call streams from Private Branch Exchange (PBX) software and route them to Amazon Kinesis Video Streams.
-* Amazon Kinesis Video Streams to store call streams for analytics.
+* Kinesis Video Streams to store call streams for analytics.
 * Two Amazon EventBridge rules triggered simultaneously on the receipt of call streams. They write call metadata and stream details into Amazon Simple Queue Service (Amazon SQS) queues at the start and end of a call.
 * Amazon SQS queues
-** SQS queue ChimeVoiceConnectorStreaming1 to initiate a transcription AWS Lambda function.
-** SQS queue ChimeVoiceConnectorStreaming2 to initiate a metadata Lambda function.
-** Post-processing SQS queue TranscribeResultsStreaming to initiate a post-processing Lambda function.
+** Chime Voice Connector stream queue to initiate a transcription AWS Lambda function.
+** Chime Voice Connector stream queue to initiate a metadata Lambda function.
+** Transcribe queue to initiate a post-processing Lambda function.
 * AWS Lambda functions
-** Transcription function (LiveCallsTranscriberFunction) to do the following:
-*** Read audio streams from Kinesis Video Streams and to call Amazon Transcribe.
-*** Write transcription data into an Amazon Dynamo DB table (LiveCallsTranscriptionTable).
-*** Publish a message to a post-processing SQS queue.
+** Transcription function to do the following::
+*** Read audio streams from Kinesis Video Streams and call Amazon Transcribe.
+*** Store transcription data in a DynamoDB table.
+*** Publish a message to a post-processing queue.
 *** Store call in MP3 format to an Amazon Simple Storage Service (Amazon S3) bucket.
-** Metadata function (PublishCallMetadataFunction) to do the following:
+** Metadata publication function to do the following:
 *** Extract entities from transcripts using custom entity extraction logic and Amazon Comprehend.
-*** Publish metadata to an Amazon API Gateway.
-*** Store metadata in a Dynamo DB table (LiveCallsMetadata) 
-** Post-processing function (KeywordExtractionFunction) to do the following:
+*** Publish metadata to the web application through Amazon API Gateway.
+*** Store metadata in a DynamoDB table. 
+** Keyword extraction function to do the following:
 *** Extract keywords from transcripts using string matching.
-*** Store results of keyword extraction to a Dynamo DB table (KeywordExtractionTable).
-*** Publish transcripts and keyword data to the web application through an Amazon API Gateway.
+*** Store results of keyword extraction to a DynamoDB table.
+*** Publish transcripts and keyword data to the web application through Amazon API Gateway.
 * Amazon Transcribe to transcribe call audio streams.
-* Amazon Dynamo DB tables for transcription data, keywords, and call metadata.
+* Amazon DynamoDB tables for transcription data, keywords, and call metadata.
 * Amazon S3 bucket to store MP3 files of call audio.
-* Amazon API Gateways to provide access to the web application.
-* A virtual private cloud (VPC) to provide you with your own virtual network on AWS.*
-* In the VPC:
-** A Network Load Balancer to balance traffic between web application nodes.
-** 1–4 Amazon Elastic Compute Cloud (Amazon EC2) instances of the web application to display transcripts and analysis to agents. Each instance is deployed into its own private subnet (not shown).
-* AWS Identity and Access Management (IAM) to manage S3 bucket access policy. 
+* Amazon API Gateways to manage access to the web application.
+* In the virtual private cloud (VPC):
+** An Application Load Balancer to balance traffic between web application nodes.
+** 1–4 Amazon Elastic Compute Cloud (Amazon EC2) instances to host web application nodes.
+* AWS Identity and Access Management (IAM) to manage IAM roles and policies. 
 
-[.small]#*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.#
+//[.small]#*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.#

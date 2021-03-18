@@ -9,10 +9,10 @@
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
 |Parameter label (name) |Default value|Description|Key pair name
-(`KeyPairName`)|`quickstart-taskcat`|Public/private key pair that allows you to securely connect to your instance after it launches.|CIDR block
-(`CIDR`)|`0.0.0.0/0`|CIDR to restrict access to the web application.|Minimum capacity of application security group
-(`MinCapacity`)|`1`|Minimum number of web application hosts (1-4).|Maximum capacity of application security group
-(`MaxCapacity`)|`4`|Maximum number of web application hosts (3-4).|Desired capacity of application security group
+(`KeyPairName`)|`quickstart-taskcat`|Public/private key pair to securely connect to your instance after it launches.|CIDR block
+(`CIDR`)|`0.0.0.0/0`|CIDR to restrict access to the web application.|Application security group minimum capacity
+(`MinCapacity`)|`1`|Minimum number of web application hosts (1-4).|Application security group maximum capacity
+(`MaxCapacity`)|`4`|Maximum number of web application hosts (3-4).|Application security group capacity
 (`DesiredCapacity`)|`2`|Number of web application hosts to create (1-4).|Amazon EC2 instance type
 (`WebAppInstanceType`)|`t2.medium`|Amazon EC2 instance type for the web application instances.
 |===
@@ -32,5 +32,5 @@
 |Parameter label (name) |Default value|Description|Quick Start S3 bucket name
 (`QSS3BucketName`)|`aws-quickstart`|Name of the S3 bucket for your copy of the Quick Start assets. Keep the default name unless you are customizing the template. Changing the name updates code references to point to a new Quick Start location. This name can include numbers, lowercase letters, uppercase letters, and hyphens, but do not start or end with a hyphen (-). See https://aws-quickstart.github.io/option1.html.|**NO_LABEL**
 (`QSTagValue`)|`qs-test`|Tag value to be attached to resource names.|Quick Start S3 key prefix
-(`QSS3KeyPrefix`)|`quickstart-*************************/`|S3 key prefix that is used to simulate a directory for your copy of the Quick Start assets. Keep the default prefix unless you are customizing the template. Changing this prefix updates code references to point to a new Quick Start location. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slashes (/). End with a forward slash. See https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html and https://aws-quickstart.github.io/option1.html.
+(`QSS3KeyPrefix`)|`quickstart-quantiphi-realtime-analytics/`|S3 key prefix that is used to simulate a directory for your copy of the Quick Start assets. Keep the default prefix unless you are customizing the template. Changing this prefix updates code references to point to a new Quick Start location. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slashes (/). End with a forward slash. See https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html and https://aws-quickstart.github.io/option1.html.
 |===

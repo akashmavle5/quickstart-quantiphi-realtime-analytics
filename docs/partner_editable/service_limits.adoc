@@ -10,10 +10,10 @@ AWS Quick Start configuration:
 |VPCs|1
 |AWS Identity and Access Management (IAM) security groups |3
 |Elastic IP addresses|3-6, depending on the Linux bastion host configuration.
-|Auto Scaling Groups |2
+|Auto Scaling groups |2
 |Application Load Balancers |1
 |Network Load Balancers |0
-|t2.medium instances (Web App)| 1-4, depending on the web application configuration.
-|t2.micro instances (Bastion)| 1-4, depending on the Linux bastion host configuration.
+|t2.medium instances | 1-4, depending on the web application configuration.
+|t2.micro instances | 1-4, depending on the Linux bastion host configuration.
 
 |===
