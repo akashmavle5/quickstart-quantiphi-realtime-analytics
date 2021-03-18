@@ -7,7 +7,7 @@ To test this Quick Start after deployment, the following items are required:
 
 === View active call transcription
 
-To view a near-real-time transcription of an active call, do the following:
+To view a live transcription of an active call, do the following:
 
 :xrefstyle: short
 
