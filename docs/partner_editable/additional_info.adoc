@@ -12,7 +12,7 @@ To view a live transcription of an active call, do the following:
 :xrefstyle: short
 
 [start=1]
-. Navigate to the web application URL. After stack deployment is complete, the web application URL is displayed on the *Outputs* tab. It is the value displayed for the `LoadBalancerDNSAddr` key, as shown in <<output>>.
+. In the AWS CloudFormation console, choose the *Outputs* tab. Retrieve the URL in the *Value* column of the `LoadBalancerDNSAddr` key, as shown in <<output>>.
 
 [#output]
 .Web application URL on the Outputs tab
@@ -20,6 +20,7 @@ To view a live transcription of an active call, do the following:
 image::../images/Output.png[UI for {partner-product-name},width=648,height=439]
 
 [start=2]
+. Navigate to the URL from step 1.
 . On the Quantiphi dashboard, select *Active Calls* from the drop down list.
 . A table of active calls displays. Choose the icon in the *View* column of an active call.
 

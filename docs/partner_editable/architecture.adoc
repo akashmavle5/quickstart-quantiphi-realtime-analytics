@@ -14,11 +14,10 @@ As shown in the <<architecture1>>, the Quick Start sets up the following:
 * Kinesis Video Streams to store call streams for analytics.
 * Two Amazon EventBridge rules triggered simultaneously on the receipt of call streams. They write call metadata and stream details into Amazon Simple Queue Service (Amazon SQS) queues at the start and end of a call.
 * Amazon SQS queues
-** Chime Voice Connector stream queue to initiate a transcription AWS Lambda function.
-** Chime Voice Connector stream queue to initiate a metadata Lambda function.
+** Amazon Chime Voice Connector stream queues to initiate transcription and metadata AWS Lambda functions.
 ** Transcribe queue to initiate a post-processing Lambda function.
 * AWS Lambda functions
-** Transcription function to do the following::
+** Transcription function to do the following:
 *** Read audio streams from Kinesis Video Streams and call Amazon Transcribe.
 *** Store transcription data in a DynamoDB table.
 *** Publish a message to a post-processing queue.
@@ -34,7 +33,7 @@ As shown in the <<architecture1>>, the Quick Start sets up the following:
 * Amazon Transcribe to transcribe call audio streams.
 * Amazon DynamoDB tables for transcription data, keywords, and call metadata.
 * Amazon S3 bucket to store MP3 files of call audio.
-* Amazon API Gateways to manage access to the web application.
+* Amazon API Gateway to manage access to the web application.
 * In the virtual private cloud (VPC):
 ** An Application Load Balancer to balance traffic between web application nodes.
 ** 1–4 Amazon Elastic Compute Cloud (Amazon EC2) instances to host web application nodes.

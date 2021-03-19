@@ -4,5 +4,5 @@
 
 This Quick Start reference deployment guide provides step-by-step instructions for deploying {partner-product-name} on the AWS Cloud. 
 
-This Quick Start sets up {partner-product-name}, used by organizations to improve and optimize remote support. It provides a dashboard for support agents where live call transcripts, keywords, and call metadata are displayed.
+This Quick Start sets up {partner-product-name}, used by organizations to improve and optimize remote support. It provides a dashboard for support agents that displays live call transcripts, keywords, and call metadata.
 
