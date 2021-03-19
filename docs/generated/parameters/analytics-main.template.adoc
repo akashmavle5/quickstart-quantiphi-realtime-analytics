@@ -31,13 +31,13 @@
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
 |Parameter label (name) |Default value|Description|Number of bastion hosts
-(`NumBastionHosts`)|`1`|The number of bastion hosts to create. The maximum number is four.|Bastion tenancy
+(`NumBastionHosts`)|`1`|Number of bastion hosts to create. The maximum number is four.|Bastion tenancy
 (`BastionTenancy`)|`default`|Bastion VPC tenancy (dedicated or default).|Enable banner
 (`EnableBanner`)|`false`|To display a banner when connecting to the bastion through SSH, choose *true*.|Bastion banner text
 (`BastionBanner`)|`**__Blank string__**`|Banner text to display at login.|TCP forwarding
 (`EnableTCPForwarding`)|`false`|To enable TCP forwarding, choose *true*.|X11 forwarding
 (`EnableX11Forwarding`)|`false`|To enable X11 forwarding, choose *true*.|Allowed bastion external access CIDR
-(`RemoteAccessCIDR`)|`**__Requires input__**`|Allowed CIDR block for external SSH access to the bastions
+(`RemoteAccessCIDR`)|`**__Requires input__**`|Allowed CIDR block for external SSH access to the bastions.
 |===
 .Bastion host instance configuration
 [width="100%",cols="16%,11%,73%",options="header",]
