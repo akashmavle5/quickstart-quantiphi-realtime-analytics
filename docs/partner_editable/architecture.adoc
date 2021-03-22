@@ -20,7 +20,7 @@ As shown in the <<architecture1>>, the Quick Start sets up the following:
 * Amazon S3 bucket to store MP3 files of calls.
 * Amazon API Gateway to manage access to the Quantiphi web application.
 * In the virtual private cloud (VPC):
-** An Application Load Balancer to balance traffic between Quantiphi web application nodes.
+** An Application Load Balancer to route traffic between Quantiphi web application nodes.
 ** 1–4 Amazon Elastic Compute Cloud (Amazon EC2) instances to host Quantiphi web application nodes. The number of hosts is chosen during deployment.
 * AWS Identity and Access Management (IAM) to manage IAM roles and policies.
 
