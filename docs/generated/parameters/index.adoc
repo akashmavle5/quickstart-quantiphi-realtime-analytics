@@ -1,6 +1,6 @@
 
-=== Parameters to launch stack in a new VPC
-include::analytics-main.template.adoc[]
-
 === Parameters to launch stack in an existing VPC
 include::analytics.template.adoc[]
+
+=== Parameters to launch stack in a new VPC
+include::analytics-main.template.adoc[]
