@@ -1,5 +1,5 @@
 :quickstart-project-name: quickstart-quantiphi-real-time-analytics
-:partner-product-name: Quantiphi Real-Time Call Center Analytics
+:partner-product-name: Quantiphi Real-Time Call Analytics
 :partner-company-name: Quantiphi
 :doc-month: March
 :doc-year: 2021
