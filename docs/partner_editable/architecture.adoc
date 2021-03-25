@@ -10,33 +10,19 @@ image::../images/quantiphi-real-time-analytics-architecture-diagram.png[Architec
 As shown in the <<architecture1>>, the Quick Start sets up the following:
 
 [start=1]
-* Amazon Chime Voice Connector to receive agent and customer call streams from Private Branch Exchange (PBX) software and route them to Amazon Kinesis Video Streams.
-* Kinesis Video Streams to store call streams for analytics.
-* Two Amazon EventBridge rules triggered simultaneously on the receipt of call streams. They write call metadata and stream details into Amazon Simple Queue Service (Amazon SQS) queues at the start and end of a call.
-* Amazon SQS queues
-** Amazon Chime Voice Connector stream queues to initiate transcription and metadata AWS Lambda functions.
-** Transcribe queue to initiate a post-processing Lambda function.
-* AWS Lambda functions
-** Transcription function to do the following:
-*** Read audio streams from Kinesis Video Streams and call Amazon Transcribe.
-*** Store transcription data in a DynamoDB table.
-*** Publish a message to a post-processing queue.
-*** Store call in MP3 format to an Amazon Simple Storage Service (Amazon S3) bucket.
-** Metadata publication function to do the following:
-*** Extract entities from transcripts using custom entity extraction logic and Amazon Comprehend.
-*** Publish metadata to the web application through Amazon API Gateway.
-*** Store metadata in a DynamoDB table. 
-** Keyword extraction function to do the following:
-*** Extract keywords from transcripts using string matching.
-*** Store results of keyword extraction to a DynamoDB table.
-*** Publish transcripts and keyword data to the web application through Amazon API Gateway.
-* Amazon Transcribe to transcribe call audio streams.
-* Amazon DynamoDB tables for transcription data, keywords, and call metadata.
-* Amazon S3 bucket to store MP3 files of call audio.
-* Amazon API Gateway to manage access to the web application.
+* Amazon Chime Voice Connector to receive calls from user Private Branch Exchange (PBX) software.
+* Kinesis Video Streams to store call streams.
+* Amazon EventBridge to write messages to Amazon Simple Queue Service (Amazon SQS) queues when call begins and ends.
+* Amazon SQS queues to store messages that are read by AWS Lambda functions.
+* AWS Lambda functions to poll SQS queues and initiate transcription, keyword-extraction, and post-call metadata extraction routines.
+* Amazon Transcribe to transcribe audio streams.
+* Amazon DynamoDB tables to store transcriptions, keywords, and call metadata.
+* Amazon S3 bucket to store MP3 files of calls.
+* Amazon API Gateway to manage access to the Quantiphi web application.
 * In the virtual private cloud (VPC):
-** An Application Load Balancer to balance traffic between web application nodes.
-** 1–4 Amazon Elastic Compute Cloud (Amazon EC2) instances to host web application nodes.
-* AWS Identity and Access Management (IAM) to manage IAM roles and policies. 
+** An Application Load Balancer to route traffic between Quantiphi web application nodes.
+** 1–4 Amazon Elastic Compute Cloud (Amazon EC2) instances to host Quantiphi web application nodes. The number of hosts is chosen during deployment.
+* AWS Identity and Access Management (IAM) to manage IAM roles and policies.
+
 
 //[.small]#*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.#
