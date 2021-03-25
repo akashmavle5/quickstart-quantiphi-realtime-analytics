@@ -1,6 +1,6 @@
 # Quantiphi Real-Time Analytics on AWS Cloud
 
-For architectural details, step-by-step instructions, and customization options, see the [deployment guide](https://...).
+For architectural details, step-by-step instructions, and customization options, see the [deployment guide](https://fwd.aws/XzP5M).
 
 To post feedback, submit feature ideas, or report bugs, use the **Issues** section of this GitHub repo. 
 
