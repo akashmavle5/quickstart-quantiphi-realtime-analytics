@@ -1,36 +1,36 @@
 
-.Keywords Function Configuration
+.Keywords function configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|The file name for the keywords function.
-(`KeywordsFileName`)|`kw_50_updated.txt`|The file where Keywords are stored for the Keywords Function.
+|Parameter label (name) |Default value|Description|Keywords function file name
+(`KeywordsFileName`)|`kw_50_updated.txt`|The file where keywords are stored.
 |===
-.Web App Configuration
+.Web application configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|The keypair name of the key to ssh into the web app ec2 instances and bastion host.
-(`KeyPairName`)|`quickstart-taskcat`|The name of KeyPair which is used to ssh into EC2 instance.|CIDR to limit the web app access.
-(`CIDR`)|`0.0.0.0/0`|CIDR to restrict access to web application.|Minimum capacity of Web App ASG.
-(`MinCapacity`)|`1`|The minimum number of webapp hosts to be maintained. The minimum number is one.|Maximum capacity of Web App ASG.
-(`MaxCapacity`)|`4`|The maximum number of webapp hosts to be scaled out. The maximum number is four.|Desired capacity of Web App ASG.
-(`DesiredCapacity`)|`2`|The desired number of webapp hosts to create. The maximum number is four.|Amazon EC2 instance type for the web app instances.
-(`WebAppInstanceType`)|`t2.medium`|Amazon EC2 instance type for the web app instances.
+|Parameter label (name) |Default value|Description|Key pair name
+(`KeyPairName`)|`quickstart-taskcat`|Public/private key pair to securely connect to your instance after it launches.|CIDR block
+(`CIDR`)|`0.0.0.0/0`|CIDR to restrict access to the web application.|Application security group minimum capacity
+(`MinCapacity`)|`1`|Minimum number of web application hosts (1-4).|Application security group maximum capacity
+(`MaxCapacity`)|`4`|Maximum number of web application hosts (3-4).|Application security group capacity
+(`DesiredCapacity`)|`2`|Number of web application hosts to create (1-4).|Amazon EC2 instance type
+(`WebAppInstanceType`)|`t2.medium`|Amazon EC2 instance type for the web application instances.
 |===
-.VPC Configuration
+.VPC configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|The VPC Id for the deployment.
-(`VPCID`)|`**__Requires input__**`|VPC ID for deploying web app.|Subnet Id of the Private Subnet for 1st  web-app EC2 instance.
-(`SubnetID1`)|`**__Requires input__**`|Subnet ID for EC2 Instance.|Subnet Id of the Private Subnet for 2nd web-app EC2 instance.
-(`SubnetID2`)|`**__Requires input__**`|Subnet ID for EC2 Instance.|Subnet Ids for the application load balancer.
-(`SubnetIDs`)|`**__Requires input__**`|Choose the minimum 2 subnets. The availability zone where instance is created should match with atleast one of the subnet's availability zone you choose.|The Security Group Id of Bastion Host Instance
-(`BastionSecurityGroupId`)|`__Optional__`|The Security Group Id of Bastion Host Instance.
+|Parameter label (name) |Default value|Description|VPC ID
+(`VPCID`)|`**__Requires input__**`|ID of the VPC (e.g., vpc-0343606e).|Private subnet 1 ID
+(`SubnetID1`)|`**__Requires input__**`|ID of the first private subnet into which Quantiphi will be deployed (e.g., subnet-a0246dcd).|Private subnet 2 ID
+(`SubnetID2`)|`**__Requires input__**`|ID of the second private subnet into which Quantiphi will be deployed (e.g., subnet-a0246dcd).|Application Load Balancer subnet IDs
+(`SubnetIDs`)|`**__Requires input__**`|Choose a minimum of two subnets. The Availability Zone where instance is created should match with at least one of the subnet's Availability Zone you choose.|Bastion host security group ID
+(`BastionSecurityGroupId`)|`__Optional__`|The security group ID of bastion host instance.
 |===
-.Quickstart Configuration
+.Quick Start configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|Your configured S3 bucket with all artifacts for the Quickstart.
-(`QSS3BucketName`)|`aws-quickstart`|The S3 bucket created for your copy of Quick Start assets.|A tag that will act as an identifier prefix for all assets.
-(`QSTagValue`)|`qs-test`|Tag value to be attached to resource names.|The folder name in the artifacts S3 bucket where you want to sync the Git repo.
-(`QSS3KeyPrefix`)|`quickstart-quantiphi-realtime-analytics/`|The S3 key name prefix used for your copy of Quick Start assets.
+|Parameter label (name) |Default value|Description|Quick Start S3 bucket name
+(`QSS3BucketName`)|`aws-quickstart`|Name of the S3 bucket for your copy of the Quick Start assets. Keep the default name unless you are customizing the template. Changing the name updates code references to point to a new Quick Start location. This name can include numbers, lowercase letters, uppercase letters, and hyphens, but do not start or end with a hyphen (-). See https://aws-quickstart.github.io/option1.html.|**NO_LABEL**
+(`QSTagValue`)|`qs-test`|Tag value to be attached to resource names.|Quick Start S3 key prefix
+(`QSS3KeyPrefix`)|`quickstart-quantiphi-realtime-analytics/`|S3 key prefix that is used to simulate a directory for your copy of the Quick Start assets. Keep the default prefix unless you are customizing the template. Changing this prefix updates code references to point to a new Quick Start location. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slashes (/). End with a forward slash. See https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html and https://aws-quickstart.github.io/option1.html.
 |===

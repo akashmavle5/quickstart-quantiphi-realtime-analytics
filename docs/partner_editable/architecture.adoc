@@ -1,29 +1,28 @@
 Deploying this Quick Start with default parameters builds the following {partner-product-name} environment in the AWS Cloud.
 
 // Replace this example diagram with your own. Send us your source PowerPoint file. Be sure to follow our guidelines here : http://(we should include these points on our contributors guide)
+:xrefstyle: short
 [#architecture1]
 .Quick Start architecture for {partner-product-name} on AWS
-[link=images/quantiphi-architecture-diagram.png]
-image::../images/quantiphi-architecture-diagram.png[Architecture,width=648,height=439]
+[link=images/quantiphi-real-time-analytics-architecture-diagram.png]
+image::../images/quantiphi-real-time-analytics-architecture-diagram.png[Architecture,width=100%,height=100%]
 
-As shown in the <<architecture1>>, the Quick Start sets up the infrastructure as described below, along with the call flow:
+As shown in the <<architecture1>>, the Quick Start sets up the following:
+
+[start=1]
+* Amazon Chime Voice Connector to receive calls from user Private Branch Exchange (PBX) software.
+* Kinesis Video Streams to store call streams.
+* Amazon EventBridge to write messages to Amazon Simple Queue Service (Amazon SQS) queues when call begins and ends.
+* Amazon SQS queues to store messages that are read by AWS Lambda functions.
+* AWS Lambda functions to poll SQS queues and initiate transcription, keyword-extraction, and post-call metadata extraction routines.
+* Amazon Transcribe to transcribe audio streams.
+* Amazon DynamoDB tables to store transcriptions, keywords, and call metadata.
+* Amazon S3 bucket to store MP3 files of calls.
+* Amazon API Gateway to manage access to the Quantiphi web application.
+* In the virtual private cloud (VPC):
+** An Application Load Balancer to route traffic between Quantiphi web application nodes.
+** 1–4 Amazon Elastic Compute Cloud (Amazon EC2) instances to host Quantiphi web application nodes. The number of hosts is chosen during deployment.
+* AWS Identity and Access Management (IAM) to manage IAM roles and policies.
 
 
-. The call stream between customer and the agent / provider is received from PBX to Amazon Chime Voice Connector in two different streams.
-
-. The chime voice connector streams the audio streams into Kinesis Video Streams.
-
-. The streams of the two speakers trigger the two eventbridge rules simultaneously.
-
-. Each event bridge writes the call metadata and the stream details into the respective SQS queues at the start and the end of the call.
-
-. These messages in SQS queue (ChimeVoiceConnectorStreaming1), triggers the Transcription lambda (LiveCallsTranscriberFunction) function. This lambda function reads the audio streams from Kinesis and makes a call to Amazon Transcribe.
-
-. The Transcription Lambda also writes the transcript data into the DynamoDB table (LiveCallsTranscriptionTable) and publishes a message to post processing SQS Queue (TranscribeResultsStreaming). This lambda also stores the mp3 file after call completion to the s3 bucket.
-
-. Post processing SQS triggers the post processing Lambda (KeywordExtractionFunction) function. Here the transcripts are cleaned and key words are extracted using string matching. The results are stored into a DynamoDB table (KeywordExtractionTable).
-
-. Post processing Lambda also publishes the transcripts and the keyword data to the Customer User Interface via the websocket.
-
-. When the call ends, a SQS message is sent for both the streams through the eventbridge rule. A metadata Lambda (PublishCallMetadataFunction) function will be triggered by this SQS queue (ChimeVoiceConnectorStreaming2). This Lambda function extract the entities from the transcripts using custom entity extraction logic and Amazon Comprehend.  It notifies the frontend that the call has ended and publishes the entity metadata to the websocket and stores the data into the DynamoDB table (LiveCallsMetadataTable).
-
+//[.small]#*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.#

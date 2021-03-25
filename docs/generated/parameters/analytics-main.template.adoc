@@ -1,56 +1,56 @@
 
-.Keywords Function Configuration
+.Keywords function configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|The file name for the keywords function.
-(`KeywordsFileName`)|`kw_50_updated.txt`|The file where Keywords are stored for the Keywords Function.
+|Parameter label (name) |Default value|Description|Keywords function file name
+(`KeywordsFileName`)|`kw_50_updated.txt`|The file where keywords are stored.
 |===
-.Web App Configuration.
+.Web application configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|The keypair name of the key to ssh into the web app ec2 instances and bastion host.
-(`KeyPairName`)|`quickstart-analytics`|The name of KeyPair which is used to ssh into EC2 instance.|CIDR to limit the web app access.
-(`CIDR`)|`0.0.0.0/0`|CIDR to restrict access to web application.|Minimum capacity of Web App ASG.
-(`MinCapacity`)|`1`|The minimum number of webapp hosts to be maintained. The minimum number is one.|Maximum capacity of Web App ASG.
-(`MaxCapacity`)|`4`|The maximum number of webapp hosts to be scaled out. The maximum number is four.|Desired capacity of Web App ASG.
-(`DesiredCapacity`)|`2`|The desired number of webapp hosts to create. The maximum number is four.|Amazon EC2 web app instance type.
-(`WebAppInstanceType`)|`t2.medium`|Amazon EC2 instance type for the web app instances.
+|Parameter label (name) |Default value|Description|Key pair name
+(`KeyPairName`)|`quickstart-analytics`|Public/private key pair to securely connect to your instance after it launches.|CIDR to limit the web app access
+(`CIDR`)|`0.0.0.0/0`|CIDR to restrict access to web application.|Application security group minimum capacity
+(`MinCapacity`)|`1`|Minimum number of web application hosts (1-4).|Application security group maximum capacity
+(`MaxCapacity`)|`4`|Maximum number of web application hosts (3-4).|Application security group capacity
+(`DesiredCapacity`)|`2`|Number of web application hosts to create (1-4).|Amazon EC2 instance type
+(`WebAppInstanceType`)|`t2.medium`|Amazon EC2 instance type for the web application instances.
 |===
-.VPC Configuration
+.VPC configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|Availability Zones.
-(`AvailabilityZones`)|`**__Requires input__**`|List of Availability Zones to use for the subnets in the VPC. Note: The logical order is preserved and only 2 AZs are used for this deployment.|CIDR for the new VPC.
-(`VPCCIDR`)|`10.192.0.0/16`|Please enter the IP range (CIDR notation) for this VPC.|CIDR for the Public Subnet 1.
-(`PublicSubnet1CIDR`)|`10.192.10.0/24`|Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone.|CIDR for the Public Subnet 2.
-(`PublicSubnet2CIDR`)|`10.192.11.0/24`|Please enter the IP range (CIDR notation) for the public subnet in the second Availability Zone.|CIDR for the Private Subnet 1.
-(`PrivateSubnet1CIDR`)|`10.192.20.0/24`|Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone.|CIDR for the Private Subnet 2.
-(`PrivateSubnet2CIDR`)|`10.192.21.0/24`|Please enter the IP range (CIDR notation) for the private subnet in the second Availability Zone.
+|Parameter label (name) |Default value|Description|Availability Zones
+(`AvailabilityZones`)|`**__Requires input__**`|List of Availability Zones to use for the subnets in the VPC.|VPC CIDR
+(`VPCCIDR`)|`10.192.0.0/16`|CIDR block for the VPC.|Public subnet 1 CIDR
+(`PublicSubnet1CIDR`)|`10.192.10.0/24`|CIDR block for public subnet 1, located in Availability Zone 1.|Public subnet 2 CIDR
+(`PublicSubnet2CIDR`)|`10.192.11.0/24`|CIDR block for public subnet 2, located in Availability Zone 2.|Private subnet 1 CIDR
+(`PrivateSubnet1CIDR`)|`10.192.20.0/24`|CIDR block for private subnet 1, located in Availability Zone 1.|Private subnet 2 CIDR
+(`PrivateSubnet2CIDR`)|`10.192.21.0/24`|CIDR block for private subnet 2, located in Availability Zone 2.
 |===
-.Linux Bastion Configuration
+.Linux bastion configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|Number of bastion hosts needed.
-(`NumBastionHosts`)|`1`|The number of bastion hosts to create. The maximum number is four.|Tenancy of the bastion host.
-(`BastionTenancy`)|`default`|VPC tenancy to launch the bastion in. Options: dedicated or default|Option to enable bastion banner.
-(`EnableBanner`)|`false`|To include a banner to be displayed when connecting via SSH to the bastion, choose true.|Banner text that will appear when ssh into the host.
-(`BastionBanner`)|`**__Blank string__**`|Banner text to display upon login.|Option to enable TCP forwarding.
-(`EnableTCPForwarding`)|`false`|To enable TCP forwarding, choose true.|Option to enable X11 forwarding.
-(`EnableX11Forwarding`)|`false`|To enable X11 forwarding, choose true.|Option to allow only connections from certain CIDR to access bastion host.
-(`RemoteAccessCIDR`)|`**__Requires input__**`|Allowed CIDR block for external SSH access to the bastions
+|Parameter label (name) |Default value|Description|Number of bastion hosts
+(`NumBastionHosts`)|`1`|Number of bastion hosts to create. The maximum number is four.|Bastion tenancy
+(`BastionTenancy`)|`default`|Bastion VPC tenancy (dedicated or default).|Enable banner
+(`EnableBanner`)|`false`|To display a banner when connecting to the bastion through SSH, choose *true*.|Bastion banner text
+(`BastionBanner`)|`**__Blank string__**`|Banner text to display at login.|TCP forwarding
+(`EnableTCPForwarding`)|`false`|To enable TCP forwarding, choose *true*.|X11 forwarding
+(`EnableX11Forwarding`)|`false`|To enable X11 forwarding, choose *true*.|Allowed bastion external access CIDR
+(`RemoteAccessCIDR`)|`**__Requires input__**`|Allowed CIDR block for external SSH access to the bastions.
 |===
-.Bastion Host Instance Configuration.
+.Bastion host instance configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|Bastion AMI operating system.
-(`BastionAMIOS`)|`Amazon-Linux2-HVM`|The linux distribution for the AMI to be used for the bastion instances.|Bastion host instance type.
-(`BastionInstanceType`)|`t2.micro`|Amazon EC2 instance type for the bastion instances.
+|Parameter label (name) |Default value|Description|Bastion AMI operating system
+(`BastionAMIOS`)|`Amazon-Linux2-HVM`|Linux distribution for the bastion instances AMI.|Bastion host instance type
+(`BastionInstanceType`)|`t2.micro`|Amazon EC2 instance type for bastion instances.
 |===
-.Quick Start Configuration
+.Quick Start configuration
 [width="100%",cols="16%,11%,73%",options="header",]
 |===
-|Parameter label (name) |Default value|Description|Your configured S3 bucket with all artifacts for the Quickstart.
-(`QSS3BucketName`)|`aws-quickstart`|The S3 bucket created for your copy of Quick Start assets.|A tag that will act as an identifier prefix for all assets.
-(`QSTagValue`)|`qs-test`|Tag value to be attached to resource names.|The folder name in the artifacts S3 bucket where you want to sync the Git repo.
-(`QSS3KeyPrefix`)|`quickstart-quantiphi-realtime-analytics/`|The S3 key name prefix used for your copy of Quick Start assets.
+|Parameter label (name) |Default value|Description|Quick Start S3 bucket name
+(`QSS3BucketName`)|`aws-quickstart`|Name of the S3 bucket for your copy of the Quick Start assets. Keep the default name unless you are customizing the template. Changing the name updates code references to point to a new Quick Start location. This name can include numbers, lowercase letters, uppercase letters, and hyphens, but do not start or end with a hyphen (-). See https://aws-quickstart.github.io/option1.html.|**NO_LABEL**
+(`QSTagValue`)|`qs-test`|Tag value to be attached to resource names.|Quick Start S3 key prefix
+(`QSS3KeyPrefix`)|`quickstart-quantiphi-realtime-analytics/`|S3 key prefix that is used to simulate a directory for your copy of the Quick Start assets. Keep the default prefix unless you are customizing the template. Changing this prefix updates code references to point to a new Quick Start location. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slashes (/). End with a forward slash. See https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html and https://aws-quickstart.github.io/option1.html.
 |===

@@ -2,18 +2,4 @@
 // Briefly describe the software. Use consistent and clear branding. 
 // Include the benefits of using the software on AWS, and provide details on usage scenarios.
 
-This Quick Start lets user set up a dashboard to get real time transcription and call metadata for all ongoing calls over any PBX software integrated with Amazon Chime Voice Connector. 
-
-This Quick Start sets up transcript generator which uses Amazon Transcribe to generate a near real time transcription of the ongoing calls and also uses Amazon Comprehend to extract caller metadata from the call transcripts which is displayed on an interactive user interface hosted on AWS infrastructure.
-
-The Quick Start provides the following functionalities:
-
-* Real Time Call Transcription: 
-** The solution transcribes an on-going call to text in real time and stores the output in DynamoDB.
-** This text can be further utilized by downstream analytical applications to draw insights.
-* Live Keywords Capture:
-** The solution captures key features/words from an on-going conversation and also gives the capability to the operator to reach to a point in the conversation based on the occurrence of the extracted keywords. 
-* Caller Details Identification:
-** The solution automatically captures the caller information from an on-going call that includes customer-id, customer name, date of birth and callback phone number.
-* Call Transcription Playback:
-** The solution gives the functionality to the end user to replay the recorded conversation along with the transcription and the extracted keywords displayed simultaneously. 
+{partner-product-name} on AWS transcribes live calls coming from an integrated PBX system. The transcription, and keywords and entities extracted from it, are displayed live to call center agents in a custom user interface. Entities include customer name, date of birth, customer ID, and callback phone number. The deployment also performs a post-call analysis to summarize a call. Agents can replay calls, download transcriptions and keywords, and jump to sections of a recording by choosing keywords. Call transcripts, keywords, and metadata are stored in Amazon DynamoDB tables, and can be used as resources later to perform further analytics.

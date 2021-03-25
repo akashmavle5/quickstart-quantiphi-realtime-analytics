@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.12">
-<title>Real Time Call Analytics on the AWS Cloud</title>
+<title>Quantiphi Real-Time Call Center Analytics on the AWS Cloud</title>
 <style>
 
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -790,7 +790,7 @@ p.footer-text a{color:#d7d8d8}
 <div id="toctitle"></div>
 <ul class="sectlevel1">
 <li><a href="#_overview">Overview</a></li>
-<li><a href="#_real_time_call_analytics_on_aws">Real Time Call Analytics on AWS</a></li>
+<li><a href="#_quantiphi_real_time_call_center_analytics_on_aws">Quantiphi Real-Time Call Center Analytics on AWS</a></li>
 <li><a href="#_cost">Cost</a></li>
 <li><a href="#_software_licenses">Software licenses</a></li>
 <li><a href="#_architecture">Architecture</a></li>
@@ -809,16 +809,17 @@ p.footer-text a{color:#d7d8d8}
 </li>
 <li><a href="#_test_the_deployment">Test the deployment</a>
 <ul class="sectlevel2">
-<li><a href="#_active_calls">ACTIVE CALLS</a></li>
-<li><a href="#_completed_calls">COMPLETED CALLS</a></li>
+<li><a href="#_view_active_call_transcription">View active call transcription</a></li>
+<li><a href="#_view_and_download_call_transcription_and_keywords">View and download call transcription and keywords</a></li>
+<li><a href="#_transcription_replays">Transcription replays</a></li>
 </ul>
 </li>
 <li><a href="#_faq">FAQ</a></li>
 <li><a href="#_troubleshooting">Troubleshooting</a></li>
 <li><a href="#_parameter_reference">Parameter reference</a>
 <ul class="sectlevel2">
-<li><a href="#_parameters_to_launch_stack_in_an_existing_vpc">Parameters to launch stack in an existing VPC</a></li>
-<li><a href="#_parameters_to_launch_stack_in_a_new_vpc">Parameters to launch stack in a new VPC</a></li>
+<li><a href="#_launch_into_a_new_vpc">Launch into a new VPC</a></li>
+<li><a href="#_launch_into_an_existing_vpc">Launch into an existing VPC</a></li>
 </ul>
 </li>
 <li><a href="#_send_us_feedback">Send us feedback</a></li>
@@ -831,7 +832,7 @@ p.footer-text a{color:#d7d8d8}
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<h2 id="_real_time_call_analytics_on_the_aws_cloud" class="discrete text-center">Real Time Call Analytics on the AWS Cloud</h2>
+<h2 id="_quantiphi_real_time_call_center_analytics_on_the_aws_cloud" class="discrete text-center">Quantiphi Real-Time Call Center Analytics on the AWS Cloud</h2>
 <h2 id="_quick_start_reference_deployment" class="discrete text-left text-center">Quick Start Reference Deployment</h2>
 <div class="imageblock text-center">
 <div class="content">
@@ -839,9 +840,9 @@ p.footer-text a{color:#d7d8d8}
 </div>
 </div>
 <div class="paragraph text-center">
-<p><strong>December 2020</strong><br>
+<p><strong>March 2021</strong><br>
 <em>Sanchit Jain, Quantiphi</em><br>
-<em>Shivansh Singh, Solutions Architect, AWS</em></p>
+<em>Shivansh Singh, AWS Quick Start team</em></p>
 </div>
 <div class="admonitionblock tip text-left">
 <table>
@@ -865,10 +866,10 @@ report bugs, or submit feature ideas for this Quick Start.
 <h2 id="_overview">Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Quick Start reference deployment guide provides step-by-step instructions for deploying  Real Time Call Analytics on the AWS Cloud.</p>
+<p>This Quick Start reference deployment guide provides step-by-step instructions for deploying Quantiphi Real-Time Call Center Analytics on the AWS Cloud.</p>
 </div>
 <div class="paragraph">
-<p>This Quick Start sets up Real-Time transcript generator which can be used by organizations to improve and optimize the remote support by providing users with the ability to create a user interface, where the live call transcripts can be displayed in near real time along with extraction of keywords, metadata and summary of the call.</p>
+<p>This Quick Start sets up Quantiphi Real-Time Call Center Analytics, used by organizations to improve and optimize remote support. It provides a dashboard for support agents that displays live call transcripts, keywords, and call metadata.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -885,63 +886,10 @@ Amazon may share user-deployment information with the AWS Partner that collabora
 </div>
 </div>
 <div class="sect1">
-<h2 id="_real_time_call_analytics_on_aws">Real Time Call Analytics on AWS</h2>
+<h2 id="_quantiphi_real_time_call_center_analytics_on_aws">Quantiphi Real-Time Call Center Analytics on AWS</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Quick Start lets user set up a dashboard to get real time transcription and call metadata for all ongoing calls over any PBX software integrated with Amazon Chime Voice Connector.</p>
-</div>
-<div class="paragraph">
-<p>This Quick Start sets up transcript generator which uses Amazon Transcribe to generate a near real time transcription of the ongoing calls and also uses Amazon Comprehend to extract caller metadata from the call transcripts which is displayed on an interactive user interface hosted on AWS infrastructure.</p>
-</div>
-<div class="paragraph">
-<p>The Quick Start provides the following functionalities:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Real Time Call Transcription:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>The solution transcribes an on-going call to text in real time and stores the output in DynamoDB.</p>
-</li>
-<li>
-<p>This text can be further utilized by downstream analytical applications to draw insights.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Live Keywords Capture:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>The solution captures key features/words from an on-going conversation and also gives the capability to the operator to reach to a point in the conversation based on the occurrence of the extracted keywords.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Caller Details Identification:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>The solution automatically captures the caller information from an on-going call that includes customer-id, customer name, date of birth and callback phone number.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Call Transcription Playback:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>The solution gives the functionality to the end user to replay the recorded conversation along with the transcription and the extracted keywords displayed simultaneously.</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
+<p>Quantiphi Real-Time Call Center Analytics on AWS transcribes live calls coming from an integrated PBX system. The transcription, and keywords and entities extracted from it, are displayed live to call center agents in a custom user interface. Entities include customer name, date of birth, customer ID, and callback phone number. The deployment also performs a post-call analysis to summarize a call. Agents can replay calls, download transcriptions and keywords, and jump to sections of a recording by choosing keywords. Call transcripts, keywords, and metadata are stored in Amazon DynamoDB tables, and can be used as resources later to perform further analytics.</p>
 </div>
 </div>
 </div>
@@ -977,7 +925,7 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <h2 id="_software_licenses">Software licenses</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Quick Start does not require a license to deploy Real Time Call Analytics.</p>
+<p>This Quick Start does not require a license to deploy Quantiphi Real-Time Call Center Analytics.</p>
 </div>
 </div>
 </div>
@@ -985,47 +933,63 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <h2 id="_architecture">Architecture</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Deploying this Quick Start with default parameters builds the following Real Time Call Analytics environment in the AWS Cloud.</p>
+<p>Deploying this Quick Start with default parameters builds the following Quantiphi Real-Time Call Center Analytics environment in the AWS Cloud.</p>
 </div>
 <div id="architecture1" class="imageblock">
 <div class="content">
-<a class="image" href="images/quantiphi-architecture-diagram.png"><img src="images/quantiphi-architecture-diagram.png" alt="Architecture" width="648" height="439"></a>
+<a class="image" href="images/quantiphi-real-time-analytics-architecture-diagram.png"><img src="images/quantiphi-real-time-analytics-architecture-diagram.png" alt="Architecture" width="100%" height="100%"></a>
 </div>
-<div class="title">Figure 1. Quick Start architecture for Real Time Call Analytics on AWS</div>
+<div class="title">Figure 1. Quick Start architecture for Quantiphi Real-Time Call Center Analytics on AWS</div>
 </div>
 <div class="paragraph">
-<p>As shown in the <a href="#architecture1">Quick Start architecture for Real Time Call Analytics on AWS</a>, the Quick Start sets up the infrastructure as described below, along with the call flow:</p>
+<p>As shown in the <a href="#architecture1">Figure 1</a>, the Quick Start sets up the following:</p>
 </div>
-<div class="olist arabic">
-<ol class="arabic">
+<div class="ulist">
+<ul>
 <li>
-<p>The call stream between customer and the agent / provider is received from PBX to Amazon Chime Voice Connector in two different streams.</p>
+<p>Amazon Chime Voice Connector to receive calls from user Private Branch Exchange (PBX) software.</p>
 </li>
 <li>
-<p>The chime voice connector streams the audio streams into Kinesis Video Streams.</p>
+<p>Kinesis Video Streams to store call streams.</p>
 </li>
 <li>
-<p>The streams of the two speakers trigger the two eventbridge rules simultaneously.</p>
+<p>Amazon EventBridge to write messages to Amazon Simple Queue Service (Amazon SQS) queues when call begins and ends.</p>
 </li>
 <li>
-<p>Each event bridge writes the call metadata and the stream details into the respective SQS queues at the start and the end of the call.</p>
+<p>Amazon SQS queues to store messages that are read by AWS Lambda functions.</p>
 </li>
 <li>
-<p>These messages in SQS queue (ChimeVoiceConnectorStreaming1), triggers the Transcription lambda (LiveCallsTranscriberFunction) function. This lambda function reads the audio streams from Kinesis and makes a call to Amazon Transcribe.</p>
+<p>AWS Lambda functions to poll SQS queues and initiate transcription, keyword-extraction, and post-call metadata extraction routines.</p>
 </li>
 <li>
-<p>The Transcription Lambda also writes the transcript data into the DynamoDB table (LiveCallsTranscriptionTable) and publishes a message to post processing SQS Queue (TranscribeResultsStreaming). This lambda also stores the mp3 file after call completion to the s3 bucket.</p>
+<p>Amazon Transcribe to transcribe audio streams.</p>
 </li>
 <li>
-<p>Post processing SQS triggers the post processing Lambda (KeywordExtractionFunction) function. Here the transcripts are cleaned and key words are extracted using string matching. The results are stored into a DynamoDB table (KeywordExtractionTable).</p>
+<p>Amazon DynamoDB tables to store transcriptions, keywords, and call metadata.</p>
 </li>
 <li>
-<p>Post processing Lambda also publishes the transcripts and the keyword data to the Customer User Interface via the websocket.</p>
+<p>Amazon S3 bucket to store MP3 files of calls.</p>
 </li>
 <li>
-<p>When the call ends, a SQS message is sent for both the streams through the eventbridge rule. A metadata Lambda (PublishCallMetadataFunction) function will be triggered by this SQS queue (ChimeVoiceConnectorStreaming2). This Lambda function extract the entities from the transcripts using custom entity extraction logic and Amazon Comprehend.  It notifies the frontend that the call has ended and publishes the entity metadata to the websocket and stores the data into the DynamoDB table (LiveCallsMetadataTable).</p>
+<p>Amazon API Gateway to manage access to the Quantiphi web application.</p>
 </li>
-</ol>
+<li>
+<p>In the virtual private cloud (VPC):</p>
+<div class="ulist">
+<ul>
+<li>
+<p>An Application Load Balancer to route traffic between Quantiphi web application nodes.</p>
+</li>
+<li>
+<p>1–4 Amazon Elastic Compute Cloud (Amazon EC2) instances to host Quantiphi web application nodes. The number of hosts is chosen during deployment.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>AWS Identity and Access Management (IAM) to manage IAM roles and policies.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1038,7 +1002,29 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <p>This deployment requires a moderate level of familiarity with AWS services. If you’re new to AWS, visit <a href="https://aws.amazon.com/getting-started/" target="_blank" rel="noopener">Getting Started with AWS</a> and <a href="https://aws.amazon.com/training/" target="_blank" rel="noopener">Training and Certification</a>. These sites provide materials for learning how to design, deploy, and operate your infrastructure and applications on the AWS Cloud.</p>
 </div>
 <div class="paragraph">
-<p>This Quick Start assumes familiarity with Amazon Transcribe, Amazon SQS, Amazon S3, Amazon DynamoDB, Amazon EC2, Amazon Comprehend.</p>
+<p>This Quick Start assumes familiarity with the following AWS services:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.aws.amazon.com/transcribe/latest/dg/what-is-transcribe.html" target="_blank" rel="noopener">Amazon Transcribe</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html" target="_blank" rel="noopener">Amazon SQS</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html" target="_blank" rel="noopener">Amazon S3</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html" target="_blank" rel="noopener">Amazon DynamoDB</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/ec2/?id=docs_gateway" target="_blank" rel="noopener">Amazon EC2</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/comprehend/latest/dg/comprehend-general.html" target="_blank" rel="noopener">Amazon Comprehend</a></p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
@@ -1089,10 +1075,10 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Elastic IP addresses</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">3-6 (Depends on Linux bastion configuration)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3-6, depending on the Linux bastion host configuration.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Auto Scaling Groups</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Auto Scaling groups</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
 </tr>
 <tr>
@@ -1104,12 +1090,12 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">t2.medium instances (Web App)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1-4 (Depends on Web App Configuration)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">t2.medium instances</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1-4, depending on the web application configuration.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">t2.micro instances (Bastion)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">1-4 (Depends on Linux bastion configuration)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">t2.micro instances</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1-4, depending on the Linux bastion host configuration.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1122,10 +1108,10 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <div class="ulist">
 <ul>
 <li>
-<p>us-east-1, US East (N. Virginia)</p>
+<p>US East (N. Virginia)</p>
 </li>
 <li>
-<p>us-west-2, US West (Oregon)</p>
+<p>US West (Oregon)</p>
 </li>
 </ul>
 </div>
@@ -1136,7 +1122,7 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This deployment includes Amazon Chime Voice Connector, which isn’t currently supported in all AWS Regions. For a current list of supported Regions for Amazon Chime Voice Connector, see the service endpoints and quotas page in the <a href="https://docs.aws.amazon.com/general/latest/gr/chime.html" target="_blank" rel="noopener">AWS documentation</a>.
+This deployment includes Amazon Chime Voice Connector, which is not currently supported in all AWS Regions. Amazon Chime Voice Connector delivers a fault tolerant and highly available SIP-trunking service using three availability zones (AZs) in the US-East (N. Virginia) Region and 3 AZs in the US-West (Oregon) Region. For more information, see <a href="https://aws.amazon.com/chime/faq/voice-connector/" target="_blank" rel="noopener">Amazon Chime Voice Connector FAQs</a>.
 </td>
 </tr>
 </table>
@@ -1163,30 +1149,23 @@ Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.
 <div class="sect3">
 <h4 id="_prepare_for_the_deployment">Prepare for the deployment</h4>
 <div class="paragraph">
-<p>Before launching the CloudFormation templates and deploying the Quick Start, create a key pair for the EC2 instances in the selected region where the templates have to be deployed.</p>
-</div>
-<div class="paragraph">
-<p>To be able to test this Quick Start, user needs to have a PBX software setup (e.g. Issabel) integrated with amazon chime voice connector.</p>
+<p>Make sure that at least one Amazon EC2 key pair exists in your AWS account in the Region where the Quick Start is deployed. Save the key pair name, as you need it during deployment. To create a key pair, follow the instructions in <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html" target="_blank" rel="noopener">Amazon EC2 key pairs and Linux instances</a>. For testing or proof-of-concept purposes, we recommend creating a new key pair.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_deployment_options">Deployment options</h4>
 <div class="paragraph">
-<p>This Quick Start provides a two deployment options that builds a new AWS environment consisting of the  Amazon Transcribe, Amazon SQS, Amazon S3, Amazon DynamoDB, Amazon EC2, Amazon Comprehend.
-This Quick Start provides two deployment options:</p>
+<p>This Quick Start provides two deployment options:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Deploy Real Time Call Analytics into a new VPC (end-to-end deployment)</strong>. This option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. It then deploys Real Time Call Analytics into this new VPC.</p>
+<p><strong>Deploy Quantiphi Real-Time Call Center Analytics into a new VPC</strong>. This option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. It then deploys Quantiphi Real-Time Call Center Analytics into this new VPC. To set up the networking and routing infrastructure, you only provide the CIDR block for the VPC that you want to create. However, you can configure instance types and software settings such as license keys, user names, and passwords, as discussed later in this guide.</p>
 </li>
 <li>
-<p><strong>Deploy Real Time Call Analytics into an existing VPC</strong>. This option provisions Real Time Call Analytics in your existing AWS infrastructure.</p>
+<p><strong>Deploy Quantiphi Real-Time Call Center Analytics into an existing VPC</strong>. Provisions resources into your existing AWS VPC.</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>The Quick Start provides separate templates for these options. It also lets you configure Classless Inter-Domain Routing (CIDR) blocks, instance types, and Real Time Call Analytics settings, as discussed later in this guide.</p>
 </div>
 </div>
 </div>
@@ -1200,10 +1179,10 @@ This Quick Start provides two deployment options:</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Sign in to your AWS account at <a href="https://aws.amazon.com" class="bare">https://aws.amazon.com</a> with an IAM user role that has the necessary permissions. For details, see Planning the deployment earlier in this guide.</p>
+<p>Sign in to your AWS account at <a href="https://aws.amazon.com" class="bare">https://aws.amazon.com</a> with an IAM user role that has the necessary permissions. For details, see <a href="#_planning_the_deployment">Planning the deployment</a> earlier in this guide.</p>
 </li>
 <li>
-<p>Make sure that your AWS account is configured correctly, as discussed in the Technical requirements section.</p>
+<p>Make sure that your AWS account is configured correctly, as discussed in the <a href="#_technical_requirements">Technical requirements</a> section.</p>
 </li>
 </ol>
 </div>
@@ -1222,10 +1201,13 @@ You are responsible for the cost of the AWS services used while running this Qui
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>Each deployment takes about 40 minutes to complete.</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Sign in to your AWS account, and launch the following AWS CloudFormation template.</p>
+<p>Sign in to your AWS account, and launch the AWS CloudFormation template.</p>
 </li>
 </ol>
 </div>
@@ -1236,22 +1218,19 @@ You are responsible for the cost of the AWS services used while running this Qui
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="http://qs_launch_link" target="_blank" rel="noopener">Deploy Real Time Call Analytics into a new VPC on AWS</a></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="http://qs_template_link" target="_blank" rel="noopener">View template</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/yJgMp" target="_blank" rel="noopener">Deploy Quantiphi Real-Time Call Center Analytics into a new VPC on AWS</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/YAMYy" target="_blank" rel="noopener">View template</a></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="http://qs_launch_link" target="_blank" rel="noopener">Deploy Real Time Call Analytics into an existing VPC on AWS</a></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="http://qs_template_link" target="_blank" rel="noopener">View template</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/3rp53" target="_blank" rel="noopener">Deploy Quantiphi Real-Time Call Center Analytics into an existing VPC on AWS</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/vbmx5" target="_blank" rel="noopener">View template</a></p></td>
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>The deployment takes about 40 minutes to complete.</p>
-</div>
 <div class="olist arabic">
 <ol class="arabic" start="2">
 <li>
-<p>Check the AWS Region that’s displayed in the upper-right corner of the navigation bar, and change it if necessary. This is where the network infrastructure for Real Time Call Analytics is built. The template is launched in the us-east-1 Region by default.</p>
+<p>Check the AWS Region that’s displayed in the upper-right corner of the navigation bar, and change it if necessary. This Region is where the network infrastructure for Quantiphi Real-Time Call Center Analytics is built. The template is launched in the us-east-1 Region by default.</p>
 </li>
 </ol>
 </div>
@@ -1261,7 +1240,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 <p>On the <strong>Create stack</strong> page, keep the default setting for the template URL, and then choose <strong>Next</strong>.</p>
 </li>
 <li>
-<p>On the <strong>Specify stack details</strong> page, change the stack name if needed. Review the parameters for the template. Provide values for the parameters that require input. For all other parameters, review the default settings and customize them as necessary.</p>
+<p>On the <strong>Specify stack details</strong> page, change the stack name if needed. Review the parameters for the template. Provide values for the parameters that require input. For all other parameters, review the default settings and customize them as necessary. For details on each parameter, see the <a href="#_parameter_reference">Parameter reference</a> section of this guide. After reviewing and customizing the parameters, choose <strong>Next</strong>.</p>
 </li>
 </ol>
 </div>
@@ -1277,10 +1256,10 @@ You are responsible for the cost of the AWS services used while running this Qui
 <p>Choose <strong>Create stack</strong> to deploy the stack.</p>
 </li>
 <li>
-<p>Monitor the status of the stack. When the status is <strong>CREATE_COMPLETE</strong>, the Real Time Call Analytics deployment is ready.</p>
+<p>Monitor the status of the stack. When the status is <strong>CREATE_COMPLETE</strong>, the Quantiphi Real-Time Call Center Analytics deployment is ready.</p>
 </li>
 <li>
-<p>Use the values displayed in the <strong>Outputs</strong> tab for the stack, as shown in <a href="#cfn_outputs">Real Time Call Analytics outputs after successful deployment</a>, to view the created resources.</p>
+<p>Use the values displayed in the <strong>Outputs</strong> tab for the stack, as shown in <a href="#cfn_outputs">Figure 2</a>, to view the created resources.</p>
 </li>
 </ol>
 </div>
@@ -1288,7 +1267,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 <div class="content">
 <a class="image" href="images/cfn_outputs.png"><img src="images/cfn_outputs.png" alt="cfn_outputs" width="100%" height="100%"></a>
 </div>
-<div class="title">Figure 2. Real Time Call Analytics outputs after successful deployment</div>
+<div class="title">Figure 2. Quantiphi Real-Time Call Center Analytics outputs after successful deployment</div>
 </div>
 </div>
 </div>
@@ -1296,302 +1275,283 @@ You are responsible for the cost of the AWS services used while running this Qui
 <div class="sect1">
 <h2 id="_test_the_deployment">Test the deployment</h2>
 <div class="sectionbody">
-<div id="Output" class="imageblock">
-<div class="content">
-<a class="image" href="images/Output.png"><img src="images/Output.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
-</div>
-<div class="title">Figure 3. Quick Start Main Stack Output for Real Time Call Analytics</div>
-</div>
 <div class="paragraph">
-<p>In the outputs of the main stack check for the <strong>LoadBalancerDNSAddr</strong> key, to get the <em>url</em>
-of the web app.</p>
+<p>To test this Quick Start after deployment, the following items are required:</p>
 </div>
-<div class="paragraph">
-<p>The Real Time Call Analytics has two functionalities:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
+<div class="ulist">
+<ul>
 <li>
-<p>Active call live transcription</p>
+<p>PBX software integrated with Amazon Chime Voice Connector.</p>
 </li>
 <li>
-<p>Completed call transcription replay</p>
+<p>An active call in the Quantiphi call transcription application.</p>
 </li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Following are the steps to interact with UI to check the above mentioned functionalities.</p>
+</ul>
 </div>
 <div class="sect2">
-<h3 id="_active_calls">ACTIVE CALLS</h3>
+<h3 id="_view_active_call_transcription">View active call transcription</h3>
 <div class="paragraph">
-<p>Steps to capture active calls transcriptions:</p>
-</div>
-<div id="UI-1" class="imageblock">
-<div class="content">
-<a class="image" href="images/SS1.png"><img src="images/SS1.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
-</div>
-<div class="title">Figure 4. UI landing page</div>
+<p>To view a live transcription of an active call, do the following:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic" start="1">
 <li>
-<p>From the drop-down make sure the “Active Calls” option is selected. Once selected the user will be able to see a table that will showcase all the calls which are active. If the user finds a message “No Active Calls Found” that means there are no active calls.</p>
+<p>In the AWS CloudFormation console, choose the <strong>Outputs</strong> tab. Retrieve the URL in the <strong>Value</strong> column of the <code>LoadBalancerDNSAddr</code> key, as shown in <a href="#output">Figure 3</a>.</p>
+</li>
+</ol>
+</div>
+<div id="output" class="imageblock">
+<div class="content">
+<a class="image" href="images/Output.png"><img src="images/Output.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+</div>
+<div class="title">Figure 3. Web application URL on the Outputs tab</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic" start="2">
+<li>
+<p>Navigate to the URL from step 1.</p>
+</li>
+<li>
+<p>On the Quantiphi dashboard, select <strong>Active Calls</strong> from the drop down list.</p>
+</li>
+<li>
+<p>A table of active calls displays. Choose the icon in the <strong>View</strong> column of an active call.</p>
 </li>
 </ol>
 </div>
 <div id="UI-2" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS2.png"><img src="images/SS2.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS2.png"><img src="images/SS2.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 5. Active calls page showing ongoing calls</div>
+<div class="title">Figure 4. Active calls table</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The message “No Active Calls Found” displays if there are no active calls. An active call is required to test the deployment using these instructions.
+</td>
+</tr>
+</table>
 </div>
 <div class="olist arabic">
-<ol class="arabic" start="2">
+<ol class="arabic" start="4">
 <li>
-<p>In the table, the user needs to click on the view (eye icon) button. This will redirect the user to the transcription component of the application where the user will be able to see all the real-time transcription.</p>
+<p>The live call transcription displays in the <strong>Transcription</strong> section of the dashboard. Keywords extracted from the call display in the <strong>Call Capture</strong> section, as shown in <a href="#UI-3">Figure 5</a>.</p>
 </li>
 </ol>
 </div>
 <div id="UI-3" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS3.png"><img src="images/SS3.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS3.png"><img src="images/SS3.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 6. Active calls transcription dashboard (Transcription and Call Capture components)</div>
+<div class="title">Figure 5. Transcription and keyword displays</div>
 </div>
 <div class="olist arabic">
-<ol class="arabic" start="3">
+<ol class="arabic" start="5">
 <li>
-<p>In the real-time transcription phase where the call is still in the active state, the user will be able to see the transcription on the “Transcription” component and the respective keywords on the “Call Capture” component.</p>
+<p>Once the call is ended, caller identification details display in the <strong>Identification</strong> section of the dashboard, as shown in <a href="#UI-4">Figure 6</a>.</p>
 </li>
 </ol>
 </div>
 <div id="UI-4" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS4.png"><img src="images/SS4.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS4.png"><img src="images/SS4.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 7. Active calls transcription dashboard (Call Metadata Identification component)</div>
+<div class="title">Figure 6. Caller identification</div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_view_and_download_call_transcription_and_keywords">View and download call transcription and keywords</h3>
 <div class="olist arabic">
-<ol class="arabic" start="4">
+<ol class="arabic" start="1">
 <li>
-<p>Once the call is ended, the user will be able to see all the entity identification details in the “Identification” component which is at the top in the module as shown in <a href="#UI-4">Figure 7</a>.</p>
+<p>To view and download a transcription after a call, choose the download icon in the <strong>Transcription</strong> section.</p>
 </li>
 </ol>
 </div>
 <div id="UI-5" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS5.png"><img src="images/SS5.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS5.png"><img src="images/SS5.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 8. Active calls transcription dashboard (Download transcription component)</div>
-</div>
-<div id="UI-6" class="imageblock">
-<div class="content">
-<a class="image" href="images/SS6.png"><img src="images/SS6.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
-</div>
-<div class="title">Figure 9. Active calls transcription dashboard (Download transcription component)</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="5">
-<li>
-<p>The user will have the capability to view and download the complete transcriptions and keywords details in the CSV format. Once the call is ended, the user will be able to see a download icon and a table icon in the “Transcription” and “Call Capture” component respectively. On clicking the icons the user will be able to see the details in tabular form and will be able to download the details by clicking on “Download CSV”.</p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_completed_calls">COMPLETED CALLS</h3>
-<div class="paragraph">
-<p>The following are the steps to capture completed calls transcriptions.</p>
-</div>
-<div id="UI-7" class="imageblock">
-<div class="content">
-<a class="image" href="images/SS7.png"><img src="images/SS7.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
-</div>
-<div class="title">Figure 10. Page Selector</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="1">
-<li>
-<p>From the drop-down on the top of the module select the “Completed Calls” option.</p>
-</li>
-</ol>
-</div>
-<div id="UI-8" class="imageblock">
-<div class="content">
-<a class="image" href="images/SS8.png"><img src="images/SS8.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
-</div>
-<div class="title">Figure 11. Completed calls page showing all completed calls</div>
+<div class="title">Figure 7. Download call transcription</div>
 </div>
 <div class="olist arabic">
 <ol class="arabic" start="2">
 <li>
-<p>On selecting the “Completed Calls” option the user will be able to see a table with the details of all the completed calls.</p>
+<p>The transcription displays in the <strong>Transcription Details</strong> window. Choose <strong>Download CSV</strong> to download the transcription in a CSV file.</p>
+</li>
+</ol>
+</div>
+<div id="UI-6" class="imageblock">
+<div class="content">
+<a class="image" href="images/SS6.png"><img src="images/SS6.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+</div>
+<div class="title">Figure 8. Download CSV</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic" start="3">
+<li>
+<p>Choose the table icon in the <strong>Call Capture</strong> section to view and download keywords.</p>
+</li>
+</ol>
+</div>
+<div id="UI-6a" class="imageblock">
+<div class="content">
+<a class="image" href="images/SS6a.png"><img src="images/SS6a.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+</div>
+<div class="title">Figure 9. Download keywords</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_transcription_replays">Transcription replays</h3>
+<div class="paragraph">
+<p>To replay a completed call, do the following:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic" start="1">
+<li>
+<p>On the Quantiphi dashboard, select <strong>Completed Calls</strong> from the drop down list.</p>
+</li>
+</ol>
+</div>
+<div id="UI-7" class="imageblock">
+<div class="content">
+<a class="image" href="images/SS7.png"><img src="images/SS7.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+</div>
+<div class="title">Figure 10. Quantiphi dashboard</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic" start="2">
+<li>
+<p>A table of completed calls displays. Choose the icon in the <strong>View</strong> column of a completed call, as shown in <a href="#UI-9">Figure 11</a>.</p>
 </li>
 </ol>
 </div>
 <div id="UI-9" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS9.png"><img src="images/SS9.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS9.png"><img src="images/SS9.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 12. Completed calls page (View button)</div>
+<div class="title">Figure 11. Completed calls on the Quantiphi dashboard</div>
 </div>
 <div class="olist arabic">
 <ol class="arabic" start="3">
 <li>
-<p>In the table, the user needs to click on the view button (eye icon) of a particular row. This will redirect the user to the transcription component of the application where the user will be able to see all the transcription of the completed calls.</p>
+<p>To play the call, choose the play icon in the <strong>Recording</strong> section or <strong>Begin</strong> in the <strong>Transcription</strong> section.</p>
 </li>
 </ol>
 </div>
 <div id="UI-10" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS10.png"><img src="images/SS10.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS10.png"><img src="images/SS10.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 13. Completed calls transcription dashboard (Play button)</div>
+<div class="title">Figure 12. Starting a playback</div>
 </div>
 <div class="olist arabic">
 <ol class="arabic" start="4">
 <li>
-<p>Below the “Identification” component, the user will be able to hear the recorded call with the help of the “Recording” component. To start the recording, the user will have two options to start</p>
-</li>
-</ol>
-</div>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a" start="1">
-<li>
-<p>By clicking the “Play” button in the “Recording” component.</p>
-</li>
-</ol>
-</div>
-<div id="UI-11" class="imageblock">
-<div class="content">
-<a class="image" href="images/SS11.png"><img src="images/SS11.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
-</div>
-<div class="title">Figure 14. Completed calls transcription dashboard (Begin button)</div>
-</div>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a" start="2">
-<li>
-<p>By clicking the “Begin” button in the “Transcription” component.</p>
+<p>The transcription and keywords of the playback display in the <strong>Transcription</strong> and <strong>Call Capture</strong> sections, respectively.</p>
 </li>
 </ol>
 </div>
 <div id="UI-12" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS12.png"><img src="images/SS12.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS12.png"><img src="images/SS12.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 15. Completed calls transcription dashboard (Transcription and Call Capture components)</div>
+<div class="title">Figure 13. Playback transcription and keywords</div>
 </div>
 <div class="olist arabic">
 <ol class="arabic" start="5">
 <li>
-<p>While the transcription is in progress the user will be able to view the transcription and its respective keywords in the “Transcription” and “Call Capture” component respectively in a synchronization of the time interval of the audio.</p>
+<p>You can move the playback head to play a different section of the call. Or, use the forward and backward controls to jump.</p>
 </li>
 </ol>
 </div>
 <div id="UI-13" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS13.png"><img src="images/SS13.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS13.png"><img src="images/SS13.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 16. Completed calls transcription dashboard (Audio playback controls)</div>
+<div class="title">Figure 14. Playback head and forward and backward controls</div>
 </div>
 <div class="olist arabic">
 <ol class="arabic" start="6">
 <li>
-<p>The user will have the functionality to move forward or backward in the recorded audio by clicking the “Forward” and “Backward” icon in the “Recording” component and also by moving the “Red” cursor in the waves of the audio.</p>
+<p>You can choose a keyword in the <strong>Call Capture</strong> section to jump to the section of the audio containing the keyword.</p>
 </li>
 </ol>
 </div>
 <div id="UI-14" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS14.png"><img src="images/SS14.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS14.png"><img src="images/SS14.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 17. Completed calls transcription dashboard (Call capture component keyword buttons)</div>
+<div class="title">Figure 15. Jump to a sections of call audio by choosing keywords</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+To view and download the entire call transcription and keywords, see <a href="#_view_and_download_call_transcription_and_keywords">View and download call transcription and keywords</a>.
+</td>
+</tr>
+</table>
 </div>
 <div class="olist arabic">
 <ol class="arabic" start="7">
 <li>
-<p>The user has the functionality to hear the sentence where the keyword is captured by clicking on the keyword button in the “Call Capture” component. This will play the audio of the sentence where the keyword was captured and the transcription and audio controls will restart from that point.</p>
+<p>Click <strong>Cancel</strong> in the <strong>Transcription</strong> section to stop the transcription. The playback head will return to the beginning of the call.</p>
 </li>
 </ol>
 </div>
 <div id="UI-15" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS15.png"><img src="images/SS15.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS15.png"><img src="images/SS15.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 18. Completed calls transcription dashboard (Cancel button)</div>
+<div class="title">Figure 16. Cancel playback and transcription</div>
 </div>
 <div class="olist arabic">
 <ol class="arabic" start="8">
 <li>
-<p>The user has the functionality to cancel the transcription by clicking the “Cancel” button in the “Transcription” component. This will restart the audio and will move its control to the start time.</p>
-</li>
-</ol>
-</div>
-<div id="UI-16" class="imageblock">
-<div class="content">
-<a class="image" href="images/SS16.png"><img src="images/SS16.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
-</div>
-<div class="title">Figure 19. Completed calls transcription dashboard (Download button)</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="9">
-<li>
-<p>Once the call is reached to its end time, the user will be able to view the complete transcription and its respective keywords by clicking the “Download” and “Table” icon in the “Transcription” and “Call Capture” component respectively.</p>
-</li>
-</ol>
-</div>
-<div id="UI-17" class="imageblock">
-<div class="content">
-<a class="image" href="images/SS17.png"><img src="images/SS17.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
-</div>
-<div class="title">Figure 20. Completed calls transcription dashboard (Download transcription component)</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="10">
-<li>
-<p>The user will be able to download the transcription and keywords in CSV format by clicking the “Download CSV” button</p>
+<p>Click <strong>Redo</strong> in the <strong>Transcription</strong> or <strong>Call Capture</strong> sections to restart the playback and transcription from the beginning of the call.</p>
 </li>
 </ol>
 </div>
 <div id="UI-18" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS18.png"><img src="images/SS18.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS18.png"><img src="images/SS18.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 21. Completed calls transcription dashboard (Redo button)</div>
+<div class="title">Figure 17. Redo playback and transcription from the beginning</div>
 </div>
 <div class="olist arabic">
-<ol class="arabic" start="11">
+<ol class="arabic" start="9">
 <li>
-<p>The user has the functionality to restart the transcription by clicking the “Redo” button either in the “Transcription” component or in the “Call Capture” component.</p>
+<p>At the end of the transcription, the caller identification details display in the <strong>Identification</strong> section of the dashboard, as shown in <a href="#UI-19">Figure 18</a>.</p>
 </li>
 </ol>
 </div>
 <div id="UI-19" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS19.png"><img src="images/SS19.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS19.png"><img src="images/SS19.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 22. Completed calls transcription dashboard (Call Metadata Identification component)</div>
+<div class="title">Figure 18. Caller identification</div>
 </div>
 <div class="olist arabic">
-<ol class="arabic" start="12">
+<ol class="arabic" start="10">
 <li>
-<p>Once the file is loaded and all the required information is fetched at the end of transcription, the user will be able to view an “Identification” component at the top which has “Members Info” segregated.</p>
+<p>To go back, choose the left arrow button.</p>
 </li>
 </ol>
 </div>
 <div id="UI-20" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS20.png"><img src="images/SS20.png" alt="UI for Real Time Call Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS20.png"><img src="images/SS20.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
 </div>
-<div class="title">Figure 23. Completed calls transcription dashboard (Back button)</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="13">
-<li>
-<p>To move back to the previous module click on the left arrow button placed at the top beside the module header.</p>
-</li>
-</ol>
+<div class="title">Figure 19. Back</div>
 </div>
 </div>
 </div>
@@ -1603,7 +1563,7 @@ of the web app.</p>
 <p><strong>Q.</strong> I encountered a <strong>CREATE_FAILED</strong> error when I launched the Quick Start.</p>
 </div>
 <div class="paragraph">
-<p><strong>A.</strong> If AWS CloudFormation fails to create the stack, relaunch the template with <strong>Rollback on failure</strong> set to <strong>Disabled</strong>. This setting is under <strong>Advanced</strong> in the AWS CloudFormation console on the <strong>Configure stack options</strong> page. With this setting, the stack’s state is retained, and the instance keeps running so that you can troubleshoot the issue. (For Windows, look at the log files in <code>%ProgramFiles%\Amazon\EC2ConfigService</code> and <code>C:\cfn\log</code>.)</p>
+<p><strong>A.</strong> If AWS CloudFormation fails to create the stack, relaunch the template with <strong>Rollback on failure</strong> set to <strong>Disabled</strong>. This setting is under <strong>Advanced</strong> in the AWS CloudFormation console on the <strong>Configure stack options</strong> page. With this setting, the stack’s state is retained, and you can troubleshoot the issue.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1612,7 +1572,7 @@ of the web app.</p>
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-When you set <strong>Rollback on failure</strong> to <strong>Disabled</strong>, you continue to incur AWS charges for this stack. Delete the stack when you finish troubleshooting.
+When you set <strong>Rollback on failure</strong> to <strong>Disabled</strong>, you continue to incur AWS charges for this stack. Ensure that you delete stack after troubleshooting.
 </td>
 </tr>
 </table>
@@ -1632,19 +1592,35 @@ When you set <strong>Rollback on failure</strong> to <strong>Disabled</strong>, 
 <h2 id="_troubleshooting">Troubleshooting</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>Q.</strong> I am getting the message as <em>'The maximum number of addresses has been reached'</em>. What has to be done?</p>
+<p><strong>Q.</strong> I encountered an error message that the maximum number of addresses has been reached.</p>
 </div>
 <div class="paragraph">
-<p><strong>A.</strong> You might be encountering this message as you may have reached the limit for the elastic IP address in your AWS account for a particular region. Please check your current limit, if exceeded then request for the quota increase. For more information about AWS CloudFormation quotas, see the <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html" target="_blank" rel="noopener">AWS documentation</a>.</p>
+<p><strong>A.</strong> This message is displayed when you reach the elastic IP address limit in your AWS account for a particular Region. Check your current limit and request a quota increase if necessary. For more information about AWS CloudFormation quotas, see <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html" target="_blank" rel="noopener">AWS CloudFormation quotas</a>.</p>
 </div>
 <div class="paragraph">
-<p><strong>Q.</strong> I encountered a <em>'Received 1 FAILURE signal(s) out of 2. Unable to satisfy 50% MinSuccessfulInstancesPercent requirement'</em> error in WebAppDeploymentStack when I deployed the AWS CloudFormation templates. What has to be done?</p>
+<p><strong>Q.</strong> I encountered a "Received 1 FAILURE signal(s) out of 2. Unable to satisfy 50% MinSuccessfulInstancesPercent requirement" error in WebAppDeploymentStack when I deployed the AWS CloudFormation templates.</p>
 </div>
 <div class="paragraph">
-<p><strong>A.</strong> If you deploy the templates using existing VPC please check in the Network ACL if all the outbound connections are enabled. If all the outbound connections are enabled then in the WebAppDeploymentStack check for the event for LogicalId WebAppAutoScalingGroup with Status CREATE_FAILED and Status reason <em>'Received FAILURE signal with UniqueId &lt;instance-id&gt;'</em>. Use the configured bastion host to ssh into that instance and check the <code>/var/log/cfn-init.log</code> to get further details.</p>
+<p><strong>A.</strong> If you deployed the templates into an existing VPC, check that all outbound connections are enabled in the network access control list (ACL). If so, then find the event with the following parameters in WebAppDeploymentStack:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>LogicalId: WebAppAutoScalingGroup</p>
+</li>
+<li>
+<p>Status: CREATE_FAILED</p>
+</li>
+<li>
+<p>Status reason: Received FAILURE signal with UniqueId &lt;instance-id&gt;</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>For more information on how to use bastion host to ssh into instances in private subnet, see the <a href="https://aws.amazon.com/blogs/security/securely-connect-to-linux-instances-running-in-a-private-amazon-vpc/" target="_blank" rel="noopener">AWS blogs</a>.</p>
+<p>Use the configured bastion host to connect using SSH (Secure Shell) into the instance and check the <code>/var/log/cfn-init.log</code> file for more details.</p>
+</div>
+<div class="paragraph">
+<p>For more information on how to use bastion hosts to connect using SSH to instances in a private subnet, see <a href="https://aws.amazon.com/blogs/security/securely-connect-to-linux-instances-running-in-a-private-amazon-vpc/" target="_blank" rel="noopener">Securely Connect to Linux Instances Running in a Private Amazon VPC</a>.</p>
 </div>
 </div>
 </div>
@@ -1665,9 +1641,9 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 </table>
 </div>
 <div class="sect2">
-<h3 id="_parameters_to_launch_stack_in_an_existing_vpc">Parameters to launch stack in an existing VPC</h3>
+<h3 id="_launch_into_a_new_vpc">Launch into a new VPC</h3>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Keywords Function Configuration</caption>
+<caption class="title">Table 1. Keywords function configuration</caption>
 <colgroup>
 <col style="width: 16%;">
 <col style="width: 11%;">
@@ -1682,15 +1658,15 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The file name for the keywords function.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Keywords function file name
 (<code>KeywordsFileName</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>kw_50_updated.txt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The file where Keywords are stored for the Keywords Function.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The file where keywords are stored.</p></td>
 </tr>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. Web App Configuration</caption>
+<caption class="title">Table 2. Web application configuration</caption>
 <colgroup>
 <col style="width: 16%;">
 <col style="width: 11%;">
@@ -1705,45 +1681,45 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The keypair name of the key to ssh into the web app ec2 instances and bastion host.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key pair name
 (<code>KeyPairName</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>quickstart-taskcat</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The name of KeyPair which is used to ssh into EC2 instance.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>quickstart-analytics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public/private key pair to securely connect to your instance after it launches.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR to limit the web app access.
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR to limit the web app access
 (<code>CIDR</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.0.0.0/0</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">CIDR to restrict access to web application.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Minimum capacity of Web App ASG.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application security group minimum capacity
 (<code>MinCapacity</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>1</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The minimum number of webapp hosts to be maintained. The minimum number is one.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Minimum number of web application hosts (1-4).</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum capacity of Web App ASG.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application security group maximum capacity
 (<code>MaxCapacity</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>4</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The maximum number of webapp hosts to be scaled out. The maximum number is four.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of web application hosts (3-4).</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Desired capacity of Web App ASG.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application security group capacity
 (<code>DesiredCapacity</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>2</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The desired number of webapp hosts to create. The maximum number is four.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of web application hosts to create (1-4).</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon EC2 instance type for the web app instances.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon EC2 instance type
 (<code>WebAppInstanceType</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>t2.medium</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon EC2 instance type for the web app instances.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon EC2 instance type for the web application instances.</p></td>
 </tr>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 3. VPC Configuration</caption>
+<caption class="title">Table 3. VPC configuration</caption>
 <colgroup>
 <col style="width: 16%;">
 <col style="width: 11%;">
@@ -1758,39 +1734,45 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The VPC Id for the deployment.
-(<code>VPCID</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zones
+(<code>AvailabilityZones</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">VPC ID for deploying web app.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List of Availability Zones to use for the subnets in the VPC.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Subnet Id of the Private Subnet for 1st  web-app EC2 instance.
-(<code>SubnetID1</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Subnet ID for EC2 Instance.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VPC CIDR
+(<code>VPCCIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.192.0.0/16</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for the VPC.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Subnet Id of the Private Subnet for 2nd web-app EC2 instance.
-(<code>SubnetID2</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Subnet ID for EC2 Instance.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet 1 CIDR
+(<code>PublicSubnet1CIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.192.10.0/24</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for public subnet 1, located in Availability Zone 1.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Subnet Ids for the application load balancer.
-(<code>SubnetIDs</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Choose the minimum 2 subnets. The availability zone where instance is created should match with atleast one of the subnet&#8217;s availability zone you choose.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public subnet 2 CIDR
+(<code>PublicSubnet2CIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.192.11.0/24</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for public subnet 2, located in Availability Zone 2.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Security Group Id of Bastion Host Instance
-(<code>BastionSecurityGroupId</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code><em>Optional</em></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Security Group Id of Bastion Host Instance.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 1 CIDR
+(<code>PrivateSubnet1CIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.192.20.0/24</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private subnet 1, located in Availability Zone 1.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 2 CIDR
+(<code>PrivateSubnet2CIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.192.21.0/24</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block for private subnet 2, located in Availability Zone 2.</p></td>
 </tr>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 4. Quickstart Configuration</caption>
+<caption class="title">Table 4. Linux bastion configuration</caption>
 <colgroup>
 <col style="width: 16%;">
 <col style="width: 11%;">
@@ -1805,30 +1787,118 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Your configured S3 bucket with all artifacts for the Quickstart.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of bastion hosts
+(<code>NumBastionHosts</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of bastion hosts to create. The maximum number is four.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bastion tenancy
+(<code>BastionTenancy</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>default</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bastion VPC tenancy (dedicated or default).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enable banner
+(<code>EnableBanner</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">To display a banner when connecting to the bastion through SSH, choose <strong>true</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bastion banner text
+(<code>BastionBanner</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Blank string</em></strong></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Banner text to display at login.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TCP forwarding
+(<code>EnableTCPForwarding</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">To enable TCP forwarding, choose <strong>true</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X11 forwarding
+(<code>EnableX11Forwarding</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">To enable X11 forwarding, choose <strong>true</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allowed bastion external access CIDR
+(<code>RemoteAccessCIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allowed CIDR block for external SSH access to the bastions.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 5. Bastion host instance configuration</caption>
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 11%;">
+<col style="width: 73%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter label (name)</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bastion AMI operating system
+(<code>BastionAMIOS</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Amazon-Linux2-HVM</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Linux distribution for the bastion instances AMI.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bastion host instance type
+(<code>BastionInstanceType</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>t2.micro</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon EC2 instance type for bastion instances.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 6. Quick Start configuration</caption>
+<colgroup>
+<col style="width: 16%;">
+<col style="width: 11%;">
+<col style="width: 73%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter label (name)</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Quick Start S3 bucket name
 (<code>QSS3BucketName</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-quickstart</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The S3 bucket created for your copy of Quick Start assets.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the S3 bucket for your copy of the Quick Start assets. Keep the default name unless you are customizing the template. Changing the name updates code references to point to a new Quick Start location. This name can include numbers, lowercase letters, uppercase letters, and hyphens, but do not start or end with a hyphen (-). See <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">A tag that will act as an identifier prefix for all assets.
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NO_LABEL</strong>
 (<code>QSTagValue</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>qs-test</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Tag value to be attached to resource names.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The folder name in the artifacts S3 bucket where you want to sync the Git repo.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Quick Start S3 key prefix
 (<code>QSS3KeyPrefix</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>quickstart-quantiphi-realtime-analytics/</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The S3 key name prefix used for your copy of Quick Start assets.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">S3 key prefix that is used to simulate a directory for your copy of the Quick Start assets. Keep the default prefix unless you are customizing the template. Changing this prefix updates code references to point to a new Quick Start location. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slashes (/). End with a forward slash. See <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html" class="bare">https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html</a> and <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_parameters_to_launch_stack_in_a_new_vpc">Parameters to launch stack in a new VPC</h3>
+<h3 id="_launch_into_an_existing_vpc">Launch into an existing VPC</h3>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 5. Keywords Function Configuration</caption>
+<caption class="title">Table 7. Keywords function configuration</caption>
 <colgroup>
 <col style="width: 16%;">
 <col style="width: 11%;">
@@ -1843,15 +1913,15 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The file name for the keywords function.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Keywords function file name
 (<code>KeywordsFileName</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>kw_50_updated.txt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The file where Keywords are stored for the Keywords Function.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The file where keywords are stored.</p></td>
 </tr>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 6. Web App Configuration.</caption>
+<caption class="title">Table 8. Web application configuration</caption>
 <colgroup>
 <col style="width: 16%;">
 <col style="width: 11%;">
@@ -1866,45 +1936,45 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The keypair name of the key to ssh into the web app ec2 instances and bastion host.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Key pair name
 (<code>KeyPairName</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>quickstart-analytics</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The name of KeyPair which is used to ssh into EC2 instance.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>quickstart-taskcat</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Public/private key pair to securely connect to your instance after it launches.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR to limit the web app access.
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR block
 (<code>CIDR</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.0.0.0/0</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR to restrict access to web application.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR to restrict access to the web application.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Minimum capacity of Web App ASG.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application security group minimum capacity
 (<code>MinCapacity</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>1</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The minimum number of webapp hosts to be maintained. The minimum number is one.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Minimum number of web application hosts (1-4).</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum capacity of Web App ASG.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application security group maximum capacity
 (<code>MaxCapacity</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>4</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The maximum number of webapp hosts to be scaled out. The maximum number is four.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maximum number of web application hosts (3-4).</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Desired capacity of Web App ASG.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application security group capacity
 (<code>DesiredCapacity</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>2</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The desired number of webapp hosts to create. The maximum number is four.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of web application hosts to create (1-4).</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon EC2 web app instance type.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon EC2 instance type
 (<code>WebAppInstanceType</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>t2.medium</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon EC2 instance type for the web app instances.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon EC2 instance type for the web application instances.</p></td>
 </tr>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 7. VPC Configuration</caption>
+<caption class="title">Table 9. VPC configuration</caption>
 <colgroup>
 <col style="width: 16%;">
 <col style="width: 11%;">
@@ -1919,104 +1989,39 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Availability Zones.
-(<code>AvailabilityZones</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">VPC ID
+(<code>VPCID</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">List of Availability Zones to use for the subnets in the VPC. Note: The logical order is preserved and only 2 AZs are used for this deployment.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ID of the VPC (e.g., vpc-0343606e).</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR for the new VPC.
-(<code>VPCCIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.192.0.0/16</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Please enter the IP range (CIDR notation) for this VPC.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR for the Public Subnet 1.
-(<code>PublicSubnet1CIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.192.10.0/24</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Please enter the IP range (CIDR notation) for the public subnet in the first Availability Zone.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR for the Public Subnet 2.
-(<code>PublicSubnet2CIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.192.11.0/24</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Please enter the IP range (CIDR notation) for the public subnet in the second Availability Zone.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR for the Private Subnet 1.
-(<code>PrivateSubnet1CIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.192.20.0/24</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Please enter the IP range (CIDR notation) for the private subnet in the first Availability Zone.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CIDR for the Private Subnet 2.
-(<code>PrivateSubnet2CIDR</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>10.192.21.0/24</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Please enter the IP range (CIDR notation) for the private subnet in the second Availability Zone.</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 8. Linux Bastion Configuration</caption>
-<colgroup>
-<col style="width: 16%;">
-<col style="width: 11%;">
-<col style="width: 73%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter label (name)</th>
-<th class="tableblock halign-left valign-top">Default value</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number of bastion hosts needed.
-(<code>NumBastionHosts</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The number of bastion hosts to create. The maximum number is four.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Tenancy of the bastion host.
-(<code>BastionTenancy</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>default</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">VPC tenancy to launch the bastion in. Options: dedicated or default</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Option to enable bastion banner.
-(<code>EnableBanner</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">To include a banner to be displayed when connecting via SSH to the bastion, choose true.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Banner text that will appear when ssh into the host.
-(<code>BastionBanner</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Blank string</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Banner text to display upon login.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Option to enable TCP forwarding.
-(<code>EnableTCPForwarding</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">To enable TCP forwarding, choose true.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Option to enable X11 forwarding.
-(<code>EnableX11Forwarding</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">To enable X11 forwarding, choose true.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Option to allow only connections from certain CIDR to access bastion host.
-(<code>RemoteAccessCIDR</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 1 ID
+(<code>SubnetID1</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Allowed CIDR block for external SSH access to the bastions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ID of the first private subnet into which Quantiphi will be deployed (e.g., subnet-a0246dcd).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Private subnet 2 ID
+(<code>SubnetID2</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ID of the second private subnet into which Quantiphi will be deployed (e.g., subnet-a0246dcd).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Application Load Balancer subnet IDs
+(<code>SubnetIDs</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><strong><em>Requires input</em></strong></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Choose a minimum of two subnets. The Availability Zone where instance is created should match with at least one of the subnet&#8217;s Availability Zone you choose.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bastion host security group ID
+(<code>BastionSecurityGroupId</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><em>Optional</em></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The security group ID of bastion host instance.</p></td>
 </tr>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 9. Bastion Host Instance Configuration.</caption>
+<caption class="title">Table 10. Quick Start configuration</caption>
 <colgroup>
 <col style="width: 16%;">
 <col style="width: 11%;">
@@ -2031,51 +2036,22 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Bastion AMI operating system.
-(<code>BastionAMIOS</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Amazon-Linux2-HVM</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The linux distribution for the AMI to be used for the bastion instances.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Bastion host instance type.
-(<code>BastionInstanceType</code>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>t2.micro</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Amazon EC2 instance type for the bastion instances.</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 10. Quick Start Configuration</caption>
-<colgroup>
-<col style="width: 16%;">
-<col style="width: 11%;">
-<col style="width: 73%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter label (name)</th>
-<th class="tableblock halign-left valign-top">Default value</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Your configured S3 bucket with all artifacts for the Quickstart.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Quick Start S3 bucket name
 (<code>QSS3BucketName</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-quickstart</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The S3 bucket created for your copy of Quick Start assets.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the S3 bucket for your copy of the Quick Start assets. Keep the default name unless you are customizing the template. Changing the name updates code references to point to a new Quick Start location. This name can include numbers, lowercase letters, uppercase letters, and hyphens, but do not start or end with a hyphen (-). See <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">A tag that will act as an identifier prefix for all assets.
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>NO_LABEL</strong>
 (<code>QSTagValue</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>qs-test</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Tag value to be attached to resource names.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The folder name in the artifacts S3 bucket where you want to sync the Git repo.
+<td class="tableblock halign-left valign-top"><p class="tableblock">Quick Start S3 key prefix
 (<code>QSS3KeyPrefix</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>quickstart-quantiphi-realtime-analytics/</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The S3 key name prefix used for your copy of Quick Start assets.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">S3 key prefix that is used to simulate a directory for your copy of the Quick Start assets. Keep the default prefix unless you are customizing the template. Changing this prefix updates code references to point to a new Quick Start location. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slashes (/). End with a forward slash. See <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html" class="bare">https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html</a> and <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
 </tr>
 </tbody>
 </table>
