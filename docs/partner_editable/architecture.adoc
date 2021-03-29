@@ -4,7 +4,7 @@ Deploying this Quick Start with default parameters builds the following {partner
 :xrefstyle: short
 [#architecture1]
 .Quick Start architecture for {partner-product-name} on AWS
-[link=images/quantiphi-real-time-analytics-architecture-diagram.png]
+//[link=images/quantiphi-real-time-analytics-architecture-diagram.png]
 image::../images/quantiphi-real-time-analytics-architecture-diagram.png[Architecture,width=100%,height=100%]
 
 As shown in the <<architecture1>>, the Quick Start sets up the following:
