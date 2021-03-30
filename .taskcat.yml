@@ -1,5 +1,30 @@
 project:
   name: quickstart-quantiphi-realtime-analytics
+  parameters:
+    QSS3BucketName: $[taskcat_autobucket]
+    QSS3KeyPrefix: quickstart-quantiphi-realtime-analytics/
+    KeyPairName: quickstart-taskcat
+    CIDR: 0.0.0.0/0
+    MinCapacity: 1
+    MaxCapacity: 4
+    DesiredCapacity: 2
+    VPCCIDR: 10.192.0.0/16
+    PublicSubnet1CIDR: 10.192.10.0/24
+    PublicSubnet2CIDR: 10.192.11.0/24
+    PrivateSubnet1CIDR: 10.192.20.0/24
+    PrivateSubnet2CIDR: 10.192.21.0/24
+    BastionAMIOS: Amazon-Linux2-HVM
+    BastionBanner: ""
+    BastionTenancy: default
+    BastionInstanceType: t2.micro
+    EnableBanner: 'false'
+    EnableTCPForwarding: 'false'
+    EnableX11Forwarding: 'false'
+    NumBastionHosts:  1
+    RemoteAccessCIDR: 10.192.0.0/16
+    WebAppInstanceType: 't2.medium'
+    KeywordsFileName: 'kw_50_updated.txt'
+    AvailabilityZones: $[taskcat_getaz_2]
   regions: # List of AWS regions
     - us-east-1
     - us-west-2
@@ -9,37 +34,18 @@ project:
 tests:  # [REQUIRED] Test definition section
   # Using New VPC
   quickstart-quantiphi-test-1:
-    parameters:
-      QSS3BucketName: $[taskcat_autobucket]
-      QSTagValue: qs-new-vpc
-      QSS3KeyPrefix: quickstart-quantiphi-realtime-analytics/
-      KeyPairName: quickstart-taskcat
-      CIDR: 0.0.0.0/0
-      MinCapacity: 1
-      MaxCapacity: 4
-      DesiredCapacity: 2
-      VPCCIDR: 10.192.0.0/16
-      PublicSubnet1CIDR: 10.192.10.0/24
-      PublicSubnet2CIDR: 10.192.11.0/24
-      PrivateSubnet1CIDR: 10.192.20.0/24
-      PrivateSubnet2CIDR: 10.192.21.0/24
-      BastionAMIOS: Amazon-Linux2-HVM
-      BastionBanner: ""
-      BastionTenancy: default
-      BastionInstanceType: t2.micro
-      EnableBanner: 'false'
-      EnableTCPForwarding: 'false'
-      EnableX11Forwarding: 'false'
-      NumBastionHosts:  1
-      RemoteAccessCIDR: 10.192.0.0/16
-      WebAppInstanceType: 't2.medium'
-      KeywordsFileName: 'kw_50_updated.txt'
-      AvailabilityZones: 'us-east-1a,us-east-1b'
+    parameters: 
+      QSTagValue: new-vpc-t1
     regions:
       - us-east-1
-    tags:  
-      Project: Quickstart-quantiphi-realtime-analytics
-    template: ./templates/analytics-main.template.yaml
+  # Using New VPC
+  quickstart-quantiphi-test-2:
+    parameters: 
+      QSTagValue: new-vpc-t2
+    regions:
+      - us-west-2
+
+
 
   # Using Existing VPC
   # quickstart-quantiphi-test-2:
@@ -66,38 +72,7 @@ tests:  # [REQUIRED] Test definition section
   #   template: ./templates/analytics.template.yaml
 
 # Using New VPC
-  quickstart-quantiphi-test-3:
-    parameters:
-      QSS3BucketName: $[taskcat_autobucket]
-      QSTagValue: qstestnew
-      QSS3KeyPrefix: quickstart-quantiphi-realtime-analytics/
-      KeyPairName: quickstart-taskcat
-      CIDR: 0.0.0.0/0
-      MinCapacity: 1
-      MaxCapacity: 4
-      DesiredCapacity: 2
-      VPCCIDR: 10.192.0.0/16
-      PublicSubnet1CIDR: 10.192.10.0/24
-      PublicSubnet2CIDR: 10.192.11.0/24
-      PrivateSubnet1CIDR: 10.192.20.0/24
-      PrivateSubnet2CIDR: 10.192.21.0/24
-      BastionAMIOS: Amazon-Linux2-HVM
-      BastionBanner: ""
-      BastionTenancy: default
-      BastionInstanceType: t2.micro
-      EnableBanner: 'false'
-      EnableTCPForwarding: 'false'
-      EnableX11Forwarding: 'false'
-      NumBastionHosts:  1
-      RemoteAccessCIDR: 10.192.0.0/16
-      WebAppInstanceType: 't2.medium'
-      KeywordsFileName: 'kw_50_updated.txt'
-      AvailabilityZones: 'us-west-2a,us-west-2b'
-    regions:
-      - us-west-2
-    tags:  
-      Project: Quickstart-quantiphi-realtime-analytics
-    template: ./templates/analytics-main.template.yaml
+
 
   # Using Existing VPC
   # quickstart-quantiphi-test-4:
