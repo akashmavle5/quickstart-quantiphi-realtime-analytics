@@ -35,6 +35,7 @@ Metadata:
             - QSS3BucketName
             - QSTagValue
             - QSS3KeyPrefix
+            - QSS3BucketRegion
         
     ParameterLabels: 
       QSS3BucketName:
@@ -90,6 +91,10 @@ Parameters:
     Default: 'qs-test'
     MaxLength: 10
     MinLength: 5
+  QSS3BucketRegion:
+    Default: 'us-east-1'
+    Description: 'The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.'
+    Type: String
   QSS3KeyPrefix:
     AllowedPattern: '^[0-9a-zA-Z-/]*$'
     ConstraintDescription:
