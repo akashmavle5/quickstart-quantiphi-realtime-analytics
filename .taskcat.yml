@@ -1,0 +1,99 @@
+project:
+  name: quickstart-quantiphi-realtime-analytics
+  parameters:
+    QSS3BucketName: $[taskcat_autobucket]
+    QSS3KeyPrefix: quickstart-quantiphi-realtime-analytics/
+    KeyPairName: quickstart-taskcat
+    CIDR: 0.0.0.0/0
+    MinCapacity: 1
+    MaxCapacity: 4
+    DesiredCapacity: 2
+    VPCCIDR: 10.192.0.0/16
+    PublicSubnet1CIDR: 10.192.10.0/24
+    PublicSubnet2CIDR: 10.192.11.0/24
+    PrivateSubnet1CIDR: 10.192.20.0/24
+    PrivateSubnet2CIDR: 10.192.21.0/24
+    BastionAMIOS: Amazon-Linux2-HVM
+    BastionBanner: ""
+    BastionTenancy: default
+    BastionInstanceType: t2.micro
+    EnableBanner: 'false'
+    EnableTCPForwarding: 'false'
+    EnableX11Forwarding: 'false'
+    NumBastionHosts:  1
+    RemoteAccessCIDR: 10.192.0.0/16
+    WebAppInstanceType: 't2.medium'
+    KeywordsFileName: 'kw_50_updated.txt'
+    AvailabilityZones: $[taskcat_getaz_2]
+  regions: # List of AWS regions
+    - us-east-1
+    - us-west-2
+  tags: 
+    Project: Quickstart-quantiphi-realtime-analytics
+  template: ./templates/analytics-main.template.yaml
+tests:  # [REQUIRED] Test definition section
+  # Using New VPC
+  quickstart-quantiphi-test-1:
+    parameters: 
+      QSTagValue: new-vpc-t1
+    regions:
+      - us-east-1
+  # Using New VPC
+  quickstart-quantiphi-test-2:
+    parameters: 
+      QSTagValue: new-vpc-t2
+    regions:
+      - us-west-2
+
+
+
+  # Using Existing VPC
+  # quickstart-quantiphi-test-2:
+  #   parameters:
+  #     QSS3BucketName: $[taskcat_autobucket]
+  #     QSTagValue: qs-old-vpc
+  #     QSS3KeyPrefix: quickstart-quantiphi-realtime-analytics/
+  #     KeyPairName: quickstart-taskcat
+  #     VPCID:  '' #Put your VPC Id here
+  #     SubnetID1: '' #Put your Private Subnet Id here. (Web App)
+  #     SubnetID2: '' #Put another Private Subnet Id here. (Web App)
+  #     SubnetIDs: '' #Put your Public Subnet Id's (Minimum 2) here. (Web App Application Load Balancer)
+  #     CIDR: 0.0.0.0/0
+  #     MinCapacity: 1
+  #     MaxCapacity: 4
+  #     DesiredCapacity: 2
+  #     WebAppInstanceType: 't2.medium'
+  #     KeywordsFileName: 'kw_50_updated.txt'
+  #     BastionSecurityGroupId: ''
+  #   regions:
+  #     - us-east-1
+  #   tags:  
+  #     Project: Quickstart-quantiphi-realtime-analytics
+  #   template: ./templates/analytics.template.yaml
+
+# Using New VPC
+
+
+  # Using Existing VPC
+  # quickstart-quantiphi-test-4:
+  #   parameters:
+  #     QSS3BucketName: $[taskcat_autobucket]
+  #     QSTagValue: qstestold
+  #     QSS3KeyPrefix: quickstart-quantiphi-realtime-analytics/
+  #     KeyPairName: quickstart-taskcat
+  #     VPCID:  '' #Put your VPC Id here
+  #     SubnetID1: '' #Put your Private Subnet Id here. (Web App)
+  #     SubnetID2: '' #Put another Private Subnet Id here. (Web App)
+  #     SubnetIDs: '' #Put your Public Subnet Id's (Minimum 2) here. (Web App Application Load Balancer)
+  #     CIDR: 0.0.0.0/0
+  #     MinCapacity: 1
+  #     MaxCapacity: 4
+  #     DesiredCapacity: 2
+  #     WebAppInstanceType: 't2.medium'      
+  #     KeywordsFileName: 'kw_50_updated.txt'
+  #     BastionSecurityGroupId: ''
+  #   regions:
+  #     - us-west-2
+  #   tags:  
+  #     Project: Quickstart-quantiphi-realtime-analytics
+  #   template: ./templates/analytics.template.yaml

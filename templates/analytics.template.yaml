@@ -1,0 +1,513 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Creates resources in an existing VPC - Chime Voice Connector audio from KVS,transcribe and publish transcription, keyword-extraction and custom entity extraction results to websocket and DynamoDB table (qs-1re0264ru)
+Metadata:
+  QuickStartDocumentation:
+    EntrypointName: Launch into an existing VPC
+    OptionalParameters:
+      - BastionSecurityGroupId
+
+  AWS::CloudFormation::Interface: 
+    ParameterGroups:
+        - Label: 
+            default: Keywords function configuration
+          Parameters: 
+            - KeywordsFileName
+        - Label: 
+            default: Web application configuration
+          Parameters: 
+            - KeyPairName
+            - CIDR
+            - MinCapacity
+            - MaxCapacity
+            - DesiredCapacity
+            - WebAppInstanceType
+        - Label: 
+            default: VPC configuration
+          Parameters:            
+            - VPCID
+            - SubnetID1
+            - SubnetID2
+            - SubnetIDs
+            - BastionSecurityGroupId
+        - Label: 
+            default: Quick Start configuration
+          Parameters: 
+            - QSS3BucketName
+            - QSTagValue
+            - QSS3KeyPrefix
+            - QSS3BucketRegion
+        
+    ParameterLabels: 
+      QSS3BucketName:
+        default: Quick Start S3 bucket name
+      QSS3BucketRegion:
+        default: Quick Start S3 bucket Region
+      QSS3KeyPrefix:
+        default: Quick Start S3 key prefix
+      KeywordsFileName:
+        default: Keywords function file name
+      KeyPairName:
+        default: Key pair name
+      VPCID:
+        default: VPC ID
+      SubnetID1:
+        default: Private subnet 1 ID
+      SubnetID2:
+        default: Private subnet 2 ID 
+      SubnetIDs:
+        default: Application Load Balancer subnet IDs
+      CIDR:
+        default: CIDR block
+      MinCapacity:
+        default: Application security group minimum capacity
+      MaxCapacity:
+        default: Application security group maximum capacity
+      DesiredCapacity:
+        default: Application security group capacity
+      BastionSecurityGroupId:
+        default: Bastion host security group ID
+      WebAppInstanceType:
+        default: Amazon EC2 instance type
+
+Parameters:
+  QSS3BucketName:
+    AllowedPattern: '^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$'
+    ConstraintDescription:
+      The Quick Start bucket name can include numbers, lowercase
+      letters, uppercase letters, and hyphens (-). It cannot start or end with a 
+      hyphen (-).
+    Default: aws-quickstart
+    Description:
+      Name of the S3 bucket for your copy of the Quick Start assets. 
+      Keep the default name unless you are customizing the template. 
+      Changing the name updates code references to point to a new Quick 
+      Start location. This name can include numbers, lowercase letters, 
+      uppercase letters, and hyphens, but do not start or end with a hyphen (-). 
+      See https://aws-quickstart.github.io/option1.html.
+    Type: String
+  QSTagValue:
+    Description: Tag value to be attached to resource names.
+    Type: String
+    Default: 'qs-test'
+    MaxLength: 10
+    MinLength: 5
+  QSS3BucketRegion:
+    Default: 'us-east-1'
+    Description: 'The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.'
+    Type: String
+  QSS3KeyPrefix:
+    AllowedPattern: '^[0-9a-zA-Z-/]*$'
+    ConstraintDescription:
+      The Quick Start S3 key prefix can include numbers, lowercase letters,
+      uppercase letters, hyphens (-), and forward slashes (/).
+    Default: 'quickstart-quantiphi-realtime-analytics/'
+    Description:
+      S3 key prefix that is used to simulate a directory for your copy of the 
+      Quick Start assets. Keep the default prefix unless you are customizing 
+      the template. Changing this prefix updates code references to point to 
+      a new Quick Start location. This prefix can include numbers, lowercase 
+      letters, uppercase letters, hyphens (-), and forward slashes (/). End with a forward slash. 
+      See https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html 
+      and https://aws-quickstart.github.io/option1.html.
+    Type: String
+  KeywordsFileName:
+    AllowedPattern: ^.*.txt$
+    Description: The file where keywords are stored.
+    Type: String
+    Default: 'kw_50_updated.txt'
+  KeyPairName:
+    Description: Public/private key pair to securely connect to your instance after it launches.
+    Type: String
+    Default: 'quickstart-taskcat'
+  VPCID:
+    Type: String
+    Description: ID of the VPC (e.g., vpc-0343606e).
+  SubnetID1: 
+    Description: ID of the first private subnet into which Quantiphi will be deployed (e.g., subnet-a0246dcd).
+    Type: String
+  SubnetID2: 
+    Description: ID of the second private subnet into which Quantiphi will be deployed (e.g., subnet-a0246dcd).
+    Type: String
+  SubnetIDs: 
+    Description: Choose a minimum of two subnets. The Availability Zone where instance is created should match with at least one of the subnet's Availability Zone you choose.
+    Type: CommaDelimitedList
+  CIDR: 
+    AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
+    Description: CIDR to restrict access to the web application.
+    Type: String
+    Default: "0.0.0.0/0"
+  MinCapacity:
+    AllowedValues:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+    Default: '1'
+    Description: Minimum number of web application hosts (1-4).
+    Type: String
+  MaxCapacity:
+    AllowedValues:
+      - '3'
+      - '4'
+    Default: '4'
+    Description: Maximum number of web application hosts (3-4).
+    Type: String
+  DesiredCapacity:
+    AllowedValues:
+      - '1'
+      - '2'
+      - '3'
+      - '4'
+    Default: '2'
+    Description: Number of web application hosts to create (1-4).
+    Type: String
+  WebAppInstanceType:
+    Description: Amazon EC2 instance type for the web application instances.
+    Type: String
+    Default: 't2.medium'
+    AllowedValues:
+      - 't2.medium'
+      - 't2.large'
+      - 't3.medium'
+      - 't3.large'
+      - 't3.xlarge'
+      - 't3.2xlarge'
+  BastionSecurityGroupId:
+    Type: String
+    Description: The security group ID of bastion host instance.
+
+Conditions:
+  UsingDefaultBucket: 
+    Fn::Equals: 
+    - !Ref QSS3BucketName
+    - 'aws-quickstart'
+
+
+Resources:
+  LambdaFunctionIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+            - s3.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+
+  LambdaFunctionIAMPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Join
+        - ''
+        - - !Ref 'LambdaFunctionIAMRole'
+          - _policy
+      Roles:
+      - Ref: LambdaFunctionIAMRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - "logs:CreateLogGroup"
+          - "logs:CreateLogStream"
+          - "logs:PutLogEvents"
+          Resource:
+          - arn:aws:logs:*:*:*
+        - Effect: Allow
+          Action:
+          - "s3:GetObject"
+          - "s3:GetObjectTagging"
+          - "s3:PutObject"
+          - "s3:PutObjectTagging"
+          - "s3:DeleteObject"
+          Resource:
+          - "arn:aws:s3:*:*:accesspoint/*"
+          - !Join
+            - ''
+            - - 'arn:aws:s3:::'
+              - !Ref RegionalArtifactBucket
+          - !Join
+            - ''
+            - - 'arn:aws:s3:::'
+              - !Ref RegionalArtifactBucket
+              - '/*'
+          - !Join
+            - ''
+            - - 'arn:aws:s3:::'
+              - !Ref QSS3BucketName
+          - !Join
+            - ''
+            - - 'arn:aws:s3:::'
+              - !Ref QSS3BucketName
+              - '/*'
+        - Effect: Allow
+          Action:
+          - "iam:GetRole"
+          - "iam:PassRole"
+          Resource:
+          - !GetAtt LambdaFunctionIAMRole.Arn
+        - Effect: Allow
+          Action:
+          - lambda:InvokeFunction
+          Resource:
+          - "*"
+  
+  RegionalArtifactBucket:
+    Type: AWS::S3::Bucket
+
+  CopyZipsFunction:
+    DependsOn:
+    - LambdaFunctionIAMPolicy
+    Type: AWS::Lambda::Function
+    Properties:
+      Description: Copies objects from a source S3 bucket to a destination.
+      Handler: index.handler
+      Runtime: python3.6
+      Role: !GetAtt LambdaFunctionIAMRole.Arn
+      Timeout: 240
+      Code:
+        ZipFile: !Join
+          - "\n"
+          - - import json
+            - import logging
+            - import threading
+            - import boto3
+            - import cfnresponse
+            - ''
+            - 'def copy_objects(source_bucket, dest_bucket, prefix, objects):'
+            - '   s3 = boto3.client(''s3'')'
+            - '   for o in objects:'
+            - '       key = prefix + o'
+            - '       copy_source = {'
+            - '           ''Bucket'': source_bucket,'
+            - '           ''Key'': key'
+            - '       }'
+            - '       print((''copy_source: %s'' % copy_source))'
+            - '       print((''dest_bucket = %s''%dest_bucket))'
+            - '       print((''key = %s'' %key))'
+            - '       s3.copy_object(CopySource=copy_source, Bucket=dest_bucket,'
+            - '             Key=key)'
+            - ''
+            - 'def delete_objects(bucket, prefix, objects):'
+            - '   s3 = boto3.client(''s3'')'
+            - '   objects = {''Objects'': [{''Key'': prefix + o} for o in objects]}'
+            - '   s3.delete_objects(Bucket=bucket, Delete=objects)'
+            - ''
+            - 'def timeout(event, context):'
+            - '   logging.error(''Execution is about to time out, sending failure
+              response to CloudFormation'')'
+            - '   cfnresponse.send(event, context, cfnresponse.FAILED, {}, None)'
+            - ''
+            - 'def handler(event, context):'
+            - '   # make sure we send a failure to CloudFormation if the function'
+            - '   # is going to timeout'
+            - '   timer = threading.Timer((context.get_remaining_time_in_millis()'
+            - '             / 1000.00) - 0.5, timeout, args=[event, context])'
+            - '   timer.start()'
+            - '   print((''Received event: %s'' % json.dumps(event)))'
+            - '   status = cfnresponse.SUCCESS'
+            - '   try:'
+            - '       source_bucket = event[''ResourceProperties''][''SourceBucket'']'
+            - '       dest_bucket = event[''ResourceProperties''][''DestBucket'']'
+            - '       prefix = event[''ResourceProperties''][''Prefix'']'
+            - '       objects = event[''ResourceProperties''][''Objects'']'
+            - '       if event[''RequestType''] == ''Delete'':'
+            - '           delete_objects(dest_bucket, prefix, objects)'
+            - '       else:'
+            - '           copy_objects(source_bucket, dest_bucket, prefix, objects)'
+            - '   except Exception as e:'
+            - '       logging.error(''Exception: %s'' % e, exc_info=True)'
+            - '       status = cfnresponse.FAILED'
+            - '   finally:'
+            - '       timer.cancel()'
+            - '       cfnresponse.send(event, context, status, {}, None)'
+            - ''
+  
+  CopyZips:
+    Type: Custom::CopyZips
+    Properties:
+      ServiceToken: !GetAtt 'CopyZipsFunction.Arn'
+      DestBucket: !Ref 'RegionalArtifactBucket'
+      SourceBucket: !Ref 'QSS3BucketName'
+      Prefix: !Ref 'QSS3KeyPrefix'
+      Objects:
+        - "assets/kw_50_updated.txt"
+        - "templates/web-app.yaml"
+        - "templates/storage.yaml"
+        - "templates/function.yaml"
+        - "functions/packages/websocket-connection.zip"
+        - "functions/packages/publish-call-metadata.zip"
+        - "functions/packages/keyword-extraction.zip"
+        - "functions/packages/amazon-chime-recordandtranscribe.zip"
+        - "functions/packages/layers/pydub.zip"
+        - "functions/packages/layers/pandas.zip"
+        - "functions/packages/layers/chimetranscribe-libraries.zip"
+        - "functions/packages/layers/date_extractor.zip"
+        - "assets/web_app/ui_code.zip"
+
+  StorageStack:
+    DependsOn: CopyZips
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL:
+        !Sub 
+        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/storage.yaml
+        - S3Region: !Ref 'AWS::Region'
+          S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref RegionalArtifactBucket]
+      Parameters:
+        QSTagValue: !Ref QSTagValue
+
+  LambdaFunctionIAMPolicySourceBucketAccess:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Join
+        - ''
+        - - !Ref 'LambdaFunctionIAMRole'
+          - S3access_policy
+      Roles:
+      - Ref: LambdaFunctionIAMRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - "s3:GetObject"
+          - "s3:GetObjectTagging"
+          - "s3:PutObject"
+          - "s3:PutObjectTagging"
+          - "s3:DeleteObject"
+          Resource:
+          - !Join
+            - ''
+            - - 'arn:aws:s3:::'
+              - !GetAtt StorageStack.Outputs.SourceArtifactBucketName
+          - !Join
+            - ''
+            - - 'arn:aws:s3:::'
+              - !GetAtt StorageStack.Outputs.SourceArtifactBucketName
+              - '/*'
+
+  CopyAsset:
+    DependsOn: LambdaFunctionIAMPolicySourceBucketAccess
+    Type: Custom::CopyZips
+    Properties:
+      ServiceToken: !GetAtt 'CopyZipsFunction.Arn'
+      DestBucket: !GetAtt StorageStack.Outputs.SourceArtifactBucketName
+      SourceBucket: !Ref 'RegionalArtifactBucket'
+      Prefix: !Ref 'QSS3KeyPrefix'
+      Objects:
+        - "assets/kw_50_updated.txt"
+
+  FunctionsStack:
+    DependsOn: CopyZips
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL:
+        !Sub 
+        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/function.yaml
+        - S3Region: !Ref 'AWS::Region'
+          S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref RegionalArtifactBucket]
+      Parameters:
+        QSTagValue: !Ref QSTagValue
+        QSS3BucketName: 
+          Fn::If:
+          - UsingDefaultBucket
+          - !Sub '${QSS3BucketName}-${AWS::Region}'
+          - !Ref RegionalArtifactBucket
+        KeywordsFileName: !Ref KeywordsFileName
+        QSS3KeyPrefix: !Ref QSS3KeyPrefix
+        RecordingBucketName: !GetAtt StorageStack.Outputs.RecordingBucketName
+        MergedRecordingBucketName: !GetAtt StorageStack.Outputs.MergedRecordingBucketName
+        SourceArtifactBucketName: !GetAtt StorageStack.Outputs.SourceArtifactBucketName
+        TranscriptionWebsocketConnectionTableName: !GetAtt StorageStack.Outputs.TranscriptionWebsocketConnectionTableName
+        TranscriptionKeywordExtractionTableName: !GetAtt StorageStack.Outputs.TranscriptionKeywordExtractionTableName
+        LiveCallsMetadataTableName: !GetAtt StorageStack.Outputs.LiveCallsMetadataTableName
+        LiveCallsTranscriptionTableName: !GetAtt StorageStack.Outputs.LiveCallsTranscriptionTableName
+        RecordingBucketARN: !GetAtt StorageStack.Outputs.RecordingBucketARN
+        MergedRecordingBucketARN: !GetAtt StorageStack.Outputs.MergedRecordingBucketARN
+        SourceArtifactBucketARN: !GetAtt StorageStack.Outputs.SourceArtifactBucketARN
+        TranscriptionWebsocketConnectionTableARN: !GetAtt StorageStack.Outputs.TranscriptionWebsocketConnectionTableARN
+        TranscriptionKeywordExtractionTableARN: !GetAtt StorageStack.Outputs.TranscriptionKeywordExtractionTableARN
+        LiveCallsMetadataTableARN: !GetAtt StorageStack.Outputs.LiveCallsMetadataTableARN
+        LiveCallsTranscriptionTableARN: !GetAtt StorageStack.Outputs.LiveCallsTranscriptionTableARN
+
+  WebAppDeploymentStack:
+    DependsOn: CopyZips
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL:
+        !Sub 
+        - https://${S3Bucket}.s3.${S3Region}.${AWS::URLSuffix}/${QSS3KeyPrefix}templates/web-app.yaml
+        - S3Region: !Ref 'AWS::Region'
+          S3Bucket: !If [UsingDefaultBucket, !Sub '${QSS3BucketName}-${AWS::Region}', !Ref RegionalArtifactBucket]
+      Parameters:
+        QSTagValue: !Ref QSTagValue
+        KeyPairName: !Ref KeyPairName
+        VPCID: !Ref VPCID
+        SubnetID1: !Ref SubnetID1
+        SubnetID2: !Ref SubnetID2
+        SubnetIDs: 
+          Fn::Join:
+            - ','
+            - !Ref SubnetIDs
+        CIDR: !Ref CIDR
+        QSS3BucketName: 
+          Fn::If:
+          - UsingDefaultBucket
+          - !Sub '${QSS3BucketName}-${AWS::Region}'
+          - !Ref RegionalArtifactBucket
+        WebSocketURL : !GetAtt FunctionsStack.Outputs.WebSocketURL 
+        WebAppInstanceType: !Ref WebAppInstanceType
+        MergedRecordingBucketName: !GetAtt StorageStack.Outputs.MergedRecordingBucketName
+        TranscriptionKeywordExtractionTableName: !GetAtt StorageStack.Outputs.TranscriptionKeywordExtractionTableName
+        LiveCallsMetadataTableName: !GetAtt StorageStack.Outputs.LiveCallsMetadataTableName
+        MergedRecordingBucketARN: !GetAtt StorageStack.Outputs.MergedRecordingBucketARN
+        TranscriptionKeywordExtractionTableARN: !GetAtt StorageStack.Outputs.TranscriptionKeywordExtractionTableARN
+        LiveCallsMetadataTableARN: !GetAtt StorageStack.Outputs.LiveCallsMetadataTableARN
+        MinCapacity: !Ref MinCapacity
+        MaxCapacity: !Ref MaxCapacity
+        DesiredCapacity: !Ref DesiredCapacity
+        QSS3KeyPrefix: !Ref QSS3KeyPrefix
+        BastionSecurityGroupId: !Ref BastionSecurityGroupId
+
+Outputs:
+  RecordingBucket:
+    Description: The Name of Audio Recording Bucket
+    Value: !GetAtt StorageStack.Outputs.RecordingBucketName
+
+  MergedRecordingBucket:
+    Description: The Name of Merged Recording Bucket
+    Value: !GetAtt StorageStack.Outputs.MergedRecordingBucketName
+
+  SourceArtifactBucket:
+    Description: The Name of Source Artifact Bucket
+    Value: !GetAtt StorageStack.Outputs.SourceArtifactBucketName
+ 
+  LiveCallsTranscriptionTable:
+    Description: Transcription table
+    Value: !GetAtt StorageStack.Outputs.LiveCallsTranscriptionTableName
+ 
+  LiveCallsMetadataTable:
+    Description: Live Call MetaData table
+    Value: !GetAtt StorageStack.Outputs.LiveCallsMetadataTableName
+
+  TranscriptionWebsocketConnectionTable:
+    Description: The name of Connection table
+    Value: !GetAtt StorageStack.Outputs.TranscriptionWebsocketConnectionTableName
+
+  TranscriptionKeywordExtractionTable:
+    Description: The name of Keywords table
+    Value: !GetAtt StorageStack.Outputs.TranscriptionKeywordExtractionTableName
+
+  LoadBalancerDNSAddr:
+    Description: DNS Address of the Load-Balancer
+    Value: !GetAtt WebAppDeploymentStack.Outputs.LoadBalancerDNS
+
+  Postdeployment:
+    Description: See the deployment guide for post-deployment steps.
+    Value: https://aws.amazon.com/quickstart/?quickstart-all.sort-by=item.additionalFields.sortDate&quickstart-all.sort-order=desc&awsm.page-quickstart-all=5

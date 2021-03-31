@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.12">
-<title>Quantiphi Real-Time Call Center Analytics on the AWS Cloud</title>
+<title>Quantiphi Real-Time Call Analytics on the AWS Cloud</title>
 <style>
 
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -790,8 +790,8 @@ p.footer-text a{color:#d7d8d8}
 <div id="toctitle"></div>
 <ul class="sectlevel1">
 <li><a href="#_overview">Overview</a></li>
-<li><a href="#_quantiphi_real_time_call_center_analytics_on_aws">Quantiphi Real-Time Call Center Analytics on AWS</a></li>
-<li><a href="#_cost">Cost</a></li>
+<li><a href="#_quantiphi_real_time_call_analytics_on_aws">Quantiphi Real-Time Call Analytics on AWS</a></li>
+<li><a href="#_aws_costs">AWS costs</a></li>
 <li><a href="#_software_licenses">Software licenses</a></li>
 <li><a href="#_architecture">Architecture</a></li>
 <li><a href="#_planning_the_deployment">Planning the deployment</a>
@@ -832,7 +832,7 @@ p.footer-text a{color:#d7d8d8}
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<h2 id="_quantiphi_real_time_call_center_analytics_on_the_aws_cloud" class="discrete text-center">Quantiphi Real-Time Call Center Analytics on the AWS Cloud</h2>
+<h2 id="_quantiphi_real_time_call_analytics_on_the_aws_cloud" class="discrete text-center">Quantiphi Real-Time Call Analytics on the AWS Cloud</h2>
 <h2 id="_quick_start_reference_deployment" class="discrete text-left text-center">Quick Start Reference Deployment</h2>
 <div class="imageblock text-center">
 <div class="content">
@@ -866,10 +866,10 @@ report bugs, or submit feature ideas for this Quick Start.
 <h2 id="_overview">Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Quick Start reference deployment guide provides step-by-step instructions for deploying Quantiphi Real-Time Call Center Analytics on the AWS Cloud.</p>
+<p>This Quick Start reference deployment guide provides step-by-step instructions for deploying Quantiphi Real-Time Call Analytics on the AWS Cloud.</p>
 </div>
 <div class="paragraph">
-<p>This Quick Start sets up Quantiphi Real-Time Call Center Analytics, used by organizations to improve and optimize remote support. It provides a dashboard for support agents that displays live call transcripts, keywords, and call metadata.</p>
+<p>This Quick Start sets up Quantiphi Real-Time Call Analytics, used by organizations to improve and optimize remote support. It provides a dashboard for support agents that displays live call transcripts, keywords, and call metadata.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -886,19 +886,18 @@ Amazon may share user-deployment information with the AWS Partner that collabora
 </div>
 </div>
 <div class="sect1">
-<h2 id="_quantiphi_real_time_call_center_analytics_on_aws">Quantiphi Real-Time Call Center Analytics on AWS</h2>
+<h2 id="_quantiphi_real_time_call_analytics_on_aws">Quantiphi Real-Time Call Analytics on AWS</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Quantiphi Real-Time Call Center Analytics on AWS transcribes live calls coming from an integrated PBX system. The transcription, and keywords and entities extracted from it, are displayed live to call center agents in a custom user interface. Entities include customer name, date of birth, customer ID, and callback phone number. The deployment also performs a post-call analysis to summarize a call. Agents can replay calls, download transcriptions and keywords, and jump to sections of a recording by choosing keywords. Call transcripts, keywords, and metadata are stored in Amazon DynamoDB tables, and can be used as resources later to perform further analytics.</p>
+<p>Quantiphi Real-Time Call Analytics on AWS transcribes live calls coming from an integrated PBX system. The transcription, and keywords and entities extracted from it, are displayed live to call center agents in a custom user interface. Entities include customer name, date of birth, customer ID, and callback phone number. The deployment also performs a post-call analysis to summarize a call. Agents can replay calls, download transcriptions and keywords, and jump to sections of a recording by choosing keywords. Call transcripts, keywords, and metadata are stored in Amazon DynamoDB tables, and can be used as resources later to perform further analytics.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_cost">Cost</h2>
+<h2 id="_aws_costs">AWS costs</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You are responsible for the cost of the AWS services used while running
-this Quick Start. There is no additional cost for
+<p>You are responsible for the cost of the AWS services and any third-party licenses used while running this Quick Start. There is no additional cost for
 using the Quick Start.</p>
 </div>
 <div class="paragraph">
@@ -925,7 +924,7 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <h2 id="_software_licenses">Software licenses</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This Quick Start does not require a license to deploy Quantiphi Real-Time Call Center Analytics.</p>
+<p>This Quick Start does not require a license to deploy Quantiphi Real-Time Call Analytics.</p>
 </div>
 </div>
 </div>
@@ -933,13 +932,13 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <h2 id="_architecture">Architecture</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Deploying this Quick Start with default parameters builds the following Quantiphi Real-Time Call Center Analytics environment in the AWS Cloud.</p>
+<p>Deploying this Quick Start with default parameters builds the following Quantiphi Real-Time Call Analytics environment in the AWS Cloud.</p>
 </div>
 <div id="architecture1" class="imageblock">
 <div class="content">
-<a class="image" href="images/quantiphi-real-time-analytics-architecture-diagram.png"><img src="images/quantiphi-real-time-analytics-architecture-diagram.png" alt="Architecture" width="100%" height="100%"></a>
+<img src="images/quantiphi-real-time-analytics-architecture-diagram.png" alt="Architecture" width="100%" height="100%">
 </div>
-<div class="title">Figure 1. Quick Start architecture for Quantiphi Real-Time Call Center Analytics on AWS</div>
+<div class="title">Figure 1. Quick Start architecture for Quantiphi Real-Time Call Analytics on AWS</div>
 </div>
 <div class="paragraph">
 <p>As shown in the <a href="#architecture1">Figure 1</a>, the Quick Start sets up the following:</p>
@@ -947,7 +946,7 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <div class="ulist">
 <ul>
 <li>
-<p>Amazon Chime Voice Connector to receive calls from user Private Branch Exchange (PBX) software.</p>
+<p>Amazon Chime Voice Connector to receive calls from user private branch exchange (PBX) software.</p>
 </li>
 <li>
 <p>Kinesis Video Streams to store call streams.</p>
@@ -959,29 +958,68 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <p>Amazon SQS queues to store messages that are read by AWS Lambda functions.</p>
 </li>
 <li>
-<p>AWS Lambda functions to poll SQS queues and initiate transcription, keyword-extraction, and post-call metadata extraction routines.</p>
-</li>
-<li>
-<p>Amazon Transcribe to transcribe audio streams.</p>
-</li>
-<li>
-<p>Amazon DynamoDB tables to store transcriptions, keywords, and call metadata.</p>
-</li>
-<li>
-<p>Amazon S3 bucket to store MP3 files of calls.</p>
-</li>
-<li>
-<p>Amazon API Gateway to manage access to the Quantiphi web application.</p>
-</li>
-<li>
-<p>In the virtual private cloud (VPC):</p>
+<p>In the transcription queue:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>An Application Load Balancer to route traffic between Quantiphi web application nodes.</p>
+<p>AWS Lambda function to read audio streams from Kinesis Video Streams and initiate transcription.</p>
 </li>
 <li>
-<p>1–4 Amazon Elastic Compute Cloud (Amazon EC2) instances to host Quantiphi web application nodes. The number of hosts is chosen during deployment.</p>
+<p>Amazon Transcribe to transcribe call streams.</p>
+</li>
+<li>
+<p>Amazon DynamoDB table to store transcriptions.</p>
+</li>
+<li>
+<p>Amazon Simple Storage Service (Amazon S3) bucket to store MP3 files of call streams.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>In the keyword-extraction queue:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>AWS Lambda function to extract keywords and publish them to the Quantiphi web application.</p>
+</li>
+<li>
+<p>DynamoDB table to store keywords.</p>
+</li>
+<li>
+<p>API Gateway to manage access to the Quantiphi web application.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>In the postcall metadata-extraction queue:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>AWS Lambda function to extract metadata and publish it to the Quantiphi web application.</p>
+</li>
+<li>
+<p>Amazon Comprehend to extract metadata.</p>
+</li>
+<li>
+<p>DynamoDB table to store metadata.</p>
+</li>
+<li>
+<p>API Gateway to manage access to the Quantiphi web application.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>In the virtual private cloud (VPC):*</p>
+<div class="ulist">
+<ul>
+<li>
+<p>An Application Load Balancer to route traffic between Quantiphi web application nodes.*</p>
+</li>
+<li>
+<p>1-4 Amazon Elastic Compute Cloud (Amazon EC2) instances to host Quantiphi web application nodes. You choose the number of hosts during deployment.</p>
 </li>
 </ul>
 </div>
@@ -991,6 +1029,9 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p><span class="small">*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.</span></p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -999,7 +1040,10 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <div class="sect2">
 <h3 id="_specialized_knowledge">Specialized knowledge</h3>
 <div class="paragraph">
-<p>This deployment requires a moderate level of familiarity with AWS services. If you’re new to AWS, visit <a href="https://aws.amazon.com/getting-started/" target="_blank" rel="noopener">Getting Started with AWS</a> and <a href="https://aws.amazon.com/training/" target="_blank" rel="noopener">Training and Certification</a>. These sites provide materials for learning how to design, deploy, and operate your infrastructure and applications on the AWS Cloud.</p>
+<p>This deployment requires a moderate level of familiarity with
+AWS services. If you’re new to AWS, see <a href="https://aws.amazon.com/getting-started/" target="_blank" rel="noopener">Getting Started Resource Center</a>
+and <a href="https://aws.amazon.com/training/" target="_blank" rel="noopener">AWS Training and Certification</a>. These sites provide materials for learning how to design,
+deploy, and operate your infrastructure and applications on the AWS Cloud.</p>
 </div>
 <div class="paragraph">
 <p>This Quick Start assumes familiarity with the following AWS services:</p>
@@ -1039,7 +1083,7 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <div class="sect2">
 <h3 id="_technical_requirements">Technical requirements</h3>
 <div class="paragraph">
-<p>Before you launch the Quick Start, your account must be configured as specified in the following table. Otherwise, deployment might fail.</p>
+<p>Before you launch the Quick Start, review the following information and ensure that your account is properly configured. Otherwise, deployment might fail.</p>
 </div>
 <div class="sect3">
 <h4 id="_resource_quotas">Resource quotas</h4>
@@ -1134,7 +1178,7 @@ This deployment includes Amazon Chime Voice Connector, which is not currently su
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.amazon.com/general/latest/gr/rande-manage.html" target="_blank" rel="noopener">Managing AWS Regions</a>.
+Certain Regions are available on an opt-in basis. For more information, see <a href="https://docs.aws.amazon.com/general/latest/gr/rande-manage.html" target="_blank" rel="noopener">Managing AWS Regions</a>.
 </td>
 </tr>
 </table>
@@ -1160,10 +1204,10 @@ Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Deploy Quantiphi Real-Time Call Center Analytics into a new VPC</strong>. This option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. It then deploys Quantiphi Real-Time Call Center Analytics into this new VPC. To set up the networking and routing infrastructure, you only provide the CIDR block for the VPC that you want to create. However, you can configure instance types and software settings such as license keys, user names, and passwords, as discussed later in this guide.</p>
+<p><strong>Deploy Quantiphi Real-Time Call Analytics into a new VPC</strong>. This option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. It then deploys Quantiphi Real-Time Call Analytics into this new VPC. To set up the networking and routing infrastructure, you only provide the CIDR block for the VPC that you want to create. However, you can configure instance types and software settings such as license keys, user names, and passwords, as discussed later in this guide.</p>
 </li>
 <li>
-<p><strong>Deploy Quantiphi Real-Time Call Center Analytics into an existing VPC</strong>. Provisions resources into your existing AWS VPC.</p>
+<p><strong>Deploy Quantiphi Real-Time Call Analytics into an existing VPC</strong>. Provisions resources into your existing AWS VPC.</p>
 </li>
 </ul>
 </div>
@@ -1218,11 +1262,11 @@ You are responsible for the cost of the AWS services used while running this Qui
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/yJgMp" target="_blank" rel="noopener">Deploy Quantiphi Real-Time Call Center Analytics into a new VPC on AWS</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/yJgMp" target="_blank" rel="noopener">Deploy Quantiphi Real-Time Call Analytics into a new VPC on AWS</a></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/YAMYy" target="_blank" rel="noopener">View template</a></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/3rp53" target="_blank" rel="noopener">Deploy Quantiphi Real-Time Call Center Analytics into an existing VPC on AWS</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/3rp53" target="_blank" rel="noopener">Deploy Quantiphi Real-Time Call Analytics into an existing VPC on AWS</a></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/vbmx5" target="_blank" rel="noopener">View template</a></p></td>
 </tr>
 </tbody>
@@ -1230,7 +1274,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 <div class="olist arabic">
 <ol class="arabic" start="2">
 <li>
-<p>Check the AWS Region that’s displayed in the upper-right corner of the navigation bar, and change it if necessary. This Region is where the network infrastructure for Quantiphi Real-Time Call Center Analytics is built. The template is launched in the us-east-1 Region by default.</p>
+<p>Check the AWS Region that’s displayed in the upper-right corner of the navigation bar, and change it if necessary. This Region is where the network infrastructure for Quantiphi Real-Time Call Analytics is built. The template is launched in the us-east-1 Region by default.</p>
 </li>
 </ol>
 </div>
@@ -1242,10 +1286,6 @@ You are responsible for the cost of the AWS services used while running this Qui
 <li>
 <p>On the <strong>Specify stack details</strong> page, change the stack name if needed. Review the parameters for the template. Provide values for the parameters that require input. For all other parameters, review the default settings and customize them as necessary. For details on each parameter, see the <a href="#_parameter_reference">Parameter reference</a> section of this guide. After reviewing and customizing the parameters, choose <strong>Next</strong>.</p>
 </li>
-</ol>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="5">
 <li>
 <p>On the <strong>Configure stack options</strong> page, you can <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-resource-tags.html" target="_blank" rel="noopener">specify tags</a> (key-value pairs) for resources in your stack and <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-add-tags.html" target="_blank" rel="noopener">set advanced options</a>. When you’re finished, choose <strong>Next</strong>.</p>
 </li>
@@ -1256,7 +1296,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 <p>Choose <strong>Create stack</strong> to deploy the stack.</p>
 </li>
 <li>
-<p>Monitor the status of the stack. When the status is <strong>CREATE_COMPLETE</strong>, the Quantiphi Real-Time Call Center Analytics deployment is ready.</p>
+<p>Monitor the status of the stack. When the status is <strong>CREATE_COMPLETE</strong>, the Quantiphi Real-Time Call Analytics deployment is ready.</p>
 </li>
 <li>
 <p>Use the values displayed in the <strong>Outputs</strong> tab for the stack, as shown in <a href="#cfn_outputs">Figure 2</a>, to view the created resources.</p>
@@ -1267,7 +1307,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 <div class="content">
 <a class="image" href="images/cfn_outputs.png"><img src="images/cfn_outputs.png" alt="cfn_outputs" width="100%" height="100%"></a>
 </div>
-<div class="title">Figure 2. Quantiphi Real-Time Call Center Analytics outputs after successful deployment</div>
+<div class="title">Figure 2. Quantiphi Real-Time Call Analytics outputs after successful deployment</div>
 </div>
 </div>
 </div>
@@ -1302,7 +1342,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 </div>
 <div id="output" class="imageblock">
 <div class="content">
-<a class="image" href="images/Output.png"><img src="images/Output.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/Output.png"><img src="images/Output.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 3. Web application URL on the Outputs tab</div>
 </div>
@@ -1321,7 +1361,7 @@ You are responsible for the cost of the AWS services used while running this Qui
 </div>
 <div id="UI-2" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS2.png"><img src="images/SS2.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS2.png"><img src="images/SS2.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 4. Active calls table</div>
 </div>
@@ -1346,7 +1386,7 @@ The message “No Active Calls Found” displays if there are no active calls. A
 </div>
 <div id="UI-3" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS3.png"><img src="images/SS3.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS3.png"><img src="images/SS3.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 5. Transcription and keyword displays</div>
 </div>
@@ -1359,7 +1399,7 @@ The message “No Active Calls Found” displays if there are no active calls. A
 </div>
 <div id="UI-4" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS4.png"><img src="images/SS4.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS4.png"><img src="images/SS4.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 6. Caller identification</div>
 </div>
@@ -1375,7 +1415,7 @@ The message “No Active Calls Found” displays if there are no active calls. A
 </div>
 <div id="UI-5" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS5.png"><img src="images/SS5.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS5.png"><img src="images/SS5.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 7. Download call transcription</div>
 </div>
@@ -1388,7 +1428,7 @@ The message “No Active Calls Found” displays if there are no active calls. A
 </div>
 <div id="UI-6" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS6.png"><img src="images/SS6.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS6.png"><img src="images/SS6.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 8. Download CSV</div>
 </div>
@@ -1401,7 +1441,7 @@ The message “No Active Calls Found” displays if there are no active calls. A
 </div>
 <div id="UI-6a" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS6a.png"><img src="images/SS6a.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS6a.png"><img src="images/SS6a.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 9. Download keywords</div>
 </div>
@@ -1420,7 +1460,7 @@ The message “No Active Calls Found” displays if there are no active calls. A
 </div>
 <div id="UI-7" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS7.png"><img src="images/SS7.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS7.png"><img src="images/SS7.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 10. Quantiphi dashboard</div>
 </div>
@@ -1433,7 +1473,7 @@ The message “No Active Calls Found” displays if there are no active calls. A
 </div>
 <div id="UI-9" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS9.png"><img src="images/SS9.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS9.png"><img src="images/SS9.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 11. Completed calls on the Quantiphi dashboard</div>
 </div>
@@ -1446,7 +1486,7 @@ The message “No Active Calls Found” displays if there are no active calls. A
 </div>
 <div id="UI-10" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS10.png"><img src="images/SS10.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS10.png"><img src="images/SS10.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 12. Starting a playback</div>
 </div>
@@ -1459,7 +1499,7 @@ The message “No Active Calls Found” displays if there are no active calls. A
 </div>
 <div id="UI-12" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS12.png"><img src="images/SS12.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS12.png"><img src="images/SS12.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 13. Playback transcription and keywords</div>
 </div>
@@ -1472,7 +1512,7 @@ The message “No Active Calls Found” displays if there are no active calls. A
 </div>
 <div id="UI-13" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS13.png"><img src="images/SS13.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS13.png"><img src="images/SS13.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 14. Playback head and forward and backward controls</div>
 </div>
@@ -1485,7 +1525,7 @@ The message “No Active Calls Found” displays if there are no active calls. A
 </div>
 <div id="UI-14" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS14.png"><img src="images/SS14.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS14.png"><img src="images/SS14.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 15. Jump to a sections of call audio by choosing keywords</div>
 </div>
@@ -1510,7 +1550,7 @@ To view and download the entire call transcription and keywords, see <a href="#_
 </div>
 <div id="UI-15" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS15.png"><img src="images/SS15.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS15.png"><img src="images/SS15.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 16. Cancel playback and transcription</div>
 </div>
@@ -1523,7 +1563,7 @@ To view and download the entire call transcription and keywords, see <a href="#_
 </div>
 <div id="UI-18" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS18.png"><img src="images/SS18.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS18.png"><img src="images/SS18.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 17. Redo playback and transcription from the beginning</div>
 </div>
@@ -1536,7 +1576,7 @@ To view and download the entire call transcription and keywords, see <a href="#_
 </div>
 <div id="UI-19" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS19.png"><img src="images/SS19.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS19.png"><img src="images/SS19.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 18. Caller identification</div>
 </div>
@@ -1549,7 +1589,7 @@ To view and download the entire call transcription and keywords, see <a href="#_
 </div>
 <div id="UI-20" class="imageblock">
 <div class="content">
-<a class="image" href="images/SS20.png"><img src="images/SS20.png" alt="UI for Quantiphi Real-Time Call Center Analytics" width="648" height="439"></a>
+<a class="image" href="images/SS20.png"><img src="images/SS20.png" alt="UI for Quantiphi Real-Time Call Analytics" width="648" height="439"></a>
 </div>
 <div class="title">Figure 19. Back</div>
 </div>
@@ -2053,6 +2093,12 @@ Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parame
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>quickstart-quantiphi-realtime-analytics/</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">S3 key prefix that is used to simulate a directory for your copy of the Quick Start assets. Keep the default prefix unless you are customizing the template. Changing this prefix updates code references to point to a new Quick Start location. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slashes (/). End with a forward slash. See <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html" class="bare">https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html</a> and <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Quick Start S3 bucket Region
+(<code>QSS3BucketRegion</code>)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>us-east-1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -2092,7 +2138,7 @@ and to share your customizations with others.</p>
 <p>This document is provided for informational purposes only. It represents AWS’s current product offerings and practices as of the date of issue of this document, which are subject to change without notice. Customers are responsible for making their own independent assessment of the information in this document and any use of AWS’s products or services, each of which is provided “as is” without warranty of any kind, whether expressed or implied. This document does not create any warranties, representations, contractual commitments, conditions, or assurances from AWS, its affiliates, suppliers, or licensors. The responsibilities and liabilities of AWS to its customers are controlled by AWS agreements, and this document is not part of, nor does it modify, any agreement between AWS and its customers.</p>
 </div>
 <div class="paragraph">
-<p>The software included with this paper is licensed under the Apache License, version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at <a href="http://aws.amazon.com/apache2.0/" class="bare">http://aws.amazon.com/apache2.0/</a> or in the accompanying "license" file. This code is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied. See the License for specific language governing permissions and limitations.</p>
+<p>The software included with this paper is licensed under the Apache License, version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at <a href="http://aws.amazon.com/apache2.0/" target="_blank" rel="noopener">http://aws.amazon.com/apache2.0/</a> or in the accompanying "license" file. This code is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied. See the License for specific language governing permissions and limitations.</p>
 </div>
 </div>
 </div>
@@ -2100,7 +2146,16 @@ and to share your customizations with others.</p>
 <p class="footer-text">
 <!-- We can use document attributes: -->
 <!-- Generated with Asciidoctor v2.0.12. -->
-<a href="https://aws.amazon.com/privacy/">Privacy</a> | <a href="https://aws.amazon.com/terms/">Site terms</a> | &copy; 2020, Amazon Web Services, Inc. or its affiliates and Quantiphi. All rights reserved.
+<a href="https://aws.amazon.com/privacy/">Privacy</a> | <a href="https://aws.amazon.com/terms/">Site terms</a> | &copy; 2021, Amazon Web Services, Inc. or its affiliates and Quantiphi. All rights reserved.
 </p>
 </body>
 </html>
+<!--
+repo commit:
+f50198ecf834ab3f3cdc4ebca5a2c31ac5f3477e
+
+submodule config:
+ d15f338e5c2b27efea5af124e7da7d589e0bee78 docs/boilerplate (heads/main)
+ 53fbedf058adaea101a587ec0fa9d84cb2a05587 submodules/quickstart-aws-vpc (v1.0-56-g53fbedf)
+ 395c4f548145d871b07ae19f57d76a76797ac412 submodules/quickstart-linux-bastion (heads/main)
+-->
