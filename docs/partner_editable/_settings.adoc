@@ -1,4 +1,4 @@
-:quickstart-project-name: quickstart-quantiphi-real-time-analytics
+:quickstart-project-name: quickstart-quantiphi-realtime-analytics
 :partner-product-name: Quantiphi Real-Time Call Analytics
 :partner-company-name: Quantiphi
 :doc-month: March
